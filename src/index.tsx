@@ -1,9 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { CssBaseline, ThemeProvider, createMuiTheme, Theme, AppBar } from '@material-ui/core';
+import { CssBaseline, ThemeProvider, createMuiTheme, Theme } from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
 import blueGrey from '@material-ui/core/colors/blueGrey';
+
+import HomeRoute from '@routes/home';
+
+import './main.scss';
 
 const theme: Theme = createMuiTheme({
     palette: {
@@ -22,9 +27,13 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <div className="app">
-                <AppBar position="sticky" color="default">
-                    <p>test</p>
-                </AppBar>
+                <Router>
+                    <Switch>
+                        <Route path="/" exact>
+                            <HomeRoute />
+                        </Route>
+                    </Switch>
+                </Router>
             </div>
         </ThemeProvider>
     </>,

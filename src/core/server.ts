@@ -5,6 +5,8 @@ import express, { Request, Response } from 'express';
 
 import EspressoRegistrar from './registrar';
 
+import espresso from './espresso';
+
 interface ServerRoute {
     path: string;
     method: 'get' | 'post' | 'put' | 'delete' | 'head';
@@ -28,8 +30,12 @@ export default class EspressoServer extends EspressoRegistrar<ServerRoute> {
         }, 30000);
 
         this.app.use(bodyParser.json());
+    }
 
-        this.server.listen(23167);
+    // Start the server if it is not already running
+    public start(port: number = 23167) {
+        if (this.server.listening) return;
+        this.server.listen(port);
     }
 
     public emitToSocket(event: string, data?: any) {
@@ -50,11 +56,3 @@ export default class EspressoServer extends EspressoRegistrar<ServerRoute> {
         this.app[route.method.toLowerCase() as ServerRoute['method']](route.path, route.response);
     };
 }
-
-// const app = Express();
-
-// app.get('/', function (req, res) {
-//     res.send('Hello World');
-// });
-
-// app.listen(23167);

@@ -1,4 +1,6 @@
 import espresso from '../core/espresso';
+import { ActionSet, Item, ItemType } from '@typings/items';
+import { v4 as uuid } from 'uuid';
 
 espresso.server.register({
     method: 'get',
@@ -32,9 +34,18 @@ espresso.server.register({
     path: '/api/items',
     method: 'get',
     response: (req, res) => {
+        const parentId = req.query.parent;
+
         res.contentType('application/json');
-        res.send(JSON.stringify([], null, 4));
-        //   res.send(JSON.stringify(espresso.items.toJSON().value, null, 4));
+
+        if (parentId) {
+            // @ts-ignore
+            const items = espresso.store.get('items').filter((i) => i.parent === parentId);
+            res.send(JSON.stringify(items, null, 4));
+            return;
+        }
+
+        res.send(JSON.stringify(espresso.store.get('items'), null, 4));
     },
 });
 
@@ -43,9 +54,9 @@ espresso.server.register({
     method: 'get',
     response: (req, res) => {
         const { id } = req.params;
-        //   const items = espresso.items.toJSON();
-        //   const item = items.value.find(i => i.id === id);
-        const item = false;
+        const items = espresso.store.get('items');
+        // @ts-ignore
+        const item = items.value.find((i) => i.id === id);
 
         if (item) {
             res.contentType('application/json');
@@ -63,23 +74,54 @@ espresso.server.register({
 });
 
 espresso.server.register({
+    path: '/api/items',
+    method: 'post',
+    response: (req, res) => {
+        const { type, name } = req.body;
+        const id = uuid();
+
+        const items = espresso.store.get('items');
+
+        switch (type as ItemType) {
+            case 'action-set':
+                const item: ActionSet = {
+                    id,
+                    type,
+                    name,
+                    cooldown: -1,
+                    active: false,
+                    settings: [],
+                    triggers: [],
+                };
+
+                espresso.store.set('items', [...items, item]);
+                res.json(item);
+                break;
+        }
+    },
+});
+
+espresso.server.register({
     path: '/api/items/:id',
     method: 'put',
     response: (req, res) => {
         const { id } = req.params;
-        //   const item = espresso.items.getById(id);
+        const items = espresso.store.get('items') as any[];
+        // @ts-ignore
+        const index = items.findIndex((i) => i.id === id);
 
-        //   if (item) {
-        //     Object.entries(req.body).forEach(([key, value]) => {
-        //       item[key] = value;
-        //     });
+        if (index) {
+            const item = items[index];
+            Object.entries(req.body).forEach(([key, value]) => {
+                item[key] = value;
+            });
 
-        //     const json = espresso.items.toJSON().value.find(i => i.id === id);
+            espresso.store.set(`items[${index}]`, item);
 
-        //     res.contentType("application/json");
-        //     res.send(JSON.stringify(json, null, 4));
-        //     return;
-        //   }
+            res.contentType('application/json');
+            res.send(JSON.stringify(item, null, 4));
+            return;
+        }
 
         const error = {
             status: 404,

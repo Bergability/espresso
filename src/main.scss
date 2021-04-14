@@ -1,0 +1,15 @@
+.app {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+}
+
+.padded,
+.route-wrapper {
+    padding: 20px;
+}
+
+.MuiFormControl-root:not(:last-child) {
+    margin-bottom: 20px;
+}
