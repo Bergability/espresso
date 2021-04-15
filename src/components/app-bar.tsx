@@ -3,7 +3,7 @@ import React from 'react';
 
 // Components
 import { Link } from 'react-router-dom';
-import { AppBar, Breadcrumbs, LinearProgress, makeStyles, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Breadcrumbs, LinearProgress, makeStyles, Toolbar, Typography, Link as MaterialLink } from '@material-ui/core';
 
 // Styles
 import './app-bar.scss';
@@ -11,7 +11,9 @@ import './app-bar.scss';
 const useStyles = makeStyles((theme) => ({
     crumb: {
         color: theme.palette.primary.main,
-        textDecoration: 'none',
+    },
+    current: {
+        cursor: 'default',
     },
 }));
 
@@ -43,9 +45,9 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs, loading, children }) => {
                         );
 
                     return (
-                        <Typography key={index} color="textPrimary" component={Link} to={link} className={classes.crumb}>
+                        <MaterialLink key={index} color="textPrimary" component={Link} to={link} className={classes.crumb}>
                             {text}
-                        </Typography>
+                        </MaterialLink>
                     );
                 })}
             </Breadcrumbs>

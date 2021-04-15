@@ -5,6 +5,8 @@
     flex-wrap: nowrap;
     height: 54px;
 
+    user-select: none;
+
     &-crumbs {
         flex: 1 1 100%;
     }
