@@ -38,7 +38,7 @@ ReactDOM.render(
                             <FolderRoute />
                         </Route>
 
-                        <Route path="/action-set/:id" exact>
+                        <Route path="/action-set/:id">
                             <ActionSetRoute />
                         </Route>
                     </Switch>

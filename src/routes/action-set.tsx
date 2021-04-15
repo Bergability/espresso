@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import React, { useEffect, useState, createContext } from 'react';
+import { withRouter, RouteComponentProps, Link, useRouteMatch, Switch, Route } from 'react-router-dom';
 
 import { ActionSet, Item } from '@typings/items';
 import EspressoAppBar, { Crumb } from '@components/app-bar';
 import api from 'src/api';
 import { IconButton, Icon } from '@material-ui/core';
+
+import ActionSetSettingsRoute from '@routes/action-set-settings';
+import ActionSetEditorRoute from '@routes/action-set-editor';
 
 interface RouteParams {
     id: string;
@@ -20,8 +23,11 @@ const defaultState: State = {
     crumbs: [{ text: 'Home', link: '/' }],
 };
 
+export const ActionSetContext = createContext<State>(defaultState);
+
 const ActionSetRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     const id = props.match.params.id;
+    const match = useRouteMatch();
     const [state, updateState] = useState<State>(defaultState);
 
     useEffect(() => {
@@ -39,13 +45,19 @@ const ActionSetRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
 
     // Show just the loading app bar if we are still loading
     return (
-        <>
-            <EspressoAppBar crumbs={state.crumbs} loading={state.item === null}>
-                <IconButton component={Link} to={`/action-set/${id}/settings`}>
-                    <Icon>settings</Icon>
-                </IconButton>
-            </EspressoAppBar>
-        </>
+        <ActionSetContext.Provider value={state}>
+            <Switch>
+                {/* Settings route */}
+                <Route path={`${match.path}/settings`}>
+                    <ActionSetSettingsRoute id={id} />
+                </Route>
+
+                {/* Main set editor route */}
+                <Route path={`${match.path}`} exact>
+                    <ActionSetEditorRoute id={id} />
+                </Route>
+            </Switch>
+        </ActionSetContext.Provider>
     );
 };
 

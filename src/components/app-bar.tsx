@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, Breadcrumbs, IconButton, LinearProgress, makeStyles, Toolbar, Typography } from '@material-ui/core';
 
-const styles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
     crumb: {
         color: theme.palette.primary.main,
         textDecoration: 'none',
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const EspressoAppBar: React.FC<Props> = ({ crumbs, loading, children }) => {
-    const classes = styles();
+    const classes = useStyles();
 
     const CrumbDisplay: React.FC = () => {
         if (crumbs.length === 0 || loading) return <Typography>&nbsp;</Typography>;
