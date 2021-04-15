@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import {
     Button,
     Icon,
@@ -20,15 +20,15 @@ import { Item } from '@typings/items';
 import EspressoAppBar from '@components/app-bar';
 import api from '../api';
 
+interface RouteParams {
+    id?: string;
+}
+
 interface State {
     items: Item[];
     loaded: boolean;
     open: boolean;
     error?: string;
-}
-
-interface Props {
-    id?: string;
 }
 
 const defaultState: State = {
@@ -37,8 +37,9 @@ const defaultState: State = {
     open: false,
 };
 
-const FolderRoute: React.FC<Props> = (props) => {
+const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     const [state, updateState] = useState<State>(defaultState);
+    // const id = props.match.params.id;
 
     useEffect(() => {
         // TODO add parent searching
@@ -60,11 +61,16 @@ const FolderRoute: React.FC<Props> = (props) => {
 
         return (
             <>
-                {state.items.map((item) => (
-                    <Button to={`/${item.id}`} key={item.id} variant="outlined" component={Link} style={{ textTransform: 'none' }}>
-                        {item.name}
-                    </Button>
-                ))}
+                {state.items.map((item) => {
+                    let link: string = `/${item.type}/${item.id}`;
+                    if (item.type === 'folder') link = `/${item.id}`;
+
+                    return (
+                        <Button to={link} key={item.id} variant="outlined" component={Link} style={{ textTransform: 'none' }}>
+                            {item.name}
+                        </Button>
+                    );
+                })}
             </>
         );
     };
@@ -130,4 +136,4 @@ const FolderRoute: React.FC<Props> = (props) => {
     );
 };
 
-export default FolderRoute;
+export default withRouter(FolderRoute);

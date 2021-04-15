@@ -2,6 +2,7 @@ interface ItemBase {
     id: string;
     type: string;
     name: string;
+    parent: null | string;
 }
 
 export interface Folder extends ItemBase {

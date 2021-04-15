@@ -1,9 +1,17 @@
 import React from 'react';
-import { AppBar, Breadcrumbs, IconButton, LinearProgress, Toolbar, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { AppBar, Breadcrumbs, IconButton, LinearProgress, makeStyles, Toolbar, Typography } from '@material-ui/core';
+
+const styles = makeStyles((theme) => ({
+    crumb: {
+        color: theme.palette.primary.main,
+        textDecoration: 'none',
+    },
+}));
 
 import './app-bar.scss';
 
-interface Crumb {
+export interface Crumb {
     text: string;
     link: string;
 }
@@ -14,14 +22,23 @@ interface Props {
 }
 
 const EspressoAppBar: React.FC<Props> = ({ crumbs, loading, children }) => {
+    const classes = styles();
+
     const CrumbDisplay: React.FC = () => {
         if (crumbs.length === 0 || loading) return <Typography>&nbsp;</Typography>;
 
         return (
             <Breadcrumbs className="espresso-app-bar-crumbs">
                 {crumbs.map(({ text, link }, index) => {
+                    if (index === crumbs.length - 1)
+                        return (
+                            <Typography key={index} color="textPrimary">
+                                {text}
+                            </Typography>
+                        );
+
                     return (
-                        <Typography key={index} color="textPrimary">
+                        <Typography key={index} color="textPrimary" component={Link} to={link} className={classes.crumb}>
                             {text}
                         </Typography>
                     );

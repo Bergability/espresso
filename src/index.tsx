@@ -6,7 +6,8 @@ import { CssBaseline, ThemeProvider, createMuiTheme, Theme } from '@material-ui/
 import blue from '@material-ui/core/colors/blue';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 
-import ItemRoute from '@routes/item';
+import FolderRoute from '@routes/folder';
+import ActionSetRoute from '@routes/action-set';
 
 import './main.scss';
 
@@ -30,11 +31,15 @@ ReactDOM.render(
                 <Router>
                     <Switch>
                         <Route path="/" exact>
-                            <ItemRoute />
+                            <FolderRoute />
                         </Route>
 
                         <Route path="/:id" exact>
-                            <ItemRoute />
+                            <FolderRoute />
+                        </Route>
+
+                        <Route path="/action-set/:id" exact>
+                            <ActionSetRoute />
                         </Route>
                     </Switch>
                 </Router>

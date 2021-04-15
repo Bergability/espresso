@@ -56,7 +56,7 @@ espresso.server.register({
         const { id } = req.params;
         const items = espresso.store.get('items');
         // @ts-ignore
-        const item = items.value.find((i) => i.id === id);
+        const item = items.find((i) => i.id === id);
 
         if (item) {
             res.contentType('application/json');
@@ -77,7 +77,7 @@ espresso.server.register({
     path: '/api/items',
     method: 'post',
     response: (req, res) => {
-        const { type, name } = req.body;
+        const { type, name, parent } = req.body;
         const id = uuid();
 
         const items = espresso.store.get('items');
@@ -88,6 +88,7 @@ espresso.server.register({
                     id,
                     type,
                     name,
+                    parent: parent || null,
                     cooldown: -1,
                     active: false,
                     settings: [],
