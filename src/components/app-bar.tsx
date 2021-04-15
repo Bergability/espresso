@@ -1,6 +1,12 @@
+// Libraries
 import React from 'react';
+
+// Components
 import { Link } from 'react-router-dom';
-import { AppBar, Breadcrumbs, IconButton, LinearProgress, makeStyles, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Breadcrumbs, LinearProgress, makeStyles, Toolbar, Typography } from '@material-ui/core';
+
+// Styles
+import './app-bar.scss';
 
 const useStyles = makeStyles((theme) => ({
     crumb: {
@@ -9,8 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-import './app-bar.scss';
-
+// Types
 export interface Crumb {
     text: string;
     link: string;

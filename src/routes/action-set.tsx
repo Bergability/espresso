@@ -1,13 +1,21 @@
+// Libraries
 import React, { useEffect, useState, createContext } from 'react';
-import { withRouter, RouteComponentProps, Link, useRouteMatch, Switch, Route } from 'react-router-dom';
+import { withRouter, useRouteMatch } from 'react-router-dom';
 
-import { ActionSet, Item } from '@typings/items';
-import EspressoAppBar, { Crumb } from '@components/app-bar';
-import api from 'src/api';
-import { IconButton, Icon } from '@material-ui/core';
+// Components
+import { Crumb } from '@components/app-bar';
+import { Switch, Route } from 'react-router-dom';
 
+// Routes
 import ActionSetSettingsRoute from '@routes/action-set-settings';
 import ActionSetEditorRoute from '@routes/action-set-editor';
+
+// Utilities
+import api from '@utilities/api';
+
+// Types
+import { ActionSet, Item } from '@typings/items';
+import { RouteComponentProps } from 'react-router-dom';
 
 interface RouteParams {
     id: string;

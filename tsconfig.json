@@ -21,7 +21,8 @@
             "@core/*": ["src/core/*"],
             "@typings/*": ["src/typings/*"],
             "@components/*": ["src/components/*"],
-            "@routes/*": ["src/routes/*"]
+            "@routes/*": ["src/routes/*"],
+            "@utilities/*": ["src/utilities/*"]
         }
     }
 }

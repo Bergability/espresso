@@ -1,24 +1,19 @@
+// Libraries
 import React, { useEffect, useState } from 'react';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import {
-    Button,
-    Icon,
-    IconButton,
-    Dialog,
-    DialogContent,
-    DialogActions,
-    DialogTitle,
-    Typography,
-    TextField,
-    FormControl,
-    Select,
-    MenuItem,
-    InputLabel,
-} from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
-import { Item } from '@typings/items';
+// Components
+// prettier-ignore
+import {Button,Icon,IconButton,Dialog,DialogContent,DialogActions,DialogTitle,Typography,TextField,FormControl, Select,MenuItem, InputLabel } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import EspressoAppBar from '@components/app-bar';
-import api from '../api';
+
+// Utilities
+import api from '@utilities/api';
+
+// Types
+import { Item } from '@typings/items';
+import { RouteComponentProps } from 'react-router-dom';
 
 interface RouteParams {
     id?: string;

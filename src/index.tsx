@@ -1,15 +1,19 @@
+// Libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+// Components
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-
 import { CssBaseline, ThemeProvider, createMuiTheme, Theme } from '@material-ui/core';
-import blue from '@material-ui/core/colors/blue';
-import blueGrey from '@material-ui/core/colors/blueGrey';
 
+// Routes
 import FolderRoute from '@routes/folder';
 import ActionSetRoute from '@routes/action-set';
 
+// Styles
 import './main.scss';
+import blue from '@material-ui/core/colors/blue';
+import blueGrey from '@material-ui/core/colors/blueGrey';
 
 const theme: Theme = createMuiTheme({
     palette: {

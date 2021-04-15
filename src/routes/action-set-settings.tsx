@@ -1,7 +1,13 @@
-import EspressoAppBar from '@components/app-bar';
+// Libraries
 import React, { useContext } from 'react';
+
+// Components
+import EspressoAppBar from '@components/app-bar';
+
+// Contexts
 import { ActionSetContext } from './action-set';
 
+// Types
 interface Props {
     id: string;
 }

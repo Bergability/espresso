@@ -1,9 +1,15 @@
-import EspressoAppBar from '@components/app-bar';
-import { Icon, IconButton } from '@material-ui/core';
+// Libraries
 import React, { useContext } from 'react';
+
+// Components
 import { Link } from 'react-router-dom';
+import { Icon, IconButton } from '@material-ui/core';
+import EspressoAppBar from '@components/app-bar';
+
+// Contexts
 import { ActionSetContext } from './action-set';
 
+// Types
 interface Props {
     id: string;
 }
