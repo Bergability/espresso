@@ -6,7 +6,7 @@ import { CssBaseline, ThemeProvider, createMuiTheme, Theme } from '@material-ui/
 import blue from '@material-ui/core/colors/blue';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 
-import HomeRoute from '@routes/home';
+import ItemRoute from '@routes/item';
 
 import './main.scss';
 
@@ -30,7 +30,11 @@ ReactDOM.render(
                 <Router>
                     <Switch>
                         <Route path="/" exact>
-                            <HomeRoute />
+                            <ItemRoute />
+                        </Route>
+
+                        <Route path="/:id" exact>
+                            <ItemRoute />
                         </Route>
                     </Switch>
                 </Router>
