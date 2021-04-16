@@ -21,9 +21,18 @@ espresso.triggers.register({
     catigory: 'Twitch chat',
 });
 
+interface TwtichChatCommand {
+    aliases: string[];
+}
+
 espresso.triggers.register({
     slug: 'twitch-chat-command',
     name: 'Twitch chat command',
     provider: 'Twitch',
     catigory: 'Twitch chat',
+    // settings: [
+    //     {
+    //         type: ''
+    //     }
+    // ]
 });

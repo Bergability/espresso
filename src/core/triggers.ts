@@ -2,6 +2,7 @@
 import EspressoRegistrar from './registrar';
 
 // Types
+import { Object } from '@typings/inputs';
 import { EspressoTrigger } from '@typings/espresso';
 
 export default class EspressoTriggers extends EspressoRegistrar<EspressoTrigger> {
