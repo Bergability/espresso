@@ -8,8 +8,13 @@ espresso.server.register({
     response: (req, res) => {
         const lines: string[] = [
             'Welcome to the Espresso server!',
-            'Below is a list of all registered server routes. \n',
-            '-------------------------------------------------\n',
+            'Below is a list of all registered server routes.',
+            '',
+            'Note that this is not only an API, the server can serve static files,',
+            'dynamic content, or anything else that might be needed for the Espresso App or plugins',
+            '',
+            'METHOD:    PATH:',
+            '-------------------------------------------------',
         ];
 
         espresso.server.getAll().forEach(({ method, path, category, description }) => {
@@ -26,9 +31,9 @@ espresso.server.register({
                         break;
                 }
 
-                if (path === '/') path += '  <------------ YOU ARE HERE!';
+                if (path === '/') path += '            <---------- YOU ARE HERE!';
 
-                return [`${method.toUpperCase()} - ${path}`];
+                return [`${method.toUpperCase()}  -  ${path}`];
             };
 
             lines.push(...format());
