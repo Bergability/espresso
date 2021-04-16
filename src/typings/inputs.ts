@@ -31,5 +31,13 @@ export interface SelectInput<Data extends Object> extends InputBase<Data> {
     multiple?: boolean;
 }
 
-export type Input<Data extends Object> = TextInput<Data> | ToggleInput<Data> | SelectInput<Data>;
+export interface ChipsInput<Data extends Object> extends InputBase<Data> {
+    type: 'chips';
+    label: string;
+    emptyText: string;
+    duplicates?: boolean;
+    textTransform?: 'uppercase' | 'lowercase';
+}
+
+export type Input<Data extends Object> = TextInput<Data> | ToggleInput<Data> | SelectInput<Data> | ChipsInput<Data>;
 export type InputType = Input<{}>['type'];

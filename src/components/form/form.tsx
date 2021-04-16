@@ -5,6 +5,7 @@ import React from 'react';
 import { TextField } from '@material-ui/core';
 import EspressoToggleInput from '@components/form/toggle';
 import EspressoSelectInput from '@components/form/select';
+import EspressoChipsInput from '@components/form/chips';
 
 // Styles
 import './form.scss';
@@ -42,7 +43,7 @@ class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
         };
 
         return (
-            <form className="espresso-form">
+            <div className="espresso-form">
                 {inputs.map((input) => {
                     switch (input.type) {
                         case 'text':
@@ -89,11 +90,26 @@ class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
                                 />
                             );
 
+                        case 'chips':
+                            return (
+                                <EspressoChipsInput
+                                    key={input.key as string}
+                                    inputKey={input.key as string}
+                                    label={input.label}
+                                    helperText={input.helper}
+                                    value={data[input.key]}
+                                    duplicates={input.duplicates}
+                                    textTransform={input.textTransform}
+                                    emptyText={input.emptyText}
+                                    onChange={onInputChange}
+                                />
+                            );
+
                         // default:
                         //     return <p key={input.key as string}>{`${input.label} - ${input.type}`}</p>;
                     }
                 })}
-            </form>
+            </div>
         );
     }
 }

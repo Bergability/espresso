@@ -34,6 +34,15 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
 
     const inputs: Input<ActionSet>[] = [
         {
+            type: 'chips',
+            key: 'triggers',
+            label: 'Command aliases',
+            helper: 'Things that do things... they are chips.',
+            emptyText: 'No command aliases',
+            duplicates: false,
+            textTransform: 'lowercase',
+        },
+        {
             type: 'toggle',
             key: 'active',
             label: 'Enabled',
@@ -44,14 +53,14 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
             key: 'name',
             label: 'Name',
         },
-        {
-            type: 'select',
-            key: 'triggers',
-            label: 'Triggers',
-            multiple: true,
-            helper: 'The methods that will trigger this action set.',
-            options: 'espresso:triggers',
-        },
+        // {
+        //     type: 'select',
+        //     key: 'triggers',
+        //     label: 'Triggers',
+        //     multiple: true,
+        //     helper: 'The methods that will trigger this action set.',
+        //     options: 'espresso:triggers',
+        // },
     ];
 
     const onChange = (key: keyof ActionSet, value: any) => {
