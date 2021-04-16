@@ -14,37 +14,31 @@ import ActionSetEditorRoute from '@routes/action-set-editor';
 import api from '@utilities/api';
 
 // Types
-import { ActionSet, Item } from '@typings/items';
+import { ActionSet } from '@typings/items';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface RouteParams {
     id: string;
 }
 
-interface State {
-    item: Item | null;
-    crumbs: Crumb[];
+type State = ActionSet | null;
+
+interface ContextUpdate {
+    update: (update: State) => void;
 }
 
-const defaultState: State = {
-    item: null,
-    crumbs: [{ text: 'Home', link: '/' }],
-};
-
-export const ActionSetContext = createContext<State>(defaultState);
+// @ts-ignore
+export const ActionSetContext = createContext<{ item: State } & ContextUpdate>(null);
 
 const ActionSetRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     const id = props.match.params.id;
     const match = useRouteMatch();
-    const [state, updateState] = useState<State>(defaultState);
+    const [state, updateState] = useState<State>(null);
 
     useEffect(() => {
         api.get<ActionSet>(`/items/${id}`)
             .then((res) => {
-                const newState = { ...state };
-                newState.item = res;
-                if (res !== null) newState.crumbs = [...newState.crumbs, { text: res.name, link: `/action-set/${id}` }];
-                updateState(newState);
+                updateState(res);
             })
             .catch((e) => {
                 console.log(e);
@@ -53,7 +47,7 @@ const ActionSetRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
 
     // Show just the loading app bar if we are still loading
     return (
-        <ActionSetContext.Provider value={state}>
+        <ActionSetContext.Provider value={{ item: state, update: updateState }}>
             <Switch>
                 {/* Settings route */}
                 <Route path={`${match.path}/settings`}>

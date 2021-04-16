@@ -111,13 +111,13 @@ espresso.server.register({
         // @ts-ignore
         const index = items.findIndex((i) => i.id === id);
 
-        if (index) {
+        if (index > -1) {
             const item = items[index];
             Object.entries(req.body).forEach(([key, value]) => {
                 item[key] = value;
             });
 
-            espresso.store.set(`items[${index}]`, item);
+            espresso.store.set(`items.${index}`, item);
 
             res.contentType('application/json');
             res.send(JSON.stringify(item, null, 4));

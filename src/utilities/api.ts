@@ -41,6 +41,23 @@ class EspressoAPI {
             return null;
         }
     }
+
+    public async put<ReturnType>(url: string, body?: BodyInit) {
+        try {
+            const res = await fetch(`${this.url}${url}`, {
+                method: 'put',
+                body,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const json = await res.json();
+            return json as ReturnType;
+        } catch (e) {
+            console.log(e);
+            return null;
+        }
+    }
 }
 
 const api = new EspressoAPI();

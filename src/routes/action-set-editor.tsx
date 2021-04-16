@@ -10,12 +10,22 @@ import EspressoAppBar from '@components/app-bar';
 import { ActionSetContext } from './action-set';
 
 // Types
+import { Crumb } from '@components/app-bar';
+
 interface Props {
     id: string;
 }
 
 const ActionSetEditorRoute: React.FC<Props> = ({ id }) => {
-    const { crumbs, item } = useContext(ActionSetContext);
+    const { item } = useContext(ActionSetContext);
+
+    if (item === null) return null;
+
+    const crumbs: Crumb[] = [
+        { text: 'Home', link: `/` },
+        { text: item.name, link: `/action-set/${id}` },
+    ];
+
     return (
         <>
             <EspressoAppBar crumbs={crumbs} loading={item === null}>
@@ -23,8 +33,8 @@ const ActionSetEditorRoute: React.FC<Props> = ({ id }) => {
                     <Icon>settings</Icon>
                 </IconButton>
             </EspressoAppBar>
-            <p>Hello editor!</p>
             <pre>{JSON.stringify(item, null, 4)}</pre>
+            <p>Hello editor!</p>
         </>
     );
 };
