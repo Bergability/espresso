@@ -1,21 +1,24 @@
+// Libraries
 import ws from 'ws';
 import http from 'http';
 import bodyParser from 'body-parser';
-import express, { Request, Response } from 'express';
+import express from 'express';
 
+// Base Class
 import EspressoRegistrar from './registrar';
 
-import espresso from './espresso';
+// Types
+import { Request, Response } from 'express';
 
-interface ServerRoute {
+interface EspressoServerRoute {
     path: string;
-    method: 'get' | 'post' | 'put' | 'delete' | 'head';
+    method: 'get' | 'post' | 'put' | 'delete';
     response: (req: Request, res: Response) => void;
     description?: string;
     category?: string;
 }
 
-export default class EspressoServer extends EspressoRegistrar<ServerRoute> {
+export default class EspressoServer extends EspressoRegistrar<EspressoServerRoute> {
     private app = express();
     private server = http.createServer(this.app);
     private socket = new ws.Server({ server: this.server });
@@ -44,7 +47,7 @@ export default class EspressoServer extends EspressoRegistrar<ServerRoute> {
         });
     }
 
-    protected preRegister = (route: ServerRoute) => {
+    protected preRegister = (route: EspressoServerRoute) => {
         // If a route already has this path do not register route.
         return this.find((r) => r.path === route.path && r.method === route.method) ? false : true;
     };
@@ -53,6 +56,6 @@ export default class EspressoServer extends EspressoRegistrar<ServerRoute> {
         // Register the route with Express
         const route = this.getById(routeId);
         if (!route) return;
-        this.app[route.method.toLowerCase() as ServerRoute['method']](route.path, route.response);
+        this.app[route.method.toLowerCase() as EspressoServerRoute['method']](route.path, route.response);
     };
 }

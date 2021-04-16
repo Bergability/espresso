@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Components
 import { FormControl, Select, MenuItem, InputLabel, FormHelperText } from '@material-ui/core';
@@ -18,7 +18,8 @@ import { FormControl, Select, MenuItem, InputLabel, FormHelperText } from '@mate
 // }));
 
 // Types
-import { Options } from '@typings/inputs';
+import { Option, Options } from '@typings/inputs';
+import { getOptions } from '@utilities';
 
 interface Props {
     inputKey: string;
@@ -36,8 +37,19 @@ interface MultiProps extends Props {
 }
 
 const EspressoSelectInput: React.FC<Props | MultiProps> = ({ inputKey, label, value, variant, options, helperText, multiple, onChange }) => {
+    const [computedOptions, updateComputedOptions] = useState<Option[]>(typeof options !== 'string' ? options : []);
     // const classes = styles();
-    if (typeof options === 'string') return null;
+    useEffect(() => {
+        if (typeof options === 'string') {
+            getOptions(options)
+                .then((options) => {
+                    updateComputedOptions(options);
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
+    }, []);
 
     const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault();
@@ -49,7 +61,7 @@ const EspressoSelectInput: React.FC<Props | MultiProps> = ({ inputKey, label, va
             <InputLabel>{label}</InputLabel>
             {/* @ts-ignore */}
             <Select label={label} value={value} variant={variant} onChange={onSelectChange} multiple={multiple}>
-                {options.map((option) => (
+                {computedOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                         {option.text}
                     </MenuItem>

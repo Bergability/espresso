@@ -50,11 +50,7 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
             label: 'Triggers',
             multiple: true,
             helper: 'The methods that will trigger this action set.',
-            options: [
-                { text: 'Generic trigger', value: 'generic-trigger' },
-                { text: 'Twitch chat message', value: 'twitch-chat-message' },
-                { text: 'Twitch chat command', value: 'twitch-chat-command' },
-            ],
+            options: 'espresso:triggers',
         },
     ];
 
