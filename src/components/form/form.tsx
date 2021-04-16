@@ -2,8 +2,9 @@
 import React from 'react';
 
 // Components
-import ToggleInput from '@components/form/toggle';
 import { TextField } from '@material-ui/core';
+import EspressoToggleInput from '@components/form/toggle';
+import EspressoSelectInput from '@components/form/select';
 
 // Styles
 import './form.scss';
@@ -15,9 +16,9 @@ interface Props<Data extends Object> {
     inputs: Input<Data>[];
     data: Data;
     onChange: (key: keyof Data, value: any) => void;
-    onSave: () => void;
+    onSave: (data: Data) => void;
     saveDelay?: number;
-    varient?: 'filled' | 'outlined' | 'standard';
+    variant?: 'filled' | 'outlined' | 'standard';
 }
 
 class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
@@ -25,18 +26,18 @@ class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
 
     componentWillUnmount() {
         if (this.timeout !== null) clearTimeout(this.timeout);
-        this.props.onSave();
+        this.props.onSave(this.props.data);
     }
 
     render() {
-        const { inputs, data, onChange, onSave, saveDelay, varient } = this.props;
+        const { inputs, data, onChange, onSave, saveDelay, variant } = this.props;
 
         const onInputChange = (key: keyof Data, value: any) => {
             onChange(key, value);
-            // @ts-ignore
-            clearTimeout(this.timeout);
+            if (this.timeout !== null) clearTimeout(this.timeout);
+
             this.timeout = window.setTimeout(() => {
-                onSave();
+                onSave({ ...data, [key]: value });
             }, (saveDelay !== undefined ? saveDelay : 3) * 1000);
         };
 
@@ -51,7 +52,7 @@ class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
                                     key={input.key as string}
                                     label={input.label}
                                     value={data[input.key]}
-                                    variant={varient}
+                                    variant={variant}
                                     helperText={input.helper}
                                     fullWidth
                                     onChange={(e) => {
@@ -63,12 +64,27 @@ class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
 
                         case 'toggle':
                             return (
-                                <ToggleInput
+                                <EspressoToggleInput
                                     key={input.key as string}
                                     inputKey={input.key as string}
                                     label={input.label}
                                     helperText={input.helper}
                                     value={data[input.key]}
+                                    onChange={onInputChange}
+                                />
+                            );
+
+                        case 'select':
+                            return (
+                                <EspressoSelectInput
+                                    key={input.key as string}
+                                    inputKey={input.key as string}
+                                    label={input.label}
+                                    helperText={input.helper}
+                                    value={data[input.key]}
+                                    variant={variant}
+                                    options={input.options}
+                                    multiple={input.multiple}
                                     onChange={onInputChange}
                                 />
                             );

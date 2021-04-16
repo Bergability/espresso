@@ -43,7 +43,18 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
             type: 'text',
             key: 'name',
             label: 'Name',
-            helper: 'Testing.',
+        },
+        {
+            type: 'select',
+            key: 'triggers',
+            label: 'Triggers',
+            multiple: true,
+            helper: 'The methods that will trigger this action set.',
+            options: [
+                { text: 'Generic trigger', value: 'generic-trigger' },
+                { text: 'Twitch chat message', value: 'twitch-chat-message' },
+                { text: 'Twitch chat command', value: 'twitch-chat-command' },
+            ],
         },
     ];
 
@@ -54,8 +65,8 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
         });
     };
 
-    const onSave = () => {
-        api.put(`/items/${id}`, JSON.stringify(item));
+    const onSave = (data: ActionSet) => {
+        api.put(`/items/${id}`, JSON.stringify(data));
     };
 
     return (
@@ -65,7 +76,7 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
                 <Paper className="padded" style={{ marginBottom: '20px' }}>
                     <pre>{JSON.stringify(item, null, 4)}</pre>
                 </Paper>
-                <EspressoForm<ActionSet> inputs={inputs} data={item} onChange={onChange} onSave={onSave} varient="outlined" />
+                <EspressoForm<ActionSet> inputs={inputs} data={item} onChange={onChange} onSave={onSave} variant="outlined" />
             </div>
         </>
     );

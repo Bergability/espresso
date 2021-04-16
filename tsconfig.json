@@ -22,7 +22,8 @@
             "@typings/*": ["src/typings/*"],
             "@components/*": ["src/components/*"],
             "@routes/*": ["src/routes/*"],
-            "@utilities/*": ["src/utilities/*"]
+            "@utilities/*": ["src/utilities/*"],
+            "@utilities": ["src/utilities/index"]
         }
     }
 }

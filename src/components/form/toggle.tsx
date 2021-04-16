@@ -26,7 +26,7 @@ interface Props {
     onChange: (key: string, value: boolean) => void;
 }
 
-const ToggleInput: React.FC<Props> = ({ inputKey, label, value, onChange, helperText }) => {
+const EspressoToggleInput: React.FC<Props> = ({ inputKey, label, value, onChange, helperText }) => {
     const classes = styles();
 
     const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -48,4 +48,4 @@ const ToggleInput: React.FC<Props> = ({ inputKey, label, value, onChange, helper
     );
 };
 
-export default ToggleInput;
+export default EspressoToggleInput;
