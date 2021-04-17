@@ -33,15 +33,15 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
     ];
 
     const inputs: Input<ActionSet>[] = [
-        {
-            type: 'chips',
-            key: 'triggers',
-            label: 'Command aliases',
-            helper: 'Things that do things... they are chips.',
-            emptyText: 'No command aliases',
-            duplicates: false,
-            textTransform: 'lowercase',
-        },
+        // {
+        //     type: 'chips',
+        //     key: 'triggers',
+        //     label: 'Command aliases',
+        //     helper: 'Things that do things... they are chips.',
+        //     emptyText: 'No command aliases',
+        //     duplicates: false,
+        //     textTransform: 'lowercase',
+        // },
         {
             type: 'toggle',
             key: 'active',
@@ -53,14 +53,14 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
             key: 'name',
             label: 'Name',
         },
-        // {
-        //     type: 'select',
-        //     key: 'triggers',
-        //     label: 'Triggers',
-        //     multiple: true,
-        //     helper: 'The methods that will trigger this action set.',
-        //     options: 'espresso:triggers',
-        // },
+        {
+            type: 'select',
+            key: 'triggers',
+            label: 'Triggers',
+            multiple: true,
+            helper: 'The methods that will trigger this action set.',
+            options: 'espresso:triggers',
+        },
     ];
 
     const onChange = (key: keyof ActionSet, value: any) => {
@@ -78,10 +78,10 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
         <>
             <EspressoAppBar crumbs={crumbs} loading={item === null} />
             <div className="route-wrapper">
-                <Paper className="padded" style={{ marginBottom: '20px' }}>
+                <EspressoForm<ActionSet> inputs={inputs} data={item} onChange={onChange} onSave={onSave} variant="outlined" />
+                <Paper className="padded" style={{ marginTop: '20px' }}>
                     <pre>{JSON.stringify(item, null, 4)}</pre>
                 </Paper>
-                <EspressoForm<ActionSet> inputs={inputs} data={item} onChange={onChange} onSave={onSave} variant="outlined" />
             </div>
         </>
     );

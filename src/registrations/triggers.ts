@@ -1,3 +1,4 @@
+import { Input } from '@typings/inputs';
 import espresso from '../core/espresso';
 
 espresso.triggers.register({
@@ -25,14 +26,19 @@ interface TwtichChatCommand {
     aliases: string[];
 }
 
+const ChatCommandSettings: Input<TwtichChatCommand>[] = [
+    {
+        type: 'chips',
+        key: 'aliases',
+        label: 'Command aliases',
+        emptyText: 'No command aliases',
+    },
+];
+
 espresso.triggers.register({
     slug: 'twitch-chat-command',
     name: 'Twitch chat command',
     provider: 'Twitch',
     catigory: 'Twitch chat',
-    // settings: [
-    //     {
-    //         type: ''
-    //     }
-    // ]
+    settings: ChatCommandSettings,
 });
