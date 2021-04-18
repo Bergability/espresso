@@ -14,6 +14,7 @@ import api from '@utilities/api';
 // Types
 import { Item } from '@typings/items';
 import { RouteComponentProps } from 'react-router-dom';
+import { GetItemPayload } from '@typings/api';
 
 interface RouteParams {
     id?: string;
@@ -38,9 +39,9 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
 
     useEffect(() => {
         // TODO add parent searching
-        api.get<Item[]>('/items')
-            .then((items) => {
-                if (items !== null) updateState({ ...state, items, loaded: true });
+        api.fetch<GetItemPayload>('/items', 'get')
+            .then((payload) => {
+                updateState({ ...state, items: payload.items, loaded: true });
             })
             .catch((e) => {
                 console.log(e);

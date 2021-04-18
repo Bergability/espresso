@@ -13,7 +13,7 @@ class Espresso {
 const espresso = new Espresso();
 
 // Start the server
-const port = espresso.store.get('port');
+const port = espresso.store.get<number>('port');
 espresso.server.start(port);
 
 export default espresso;

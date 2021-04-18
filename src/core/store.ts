@@ -32,19 +32,19 @@ export default class EspressoStore {
      *
      * @returns The value retrieved from the store object. Will be undefined if no value was found.
      */
-    public get: (path: string) => any = (path) => {
-        return this.config.get(path);
-    };
+    public get<T = unknown>(path: string) {
+        return this.config.get(path) as T;
+    }
 
     /**
      * Delete a value from the store object based on a dot notated path.
      *
      * @param path Dot notated path to the value to be retrieved.
      */
-    public delete: (path: string) => void = (path) => {
+    public delete(path: string) {
         // @ts-ignore
         this.config.delete(path);
-    };
+    }
 
     /**
      * Save this.store to a file on the users machine and overwirte this.activeStore with it's value.

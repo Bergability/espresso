@@ -24,7 +24,7 @@ import { getOptions } from '@utilities';
 interface Props {
     inputKey: string;
     label: string;
-    value: string;
+    value: string | string[];
     options: Options;
     multiple?: boolean;
     variant?: 'filled' | 'outlined' | 'standard';
@@ -34,10 +34,18 @@ interface Props {
 
 interface MultiProps extends Props {
     multiple: true;
+    value: string[];
 }
 
 const EspressoSelectInput: React.FC<Props | MultiProps> = ({ inputKey, label, value, variant, options, helperText, multiple, onChange }) => {
     const [computedOptions, updateComputedOptions] = useState<Option[]>(typeof options !== 'string' ? options : []);
+
+    // Defaulter
+    if (value === undefined) {
+        if (multiple === true) value = [];
+        else value = '';
+    }
+
     // const classes = styles();
     useEffect(() => {
         if (typeof options === 'string') {

@@ -29,6 +29,9 @@ interface Props {
 const EspressoToggleInput: React.FC<Props> = ({ inputKey, label, value, onChange, helperText }) => {
     const classes = styles();
 
+    // Defaulter
+    if (value === undefined) value === false;
+
     const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
         e.stopPropagation();

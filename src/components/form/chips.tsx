@@ -38,6 +38,9 @@ const EspressoChipsInput: React.FC<Props> = ({ inputKey, label, value, emptyText
     const [state, updateState] = useState<State>({ inputValue: '', error: null });
     const { inputValue, error } = state;
 
+    // Defaulter
+    if (value === undefined) value = [];
+
     const onNewChip = () => {
         if (inputValue === '') {
             updateState({

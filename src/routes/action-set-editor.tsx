@@ -1,39 +1,52 @@
 // Libraries
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Components
 import { Link } from 'react-router-dom';
 import { Icon, IconButton } from '@material-ui/core';
 import EspressoAppBar from '@components/app-bar';
 
-// Contexts
-import { ActionSetContext } from './action-set';
+// Utilities
+import api from '@utilities/api';
 
 // Types
 import { Crumb } from '@components/app-bar';
+import { ActionSet } from '@typings/items';
+import { GetPutActionSetPayload } from '@typings/api';
 
 interface Props {
     id: string;
 }
 
 const ActionSetEditorRoute: React.FC<Props> = ({ id }) => {
-    const { item } = useContext(ActionSetContext);
+    const [set, updateSet] = useState<ActionSet | null>(null);
 
-    if (item === null) return null;
+    useEffect(() => {
+        api.fetch<GetPutActionSetPayload>(`/action-set/${id}`, 'get')
+            .then((res) => {
+                updateSet(res.set);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }, []);
 
+    if (set === null) return null;
+
+    // TODO add these to the API for action sets!
     const crumbs: Crumb[] = [
         { text: 'Home', link: `/` },
-        { text: item.name, link: `/action-set/${id}` },
+        { text: set.name, link: `/action-set/${id}` },
     ];
 
     return (
         <>
-            <EspressoAppBar crumbs={crumbs} loading={item === null}>
+            <EspressoAppBar crumbs={crumbs} loading={set === null}>
                 <IconButton component={Link} to={`/action-set/${id}/settings`}>
                     <Icon>settings</Icon>
                 </IconButton>
             </EspressoAppBar>
-            <pre>{JSON.stringify(item, null, 4)}</pre>
+            <pre>{JSON.stringify(set, null, 4)}</pre>
             <p>Hello editor!</p>
         </>
     );

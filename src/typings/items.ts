@@ -15,7 +15,12 @@ export interface ActionSet extends ItemBase {
     active: boolean;
     cooldown: number;
     triggers: string[];
-    settings: { for: string; [key: string]: any }[];
+    settings: ActionSetSetting[];
+}
+
+export interface ActionSetSetting {
+    for: string;
+    [key: string]: any;
 }
 
 export type Item = Folder | ActionSet;

@@ -2,7 +2,8 @@
 import React from 'react';
 
 // Components
-import { TextField } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { Button, TextField } from '@material-ui/core';
 import EspressoToggleInput from '@components/form/toggle';
 import EspressoSelectInput from '@components/form/select';
 import EspressoChipsInput from '@components/form/chips';
@@ -44,15 +45,22 @@ class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
 
         return (
             <div className="espresso-form">
-                {inputs.map((input) => {
+                {inputs.map((input, index) => {
                     switch (input.type) {
+                        case 'button':
+                            return (
+                                <Button key={index} to={input.link} component={Link} variant={input.variant} color={input.color}>
+                                    {input.label}
+                                </Button>
+                            );
+
                         case 'text':
                             return (
                                 // <FormControl key={input.key as string} fullWidth>
                                 <TextField
                                     key={input.key as string}
                                     label={input.label}
-                                    value={data[input.key]}
+                                    value={data[input.key] === undefined ? '' : data[input.key]}
                                     variant={variant}
                                     helperText={input.helper}
                                     fullWidth
