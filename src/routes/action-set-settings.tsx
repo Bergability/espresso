@@ -13,7 +13,7 @@ import api from '@utilities/api';
 import { Input } from '@typings/inputs';
 import { Crumb } from '@components/app-bar';
 import { ActionSet } from '@typings/items';
-import { EspressoTrigger } from '@typings/espresso';
+import { TriggerSchema } from '@typings/espresso';
 import { GetPutActionSetPayload } from '@typings/api';
 
 interface Props {
@@ -22,10 +22,10 @@ interface Props {
 
 const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
     const [set, updateSet] = useState<ActionSet | null>(null);
-    const [triggers, updateTriggers] = useState<EspressoTrigger[]>([]);
+    const [triggers, updateTriggers] = useState<TriggerSchema[]>([]);
 
     useEffect(() => {
-        api.fetch<EspressoTrigger[]>('/triggers', 'get')
+        api.fetch<TriggerSchema[]>('/triggers', 'get')
             .then((json) => {
                 if (json === null) return;
                 updateTriggers(json);

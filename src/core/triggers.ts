@@ -3,16 +3,16 @@ import EspressoRegistrar from './registrar';
 
 // Types
 import { Object } from '@typings/inputs';
-import { EspressoTrigger } from '@typings/espresso';
+import { TriggerSchema } from '@typings/espresso';
 
-export default class EspressoTriggers extends EspressoRegistrar<EspressoTrigger> {
+export default class EspressoTriggers extends EspressoRegistrar<TriggerSchema> {
     constructor() {
         super({
             registeredEvent: 'trigger-registered',
         });
     }
 
-    protected preRegister = (trigger: EspressoTrigger) => {
+    protected preRegister = (trigger: TriggerSchema) => {
         // If a trigger with this slug already exsists don't register it
         return this.find((t) => t.slug === trigger.slug) ? false : true;
     };

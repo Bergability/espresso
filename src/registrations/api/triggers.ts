@@ -1,5 +1,5 @@
 import espresso from '../../core/espresso';
-import { EspressoTrigger } from '@typings/espresso';
+import { TriggerSchema } from '@typings/espresso';
 
 /**
  *
@@ -11,13 +11,13 @@ espresso.server.register({
     method: 'get',
     response: (req, res) => {
         const slugs = req.query.slugs;
-        let payload: EspressoTrigger[];
+        let payload: TriggerSchema[];
 
         if (slugs) {
             const parsedSlugs = JSON.parse(slugs as string) as string[];
             payload = espresso.triggers.filter((t) => parsedSlugs.includes(t.slug));
         } else {
-            payload = espresso.triggers.getAll().reduce<EspressoTrigger[]>((acc, trigger) => {
+            payload = espresso.triggers.getAll().reduce<TriggerSchema[]>((acc, trigger) => {
                 return [...acc, trigger];
             }, []);
         }

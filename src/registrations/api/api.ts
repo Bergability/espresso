@@ -10,6 +10,7 @@ espresso.server.register({
 });
 
 import './action-set';
+import './actions';
 import './items';
 import './options';
 import './triggers';

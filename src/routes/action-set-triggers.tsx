@@ -10,7 +10,7 @@ import api from '@utilities/api';
 
 // Types
 import { Crumb } from '@components/app-bar';
-import { EspressoTrigger } from '@typings/espresso';
+import { TriggerSchema } from '@typings/espresso';
 import { ActionSet, ActionSetSetting } from '@typings/items';
 import EspressoForm from '@components/form/form';
 import { GetPutActionSetPayload, GetActionSetTriggerPayload } from '@typings/api';
@@ -70,7 +70,7 @@ interface TriggerFormProps {
 
 interface State {
     settings: ActionSetSetting | null;
-    trigger: EspressoTrigger;
+    trigger: TriggerSchema;
 }
 
 const TriggerForm: React.FC<TriggerFormProps> = ({ id, slug }) => {

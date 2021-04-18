@@ -1,7 +1,9 @@
 import Store from 'electron-store';
+import { Item } from '@typings/items';
 
 interface State {
-    items: unknown[];
+    items: Item[];
+    actions: unknown[];
     port: number;
 }
 
@@ -13,6 +15,7 @@ export default class EspressoStore {
         name: 'espresso-config',
         defaults: {
             items: [],
+            actions: [],
             port: 23167,
         },
     });

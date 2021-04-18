@@ -1,4 +1,4 @@
-import { EspressoTrigger } from './espresso';
+import { TriggerSchema } from './espresso';
 import { ActionSet, Item, ActionSetSetting } from './items';
 
 type ServerMethod = 'get' | 'post' | 'put' | 'delete';
@@ -32,7 +32,7 @@ export interface GetPutActionSetPayload {
 
 export interface GetActionSetTriggerPayload {
     settings: ActionSetSetting | null;
-    trigger: EspressoTrigger;
+    trigger: TriggerSchema;
     _status: number;
 }
 

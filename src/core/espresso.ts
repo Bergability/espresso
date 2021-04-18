@@ -1,9 +1,11 @@
+import Actions from './actions';
 import Server from './server';
 import Store from './store';
 import Triggers from './triggers';
 import Options from './options';
 
 class Espresso {
+    public actions = new Actions();
     public server = new Server();
     public store = new Store();
     public triggers = new Triggers();
