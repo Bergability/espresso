@@ -1,6 +1,7 @@
 import espresso from '../../core/espresso';
 import { Input } from '@typings/inputs';
 import { ActionSet, ActionSetSetting, Item } from '@typings/items';
+import { Action } from '@typings/espresso';
 import { APIError, GetPutActionSetPayload, GetActionSetTriggerPayload, PutActionSetTriggerPayload } from '@typings/api';
 // import { v4 as uuid } from 'uuid';
 
@@ -27,6 +28,7 @@ espresso.server.register({
         let payload: GetPutActionSetPayload | APIError;
 
         const set = espresso.store.get<Item[]>('items').find((i) => i.id === id);
+        const actions = (espresso.store.get('actions') as Action[]).filter((a) => a.set === id);
 
         if (set) {
             if (set.type === 'action-set') {
@@ -34,7 +36,7 @@ espresso.server.register({
                 payload = {
                     set,
                     _status,
-                    actions: [],
+                    actions,
                 };
             } else {
                 payload = {

@@ -1,4 +1,4 @@
-import { TriggerSchema } from './espresso';
+import { Action, TriggerSchema } from './espresso';
 import { ActionSet, Item, ActionSetSetting } from './items';
 
 type ServerMethod = 'get' | 'post' | 'put' | 'delete';
@@ -25,7 +25,7 @@ export interface PostPutItemPayload {
 
 export interface GetPutActionSetPayload {
     set: ActionSet;
-    actions: unknown[];
+    actions: Action[];
     // TODO add crumbs!
     _status: number;
 }
@@ -39,4 +39,14 @@ export interface GetActionSetTriggerPayload {
 export interface PutActionSetTriggerPayload {
     settings: ActionSetSetting;
     _status: number;
+}
+
+export interface NewActionRequestPayload {
+    slug: string;
+    set: string;
+}
+
+export interface PostActionPayload {
+    id: string;
+    action: Action;
 }

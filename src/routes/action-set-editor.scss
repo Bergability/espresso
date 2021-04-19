@@ -1,0 +1,42 @@
+.espresso-actions-editor {
+    position: relative;
+    display: flex;
+    height: calc(100% - 65px);
+
+    &-list {
+        flex: 1 1 65%;
+        height: 100%;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    &-new {
+        flex: 1 1 35%;
+        height: 100%;
+        padding: 20px;
+        overflow-y: auto;
+
+        &-button:not(:last-child) {
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.espresso-action-list-button-group {
+    display: flex;
+
+    // Nested action link button
+    > :nth-child(2) {
+        width: 50px;
+    }
+
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
+}
+
+.espresso-action-list-action-button {
+    text-align: left;
+    width: 100%;
+    padding: 8px 20px 13px 20px;
+}

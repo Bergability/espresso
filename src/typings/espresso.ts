@@ -18,6 +18,7 @@ export interface ActionSchema {
     name: string;
     provider: string;
     catigory: string;
+    children?: boolean;
     settings?: Input<Object>[];
     // TODO figure out what this should be
     run: () => void;
@@ -27,5 +28,6 @@ export interface Action<Settings extends Object = {}> {
     id: string;
     slug: string;
     set: string;
+    actions?: string[];
     settings: Settings;
 }

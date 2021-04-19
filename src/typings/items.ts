@@ -15,6 +15,7 @@ export interface ActionSet extends ItemBase {
     active: boolean;
     cooldown: number;
     triggers: string[];
+    actions: string[];
     settings: ActionSetSetting[];
 }
 

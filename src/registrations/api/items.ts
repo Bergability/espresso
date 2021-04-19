@@ -77,6 +77,7 @@ espresso.server.register({
                     cooldown: -1,
                     active: false,
                     settings: [],
+                    actions: [],
                     triggers: [],
                 } as ActionSet;
 

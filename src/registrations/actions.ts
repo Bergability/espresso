@@ -1,6 +1,5 @@
 import espresso from '../core/espresso';
 import { Input } from '@typings/inputs';
-import { settings } from 'cluster';
 
 interface EspressoToggleSetSettings {
     set: string;
@@ -45,5 +44,29 @@ espresso.actions.register({
     catigory: 'Utility',
     provider: 'Espresso',
     settings: getSettings('The action set to enable.'),
+    run: () => {},
+});
+
+interface EspressoRepeatSettings {
+    iterations: number;
+}
+
+const repeatSettings: Input<EspressoRepeatSettings>[] = [
+    {
+        type: 'number',
+        label: 'Action set',
+        key: 'iterations',
+        helper: 'The number of times to repeat the given actions.',
+        default: 2,
+    },
+];
+
+espresso.actions.register({
+    slug: 'espresso-repeat',
+    name: 'Repeat actions',
+    catigory: 'Utility',
+    provider: 'Espresso',
+    children: true,
+    settings: repeatSettings,
     run: () => {},
 });

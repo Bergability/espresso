@@ -23,6 +23,13 @@ export interface TextInput<Data extends Object> extends InputBase<Data> {
     default: string;
 }
 
+export interface NumberInput<Data extends Object> extends InputBase<Data> {
+    type: 'number';
+    default: number;
+    min?: number;
+    max?: number;
+}
+
 export interface ToggleInput<Data extends Object> extends InputBase<Data> {
     type: 'toggle';
     default: boolean;
@@ -52,5 +59,5 @@ export interface ButtonInput {
     color?: 'default' | 'inherit' | 'primary' | 'secondary';
 }
 
-export type Input<Data extends Object> = TextInput<Data> | ToggleInput<Data> | SelectInput<Data> | ChipsInput<Data> | ButtonInput;
+export type Input<Data extends Object> = TextInput<Data> | NumberInput<Data> | ToggleInput<Data> | SelectInput<Data> | ChipsInput<Data> | ButtonInput;
 export type InputType = Input<{}>['type'];

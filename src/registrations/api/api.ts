@@ -13,4 +13,5 @@ import './action-set';
 import './actions';
 import './items';
 import './options';
+import './schemas';
 import './triggers';

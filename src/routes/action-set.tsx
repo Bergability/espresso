@@ -32,7 +32,7 @@ const ActionSetRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
         <Switch>
             {/* Main set editor route */}
             <Route path={`${match.path}`} exact>
-                <ActionSetEditorRoute id={id} />
+                <ActionSetEditorRoute />
             </Route>
 
             {/* Settings route */}
@@ -43,6 +43,18 @@ const ActionSetRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
             {/* Settings route */}
             <Route path={`${match.path}/settings/triggers`} exact>
                 <ActionSetTriggersRoute id={id} />
+            </Route>
+
+            {/* Nested action editor */}
+            <Route path={`${match.path}/:actionId`} exact>
+                <ActionSetEditorRoute />
+                <p>nested action</p>
+            </Route>
+
+            {/* Action settings editor */}
+            <Route path={`${match.path}/action/:actionId`} exact>
+                <ActionSetEditorRoute />
+                <p>Action settings</p>
             </Route>
         </Switch>
     );
