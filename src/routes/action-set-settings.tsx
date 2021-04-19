@@ -43,7 +43,7 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
             });
     }, []);
 
-    if (set === null) return null;
+    if (set === null) return <EspressoAppBar crumbs={[]} />;
 
     const crumbs: Crumb[] = [
         { text: 'Home', link: `/` },

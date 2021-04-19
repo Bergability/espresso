@@ -18,6 +18,7 @@ export interface ActionSchema {
     name: string;
     provider: string;
     catigory: string;
+    description: string;
     children?: boolean;
     settings?: Input<Object>[];
     // TODO figure out what this should be

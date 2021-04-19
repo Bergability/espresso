@@ -45,7 +45,7 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
         fetchActions();
     }, [id, actionId]);
 
-    if (state === null) return null;
+    if (state === null) return <EspressoAppBar crumbs={[]} />;
 
     const currentAction = state.actions.find((a) => a.id === actionId);
 

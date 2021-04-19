@@ -130,10 +130,10 @@ const ActionDisplay: React.FC<Props> = ({ set, index, action, schema, isFirst, i
                 >
                     <div className="espresso-action-list-action-button">
                         <Typography variant="caption" style={{ opacity: 0.5, fontSize: '.8em' }}>
-                            {schema.provider}: {schema.catigory}
+                            {schema.provider} {schema.catigory}
                         </Typography>
                         <Typography style={{ fontWeight: 'bold' }}>{schema.name}</Typography>
-                        <Typography style={{ fontSize: '.95em' }}>Something will go here eventually.</Typography>
+                        <Typography style={{ fontSize: '.95em' }}>{schema.description}</Typography>
                     </div>
                 </Button>
 
