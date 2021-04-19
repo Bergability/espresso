@@ -79,6 +79,45 @@ espresso.server.register({
     },
 });
 
+espresso.server.register({
+    path: '/api/actions/:id/move',
+    method: 'put',
+    response: (req, res) => {
+        const id = req.params.id as string;
+        const index = parseFloat(req.query.index as string);
+
+        const actions = espresso.store.get('actions') as Action[];
+        const items = espresso.store.get('items') as Item[];
+        const parentActionIndex = actions.findIndex((a) => a.actions.includes(id));
+
+        const move = (actionIds: string[]): string[] => {
+            const currentIndex = actionIds.findIndex((i) => i === id);
+            if (currentIndex > -1) {
+                actionIds = actionIds.filter((aId) => aId !== id);
+                actionIds.splice(index, 0, id);
+            }
+            return actionIds;
+        };
+
+        // Check if this action is a child of another action
+        if (parentActionIndex > -1) {
+            const parentAction = actions[parentActionIndex];
+            espresso.store.set(`actions.${parentActionIndex}.actions`, move(parentAction.actions));
+        }
+        // else it is the child of the main Item
+        else {
+            const parentItemIndex = items.findIndex((i) => i.type === 'action-set' && i.actions.includes(id));
+            if (parentItemIndex > -1) {
+                const parentItem = items[parentItemIndex] as ActionSet;
+                espresso.store.set(`items.${parentItemIndex}.actions`, move(parentItem.actions));
+            }
+        }
+
+        res.contentType('application/json');
+        res.send(JSON.stringify({}, null, 4));
+    },
+});
+
 const deleteAction = (actionId: string) => {
     const actions = espresso.store.get('actions') as Action[];
     const items = espresso.store.get('items') as Item[];

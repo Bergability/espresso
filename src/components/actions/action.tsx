@@ -37,13 +37,13 @@ interface Props {
     set: string;
     action: Action;
     schema: ActionSchema;
-    parent?: string;
     isFirst?: boolean;
     isLast?: boolean;
     onDelete: (actionId: string) => void;
+    onMove: (actionId: string, index: number) => void;
 }
 
-const ActionDisplay: React.FC<Props> = ({ set, parent, action, schema, isFirst, isLast, onDelete }) => {
+const ActionDisplay: React.FC<Props> = ({ set, index, action, schema, isFirst, isLast, onDelete, onMove }) => {
     const classes = styles();
     const [mousePosition, updateMousePosition] = useState<MousePosition>({ x: null, y: null });
 
@@ -66,7 +66,13 @@ const ActionDisplay: React.FC<Props> = ({ set, parent, action, schema, isFirst, 
                 anchorPosition={mousePosition.y !== null && mousePosition.x !== null ? { top: mousePosition.y, left: mousePosition.x } : undefined}
             >
                 {isFirst ? null : (
-                    <MenuItem className={classes.menuItem}>
+                    <MenuItem
+                        className={classes.menuItem}
+                        onClick={() => {
+                            updateMousePosition({ x: null, y: null });
+                            onMove(action.id, index - 1);
+                        }}
+                    >
                         <Typography>Move Up</Typography>
                         <ListItemSecondaryAction className={classes.menuIcon}>
                             <Icon>arrow_upward</Icon>
@@ -75,7 +81,13 @@ const ActionDisplay: React.FC<Props> = ({ set, parent, action, schema, isFirst, 
                 )}
 
                 {isLast ? null : (
-                    <MenuItem className={classes.menuItem}>
+                    <MenuItem
+                        className={classes.menuItem}
+                        onClick={() => {
+                            updateMousePosition({ x: null, y: null });
+                            onMove(action.id, index + 1);
+                        }}
+                    >
                         <Typography>Move Down</Typography>
                         <ListItemSecondaryAction className={classes.menuIcon}>
                             <Icon>arrow_downward</Icon>

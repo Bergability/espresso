@@ -65,16 +65,20 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
             });
     };
 
+    const onActionMove = (aId: string, index: number) => {
+        api.fetch(`/actions/${aId}/move?index=${index}`, 'put')
+            .then(() => {
+                fetchActions();
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
+
     const onActionDelete = (aId: string) => {
         api.fetch(`/actions/${aId}`, 'delete')
             .then(() => {
-                updateState({
-                    ...state,
-                    set: {
-                        ...state.set,
-                        actions: state.set.actions.filter((i) => i !== aId),
-                    },
-                });
+                fetchActions();
             })
             .catch((e) => {
                 console.log(e);
@@ -106,6 +110,7 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
                                 action={action}
                                 schema={schema}
                                 onDelete={onActionDelete}
+                                onMove={onActionMove}
                                 isFirst={index === 0}
                                 isLast={state.set.actions.length - 1 === index}
                             />
