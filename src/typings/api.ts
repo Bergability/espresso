@@ -44,6 +44,7 @@ export interface PutActionSetTriggerPayload {
 export interface NewActionRequestPayload {
     slug: string;
     set: string;
+    actionId?: string;
 }
 
 export interface PostActionPayload {

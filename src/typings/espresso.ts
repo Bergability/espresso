@@ -28,6 +28,6 @@ export interface Action<Settings extends Object = {}> {
     id: string;
     slug: string;
     set: string;
-    actions?: string[];
+    actions: string[];
     settings: Settings;
 }

@@ -31,7 +31,7 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
     const [state, updateState] = useState<GetPutActionSetPayload | null>(null);
     const { id, actionId } = props.match.params;
 
-    useEffect(() => {
+    const fetchActions = () => {
         api.fetch<GetPutActionSetPayload>(`/action-set/${id}`, 'get')
             .then((res) => {
                 updateState(res);
@@ -39,9 +39,15 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
             .catch((e) => {
                 console.log(e);
             });
+    };
+
+    useEffect(() => {
+        fetchActions();
     }, []);
 
     if (state === null) return null;
+
+    const currentAction = state.actions.find((a) => a.id === actionId);
 
     // TODO add these to the API for action sets!
     const crumbs: Crumb[] = [
@@ -53,15 +59,12 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
         const body: NewActionRequestPayload = {
             slug,
             set: id,
+            actionId,
         };
 
         api.fetch<PostActionPayload>('/actions', 'post', JSON.stringify(body))
             .then((res) => {
-                updateState({
-                    ...state,
-                    actions: [...state.actions, res.action],
-                    set: { ...state.set, actions: [...state.set.actions, res.id] },
-                });
+                fetchActions();
             })
             .catch((e) => {
                 console.log(e);
@@ -94,7 +97,7 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
 
             <div className="espresso-actions-editor">
                 <div className="espresso-actions-editor-list">
-                    {state.set.actions.map((aId, index) => {
+                    {(currentAction ? currentAction.actions : state.set.actions).map((aId, index) => {
                         const action = state.actions.find((a) => a.id === aId);
                         if (!action) return <p key={aId}>Womp, action not found</p>;
 

@@ -10,18 +10,12 @@ import ActionSetEditorRoute from '@routes/action-set-editor';
 import ActionSetSettingsRoute from '@routes/action-set-settings';
 import ActionSetTriggersRoute from '@routes/action-set-triggers';
 
-// Utilities
-import api from '@utilities/api';
-
 // Types
-import { ActionSet } from '@typings/items';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface RouteParams {
     id: string;
 }
-
-type State = ActionSet | null;
 
 const ActionSetRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     const id = props.match.params.id;
@@ -48,13 +42,12 @@ const ActionSetRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
             {/* Nested action editor */}
             <Route path={`${match.path}/:actionId`} exact>
                 <ActionSetEditorRoute />
-                <p>nested action</p>
             </Route>
 
             {/* Action settings editor */}
             <Route path={`${match.path}/action/:actionId`} exact>
-                <ActionSetEditorRoute />
                 <p>Action settings</p>
+                <ActionSetEditorRoute />
             </Route>
         </Switch>
     );
