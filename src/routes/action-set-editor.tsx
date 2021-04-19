@@ -32,7 +32,7 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
     const { id, actionId } = props.match.params;
 
     const fetchActions = () => {
-        api.fetch<GetPutActionSetPayload>(`/action-set/${id}`, 'get')
+        api.fetch<GetPutActionSetPayload>(`/action-set/${id}${actionId ? `?actionId=${actionId}` : ''}`, 'get')
             .then((res) => {
                 updateState(res);
             })
@@ -43,17 +43,11 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
 
     useEffect(() => {
         fetchActions();
-    }, []);
+    }, [id, actionId]);
 
     if (state === null) return null;
 
     const currentAction = state.actions.find((a) => a.id === actionId);
-
-    // TODO add these to the API for action sets!
-    const crumbs: Crumb[] = [
-        { text: 'Home', link: `/` },
-        { text: state.set.name, link: `/action-set/${id}` },
-    ];
 
     const onNewActionClick = (slug: string) => {
         const body: NewActionRequestPayload = {
@@ -89,7 +83,7 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
 
     return (
         <>
-            <EspressoAppBar crumbs={crumbs} loading={state === null}>
+            <EspressoAppBar crumbs={state.crumbs} loading={state === null}>
                 <IconButton component={Link} to={`/action-set/${id}/settings`}>
                     <Icon>settings</Icon>
                 </IconButton>

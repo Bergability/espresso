@@ -35,7 +35,7 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs, loading, children }) => {
         if (crumbs.length === 0 || loading) return <Typography>&nbsp;</Typography>;
 
         return (
-            <Breadcrumbs className="espresso-app-bar-crumbs">
+            <Breadcrumbs className="espresso-app-bar-crumbs" maxItems={5} itemsBeforeCollapse={2} itemsAfterCollapse={3}>
                 {crumbs.map(({ text, link }, index) => {
                     if (index === crumbs.length - 1)
                         return (

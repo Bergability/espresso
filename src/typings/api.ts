@@ -1,3 +1,4 @@
+import { Crumb } from '@components/app-bar';
 import { Action, TriggerSchema } from './espresso';
 import { ActionSet, Item, ActionSetSetting } from './items';
 
@@ -26,6 +27,7 @@ export interface PostPutItemPayload {
 export interface GetPutActionSetPayload {
     set: ActionSet;
     actions: Action[];
+    crumbs: Crumb[];
     // TODO add crumbs!
     _status: number;
 }

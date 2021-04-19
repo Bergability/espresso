@@ -3,6 +3,7 @@ import { Input } from '@typings/inputs';
 import { ActionSet, ActionSetSetting, Item } from '@typings/items';
 import { Action } from '@typings/espresso';
 import { APIError, GetPutActionSetPayload, GetActionSetTriggerPayload, PutActionSetTriggerPayload } from '@typings/api';
+import { Crumb } from '@components/app-bar';
 // import { v4 as uuid } from 'uuid';
 
 const generateDefaults = <Data>(inputs: Input<Data>[], data: Object = {}) => {
@@ -19,11 +20,52 @@ const generateDefaults = <Data>(inputs: Input<Data>[], data: Object = {}) => {
     return data;
 };
 
+const getCrumbs = (setId: string, actionId: string | undefined, crumbs: Crumb[] = []): Crumb[] => {
+    const items = espresso.store.get('items') as Item[];
+    const actions = espresso.store.get('actions') as Action[];
+    const actionSchemas = espresso.actions.getAll();
+
+    const item = items.find((i) => i.id === setId) as ActionSet | undefined;
+
+    if (!item) return crumbs;
+
+    // If action ID is set we start with the action
+    if (actionId) {
+        const action = actions.find((a) => a.id === actionId);
+        if (action) {
+            const schema = actionSchemas.find((s) => s.slug === action.slug);
+
+            if (schema) {
+                crumbs = [{ text: schema.name, link: `/action-set/${setId}/${actionId}` }, ...crumbs];
+            }
+        }
+
+        // Figure out this actions parent
+        // If the main item includes the action the next crumb is for the item
+        if (item.actions.includes(actionId)) {
+            crumbs = getCrumbs(setId, undefined, crumbs);
+        } else {
+            // Else look for another actions
+            const parentAction = actions.find((a) => a.actions.includes(actionId));
+
+            if (parentAction) {
+                crumbs = getCrumbs(setId, parentAction.id, crumbs);
+            }
+        }
+    } else {
+        // Else this is a set
+        crumbs = [{ text: 'Home', link: '/' }, { text: item.name, link: `/action-set/${item.id}` }, ...crumbs];
+    }
+
+    return crumbs;
+};
+
 espresso.server.register({
     path: '/api/action-set/:id',
     method: 'get',
     response: (req, res) => {
         const { id } = req.params;
+        const actionId = req.query.actionId as string;
         let _status: number = 404;
         let payload: GetPutActionSetPayload | APIError;
 
@@ -35,8 +77,9 @@ espresso.server.register({
                 _status = 200;
                 payload = {
                     set,
-                    _status,
                     actions,
+                    crumbs: getCrumbs(id, actionId),
+                    _status,
                 };
             } else {
                 payload = {
@@ -94,6 +137,7 @@ espresso.server.register({
                 payload = {
                     _status,
                     set,
+                    crumbs: [],
                     actions: [],
                 };
             } else {

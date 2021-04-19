@@ -80,8 +80,6 @@ espresso.server.register({
 });
 
 const deleteAction = (actionId: string) => {
-    console.log(`Deleting action "${actionId}"`);
-
     const actions = espresso.store.get('actions') as Action[];
     const items = espresso.store.get('items') as Item[];
 
