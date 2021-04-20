@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 // Components
-// prettier-ignore
-import {Button,Icon,IconButton,Dialog,DialogContent,DialogActions,DialogTitle,Typography,TextField,FormControl, Select,MenuItem, InputLabel } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Icon, IconButton } from '@material-ui/core';
 import EspressoAppBar from '@components/app-bar';
+import NewItemDialog from '@components/folder/new-item-dialog';
+import ItemDisplayBlock from '@components/folder/item-display-block';
 
 // Utilities
 import api from '@utilities/api';
@@ -15,7 +15,7 @@ import api from '@utilities/api';
 import './folder.scss';
 
 // Types
-import { Folder, Item, ActionSet } from '@typings/items';
+import { Item } from '@typings/items';
 import { RouteComponentProps } from 'react-router-dom';
 import { GetItemPayload } from '@typings/api';
 
@@ -55,99 +55,22 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
         updateState({ ...state, open: true });
     };
 
-    const ItemDisplay: React.FC = () => {
-        if (!state.loaded) return null;
-
-        return (
-            <>
-                <ItemDisplayBlock type="folder" items={state.items} />
-                <ItemDisplayBlock type="action-set" items={state.items} />
-            </>
-        );
+    const onClose = () => {
+        updateState({ ...state, open: false });
     };
 
-    const NewItemDialog: React.FC = () => {
-        const [formState, updateFormState] = useState<{ name: string; type: Item['type'] }>({ name: '', type: 'action-set' });
-
-        const onClose = () => {
-            updateState({
-                ...state,
-                open: false,
-            });
-        };
-
-        const onNewItem = () => {
-            api.fetch<{ item: Item }>('/items', 'post', JSON.stringify({ name: formState.name, type: formState.type }))
-                .then((res) => {
-                    updateState({
-                        ...state,
-                        open: false,
-                        items: [...state.items, res.item],
-                    });
-                })
-                .catch((e) => {
-                    console.log(e);
+    const onNewItem = (name: string, type: Item['type']) => {
+        api.fetch<{ item: Item }>('/items', 'post', JSON.stringify({ name, type }))
+            .then((res) => {
+                updateState({
+                    ...state,
+                    open: false,
+                    items: [...state.items, res.item],
                 });
-        };
-
-        const onNameChange = (name: string) => {
-            updateFormState({ ...formState, name });
-        };
-
-        const onTypeChange = (type: Item['type']) => {
-            updateFormState({ ...formState, type });
-        };
-
-        return (
-            <Dialog open={state.open} onClose={onClose} maxWidth="xs" fullWidth>
-                <form>
-                    <DialogTitle>
-                        <Typography>New item</Typography>
-                    </DialogTitle>
-
-                    <DialogContent>
-                        <FormControl variant="outlined" fullWidth>
-                            <TextField
-                                variant="outlined"
-                                label="Item name"
-                                value={formState.name}
-                                onChange={(e) => {
-                                    onNameChange(e.target.value);
-                                }}
-                                autoFocus
-                            />
-                        </FormControl>
-
-                        <FormControl variant="outlined" fullWidth>
-                            <InputLabel id="espresso-new-item-form-type">Item type</InputLabel>
-
-                            <Select
-                                value={formState.type}
-                                label="Item Type"
-                                labelId="espresso-new-item-form-type"
-                                onChange={(e) => {
-                                    onTypeChange(e.target.value as Item['type']);
-                                }}
-                                disabled
-                            >
-                                <MenuItem value="action-set">Action Set</MenuItem>
-                                <MenuItem value="folder">Folder</MenuItem>
-                                {/* <MenuItem value="list">List</MenuItem> */}
-                            </Select>
-                        </FormControl>
-                    </DialogContent>
-
-                    <DialogActions>
-                        <Button variant="outlined" onClick={onClose}>
-                            Cancel
-                        </Button>
-                        <Button variant="contained" color="primary" onClick={onNewItem}>
-                            Add item
-                        </Button>
-                    </DialogActions>
-                </form>
-            </Dialog>
-        );
+            })
+            .catch((e) => {
+                console.log(e);
+            });
     };
 
     return (
@@ -159,69 +82,12 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
             </EspressoAppBar>
 
             <div className="route-wrapper">
-                <ItemDisplay />
+                <ItemDisplayBlock type="folder" items={state.items} />
+                <ItemDisplayBlock type="action-set" items={state.items} />
             </div>
 
-            <NewItemDialog />
+            <NewItemDialog open={state.open} onClose={onClose} onNewItem={onNewItem} />
         </>
-    );
-};
-
-interface ItemDisplayBlockProps {
-    type: Item['type'];
-    items: Item[];
-}
-
-const ItemDisplayBlock: React.FC<ItemDisplayBlockProps> = ({ type, items }) => {
-    let title: string;
-
-    switch (type) {
-        case 'action-set':
-            title = 'Action Set';
-            break;
-        case 'folder':
-            title = 'Folders';
-            break;
-    }
-
-    const filtered = items.filter((i) => i.type === type);
-
-    if (filtered.length === 0) return null;
-
-    const sorted = filtered.sort((a, b) => {
-        if (a.name === b.name) return 0;
-        if (a.name > b.name) return 1;
-
-        return -1;
-    });
-
-    return (
-        <div className="espresso-item-display-block">
-            <Typography variant="caption" style={{ opacity: 0.5 }}>
-                {title}
-            </Typography>
-            <div className="espresso-item-display-list">
-                {sorted.map((item) => {
-                    let link: string;
-
-                    switch (item.type) {
-                        case 'action-set':
-                            link = `/action-set/${item.id}`;
-                            break;
-
-                        case 'folder':
-                            link = `/${item.id}`;
-                            break;
-                    }
-
-                    return (
-                        <Button key={item.id} variant="outlined" className={`espresso-item-button ${type}`} component={Link} to={link}>
-                            {item.name}
-                        </Button>
-                    );
-                })}
-            </div>
-        </div>
     );
 };
 
