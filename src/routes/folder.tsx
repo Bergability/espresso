@@ -137,7 +137,7 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
                             >
                                 <MenuItem value="action-set">Action Set</MenuItem>
                                 <MenuItem value="folder">Folder</MenuItem>
-                                <MenuItem value="list">list</MenuItem>
+                                {/* <MenuItem value="list">List</MenuItem> */}
                             </Select>
                         </FormControl>
                     </DialogContent>

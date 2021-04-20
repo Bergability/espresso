@@ -95,7 +95,7 @@ const ActionDisplay: React.FC<Props> = ({ set, index, action, schema, isFirst, i
                     </MenuItem>
                 )}
 
-                <MenuItem className={classes.menuItem}>
+                <MenuItem className={classes.menuItem} component={Link} to={`/action-set/${set}/action/${action.id}`}>
                     <Typography>Settings</Typography>
                     <ListItemSecondaryAction className={classes.menuIcon}>
                         <Icon>settings</Icon>
