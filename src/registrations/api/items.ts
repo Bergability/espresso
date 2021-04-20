@@ -1,7 +1,8 @@
 import espresso from '../../core/espresso';
 import { ActionSet, Folder, Item, ItemType } from '@typings/items';
 import { v4 as uuid } from 'uuid';
-import { APIError, GetItemPayload, PostPutItemPayload } from '@typings/api';
+import { APIError, GetFolderPayload, GetItemPayload, PostPutItemPayload } from '@typings/api';
+import { getItemCrumbs } from './action-set';
 
 /**
  *
@@ -13,45 +14,18 @@ espresso.server.register({
     method: 'get',
     response: (req, res) => {
         let _status: number = 200;
-        const parentId = req.query.parent;
+        const parentId = req.query.parent || null;
         const items = espresso.store.get<Item[]>('items');
         const payload: GetItemPayload = {
             items,
             _status,
         };
 
-        if (parentId) {
-            payload.items = items.filter((i) => i.parent === parentId);
-            return;
-        }
+        payload.items = items.filter((i) => i.parent === parentId);
 
         res.status(_status);
         res.contentType('application/json');
         res.send(JSON.stringify(payload, null, 4));
-    },
-});
-
-espresso.server.register({
-    path: '/api/items/:id',
-    method: 'get',
-    response: (req, res) => {
-        const { id } = req.params;
-        const items = espresso.store.get('items');
-        // @ts-ignore
-        const item = items.find((i) => i.id === id);
-
-        if (item) {
-            res.contentType('application/json');
-            res.send(JSON.stringify(item, null, 4));
-            return;
-        }
-
-        const error = {
-            status: 404,
-            error: 'No item found with specified',
-        };
-        res.contentType('application/json');
-        res.send(JSON.stringify(error, null, 4));
     },
 });
 
@@ -81,18 +55,20 @@ espresso.server.register({
                     triggers: [],
                 } as ActionSet;
 
-                espresso.store.set('items', [...items, item]);
                 break;
 
             case 'folder':
                 item = {
                     id,
                     name,
+                    parent: parent || null,
                     type,
                     color: '#ff00ff',
                 } as Folder;
                 break;
         }
+
+        espresso.store.set('items', [...items, item]);
 
         const payload: PostPutItemPayload = {
             item,
@@ -101,6 +77,30 @@ espresso.server.register({
 
         res.status(200);
         res.json(payload);
+    },
+});
+
+espresso.server.register({
+    path: '/api/items/:id',
+    method: 'get',
+    response: (req, res) => {
+        const { id } = req.params;
+        const items = espresso.store.get('items');
+        // @ts-ignore
+        const item = items.find((i) => i.id === id);
+
+        if (item) {
+            res.contentType('application/json');
+            res.send(JSON.stringify(item, null, 4));
+            return;
+        }
+
+        const error = {
+            status: 404,
+            error: 'No item found with specified',
+        };
+        res.contentType('application/json');
+        res.send(JSON.stringify(error, null, 4));
     },
 });
 
@@ -150,6 +150,25 @@ espresso.server.register({
             id,
             message: 'TODO make this work',
         };
+        res.send(JSON.stringify(payload, null, 4));
+    },
+});
+
+espresso.server.register({
+    path: '/api/folder/:id',
+    method: 'get',
+    response: (req, res) => {
+        const id = req.params.id === 'home' ? null : req.params.id;
+        const items = espresso.store.get('items') as Item[];
+        const filtered = items.filter((i) => i.parent === id);
+
+        const payload: GetFolderPayload = {
+            items: filtered,
+            crumbs: getItemCrumbs(id),
+        };
+
+        res.status(200);
+        res.contentType('application/json');
         res.send(JSON.stringify(payload, null, 4));
     },
 });

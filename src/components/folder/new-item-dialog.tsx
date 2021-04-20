@@ -71,7 +71,6 @@ const NewItemDialog: React.FC<Props> = ({ open, onClose, onNewItem }) => {
                             onChange={(e) => {
                                 onTypeChange(e.target.value as Item['type']);
                             }}
-                            disabled
                         >
                             <MenuItem value="action-set">Action Set</MenuItem>
                             <MenuItem value="folder">Folder</MenuItem>

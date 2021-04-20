@@ -59,3 +59,8 @@ export interface GetActionPayload {
     crumbs: Crumb[];
     schema: ActionSchema;
 }
+
+export interface GetFolderPayload {
+    items: Item[];
+    crumbs: Crumb[];
+}

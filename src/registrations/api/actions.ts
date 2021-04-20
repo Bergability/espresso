@@ -4,7 +4,7 @@ import { ActionSet, Item } from '@typings/items';
 import { Action } from '@typings/espresso';
 import espresso from '../../core/espresso';
 
-import { getCrumbs } from './action-set';
+import { getActionCrumbs } from './action-set';
 
 espresso.server.register({
     path: '/api/actions',
@@ -37,7 +37,7 @@ espresso.server.register({
                 payload = {
                     action,
                     schema,
-                    crumbs: getCrumbs(action.set, id),
+                    crumbs: getActionCrumbs(action.set, id),
                 };
             } else {
                 payload = {

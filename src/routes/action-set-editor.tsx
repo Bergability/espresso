@@ -33,6 +33,8 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
     const fetchActions = () => {
         api.fetch<GetPutActionSetPayload>(`/action-set/${id}${actionId ? `?actionId=${actionId}` : ''}`, 'get')
             .then((res) => {
+                console.log(res.crumbs);
+
                 updateState(res);
             })
             .catch((e) => {

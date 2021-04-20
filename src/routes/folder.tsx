@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 // Components
 import { Icon, IconButton } from '@material-ui/core';
-import EspressoAppBar from '@components/app-bar';
+import EspressoAppBar, { Crumb } from '@components/app-bar';
 import NewItemDialog from '@components/folder/new-item-dialog';
 import ItemDisplayBlock from '@components/folder/item-display-block';
 
@@ -17,7 +17,7 @@ import './folder.scss';
 // Types
 import { Item } from '@typings/items';
 import { RouteComponentProps } from 'react-router-dom';
-import { GetItemPayload } from '@typings/api';
+import { GetFolderPayload, GetItemPayload } from '@typings/api';
 
 interface RouteParams {
     id?: string;
@@ -25,31 +25,35 @@ interface RouteParams {
 
 interface State {
     items: Item[];
-    loaded: boolean;
+    crumbs: Crumb[];
     open: boolean;
-    error?: string;
 }
 
-const defaultState: State = {
-    items: [],
-    loaded: false,
-    open: false,
-};
-
 const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
-    const [state, updateState] = useState<State>(defaultState);
-    // const id = props.match.params.id;
+    const [state, updateState] = useState<State | null>(null);
+    const id = props.match.params.id;
 
     useEffect(() => {
+        console.log(id);
+
         // TODO add parent searching
-        api.fetch<GetItemPayload>('/items', 'get')
-            .then((payload) => {
-                updateState({ ...state, items: payload.items, loaded: true });
+        api.fetch<GetFolderPayload>(`/folder/${id || 'home'}`, 'get')
+            .then((res) => {
+                console.log(`/folder/${id || 'home'}`);
+
+                console.log(res);
+
+                updateState({
+                    open: false,
+                    ...res,
+                });
             })
             .catch((e) => {
                 console.log(e);
             });
-    }, []);
+    }, [id]);
+
+    if (state === null) return <EspressoAppBar crumbs={[]} />;
 
     const onNewItemClick = () => {
         updateState({ ...state, open: true });
@@ -60,7 +64,13 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     };
 
     const onNewItem = (name: string, type: Item['type']) => {
-        api.fetch<{ item: Item }>('/items', 'post', JSON.stringify({ name, type }))
+        const payload = { name, type };
+
+        // TODO Type check this better
+        // @ts-ignore
+        if (id) payload.parent = id;
+
+        api.fetch<{ item: Item }>('/items', 'post', JSON.stringify(payload))
             .then((res) => {
                 updateState({
                     ...state,
@@ -75,7 +85,7 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
 
     return (
         <>
-            <EspressoAppBar crumbs={[{ text: 'Home', link: '/' }]} loading={!state.loaded}>
+            <EspressoAppBar crumbs={state.crumbs}>
                 <IconButton onClick={onNewItemClick}>
                     <Icon>add_box</Icon>
                 </IconButton>

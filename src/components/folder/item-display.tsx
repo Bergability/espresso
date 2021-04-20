@@ -101,7 +101,8 @@ const ItemDisplay: React.FC<Props> = ({ item }) => {
                 to={link}
                 onContextMenu={onContextMenu}
             >
-                {item.name}
+                {item.type === 'folder' ? <Icon style={{ marginRight: '10px', color: item.color }}>folder</Icon> : null}
+                <span>{item.name}</span>
             </Button>
             <ContextMenu />
         </React.Fragment>

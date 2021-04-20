@@ -20,7 +20,37 @@ const generateDefaults = <Data>(inputs: Input<Data>[], data: Object = {}) => {
     return data;
 };
 
-export const getCrumbs = (setId: string, actionId: string | undefined, crumbs: Crumb[] = []): Crumb[] => {
+export const getItemCrumbs = (id: string | null, crumbs: Crumb[] = []): Crumb[] => {
+    if (id === null) crumbs = [{ text: 'Home', link: '/' }, ...crumbs];
+
+    const items = espresso.store.get('items') as Item[];
+    const item = items.find((i) => i.id === id);
+
+    if (item) {
+        let link: string;
+
+        switch (item.type) {
+            case 'action-set':
+                link = `/action-set/${item.id}`;
+                break;
+
+            case 'folder':
+                link = `/${item.id}`;
+                break;
+        }
+
+        crumbs = [{ text: item.name, link }, ...crumbs];
+        if (item.parent === null) {
+            crumbs = [{ text: 'Home', link: '/' }, ...crumbs];
+        } else {
+            crumbs = getItemCrumbs(item.parent, crumbs);
+        }
+    }
+
+    return crumbs;
+};
+
+export const getActionCrumbs = (setId: string, actionId: string | undefined, crumbs: Crumb[] = []): Crumb[] => {
     const items = espresso.store.get('items') as Item[];
     const actions = espresso.store.get('actions') as Action[];
     const actionSchemas = espresso.actions.getAll();
@@ -43,18 +73,19 @@ export const getCrumbs = (setId: string, actionId: string | undefined, crumbs: C
         // Figure out this actions parent
         // If the main item includes the action the next crumb is for the item
         if (item.actions.includes(actionId)) {
-            crumbs = getCrumbs(setId, undefined, crumbs);
+            crumbs = getActionCrumbs(setId, undefined, crumbs);
         } else {
             // Else look for another actions
             const parentAction = actions.find((a) => a.actions.includes(actionId));
 
             if (parentAction) {
-                crumbs = getCrumbs(setId, parentAction.id, crumbs);
+                crumbs = getActionCrumbs(setId, parentAction.id, crumbs);
             }
         }
     } else {
         // Else this is a set
-        crumbs = [{ text: 'Home', link: '/' }, { text: item.name, link: `/action-set/${item.id}` }, ...crumbs];
+        crumbs = getItemCrumbs(item.id, crumbs);
+        // crumbs = [{ text: 'Home', link: '/' }, { text: item.name, link: `/action-set/${item.id}` }, ...crumbs];
     }
 
     return crumbs;
@@ -78,7 +109,7 @@ espresso.server.register({
                 payload = {
                     set,
                     actions,
-                    crumbs: getCrumbs(id, actionId),
+                    crumbs: getActionCrumbs(id, actionId),
                     _status,
                 };
             } else {
