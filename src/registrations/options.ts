@@ -1,5 +1,6 @@
-import { Option } from '@typings/inputs';
 import espresso from '../core/espresso';
+import { Option } from '@typings/inputs';
+import { Item, ActionSet } from '@typings/items';
 
 espresso.options.register({
     slug: 'espresso:triggers',
@@ -11,6 +12,23 @@ espresso.options.register({
                     text: trigger.name,
                     value: trigger.slug,
                     catigory: trigger.catigory,
+                },
+            ];
+        }, []);
+    },
+});
+
+espresso.options.register({
+    slug: 'espresso:action-sets',
+    get: () => {
+        const items = espresso.store.get('items') as Item[];
+        return items.reduce<Option[]>((acc, item) => {
+            if (item.type !== 'action-set') return acc;
+            return [
+                ...acc,
+                {
+                    text: item.name,
+                    value: item.id,
                 },
             ];
         }, []);

@@ -55,8 +55,8 @@ class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
                             );
 
                         case 'text':
+                            // TODO make a better number input
                             return (
-                                // <FormControl key={input.key as string} fullWidth>
                                 <TextField
                                     key={input.key as string}
                                     label={input.label}
@@ -68,7 +68,22 @@ class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
                                         onInputChange(input.key, e.target.value);
                                     }}
                                 />
-                                // </FormControl>
+                            );
+
+                        case 'number':
+                            return (
+                                <TextField
+                                    key={input.key as string}
+                                    type="number"
+                                    label={input.label}
+                                    value={data[input.key] === undefined ? '' : data[input.key]}
+                                    variant={variant}
+                                    helperText={input.helper}
+                                    fullWidth
+                                    onChange={(e) => {
+                                        onInputChange(input.key, e.target.value);
+                                    }}
+                                />
                             );
 
                         case 'toggle':

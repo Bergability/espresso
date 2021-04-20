@@ -72,11 +72,35 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     };
 
     const NewItemDialog: React.FC = () => {
+        const [formState, updateFormState] = useState<{ name: string; type: Item['type'] }>({ name: '', type: 'action-set' });
+
         const onClose = () => {
             updateState({
                 ...state,
                 open: false,
             });
+        };
+
+        const onNewItem = () => {
+            api.fetch<{ item: Item }>('/items', 'post', JSON.stringify({ name: formState.name, type: formState.type }))
+                .then((res) => {
+                    updateState({
+                        ...state,
+                        open: false,
+                        items: [...state.items, res.item],
+                    });
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        };
+
+        const onNameChange = (name: string) => {
+            updateFormState({ ...formState, name });
+        };
+
+        const onTypeChange = (type: Item['type']) => {
+            updateFormState({ ...formState, type });
         };
 
         return (
@@ -88,13 +112,29 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
 
                     <DialogContent>
                         <FormControl variant="outlined" fullWidth>
-                            <TextField variant="outlined" label="Item name" autoFocus />
+                            <TextField
+                                variant="outlined"
+                                label="Item name"
+                                value={formState.name}
+                                onChange={(e) => {
+                                    onNameChange(e.target.value);
+                                }}
+                                autoFocus
+                            />
                         </FormControl>
 
                         <FormControl variant="outlined" fullWidth>
                             <InputLabel id="espresso-new-item-form-type">Item type</InputLabel>
 
-                            <Select value={'action-set'} label="Item Type" labelId="espresso-new-item-form-type">
+                            <Select
+                                value={formState.type}
+                                label="Item Type"
+                                labelId="espresso-new-item-form-type"
+                                onChange={(e) => {
+                                    onTypeChange(e.target.value as Item['type']);
+                                }}
+                                disabled
+                            >
                                 <MenuItem value="action-set">Action Set</MenuItem>
                                 <MenuItem value="folder">Folder</MenuItem>
                                 <MenuItem value="list">list</MenuItem>
@@ -106,7 +146,7 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
                         <Button variant="outlined" onClick={onClose}>
                             Cancel
                         </Button>
-                        <Button variant="contained" color="primary">
+                        <Button variant="contained" color="primary" onClick={onNewItem}>
                             Add item
                         </Button>
                     </DialogActions>
