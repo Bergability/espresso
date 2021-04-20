@@ -11,8 +11,11 @@ import EspressoAppBar from '@components/app-bar';
 // Utilities
 import api from '@utilities/api';
 
+// Styles
+import './folder.scss';
+
 // Types
-import { Item } from '@typings/items';
+import { Folder, Item, ActionSet } from '@typings/items';
 import { RouteComponentProps } from 'react-router-dom';
 import { GetItemPayload } from '@typings/api';
 
@@ -57,16 +60,8 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
 
         return (
             <>
-                {state.items.map((item) => {
-                    let link: string = `/${item.type}/${item.id}`;
-                    if (item.type === 'folder') link = `/${item.id}`;
-
-                    return (
-                        <Button to={link} key={item.id} variant="outlined" component={Link} style={{ textTransform: 'none' }}>
-                            {item.name}
-                        </Button>
-                    );
-                })}
+                <ItemDisplayBlock type="folder" items={state.items} />
+                <ItemDisplayBlock type="action-set" items={state.items} />
             </>
         );
     };
@@ -169,6 +164,64 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
 
             <NewItemDialog />
         </>
+    );
+};
+
+interface ItemDisplayBlockProps {
+    type: Item['type'];
+    items: Item[];
+}
+
+const ItemDisplayBlock: React.FC<ItemDisplayBlockProps> = ({ type, items }) => {
+    let title: string;
+
+    switch (type) {
+        case 'action-set':
+            title = 'Action Set';
+            break;
+        case 'folder':
+            title = 'Folders';
+            break;
+    }
+
+    const filtered = items.filter((i) => i.type === type);
+
+    if (filtered.length === 0) return null;
+
+    const sorted = filtered.sort((a, b) => {
+        if (a.name === b.name) return 0;
+        if (a.name > b.name) return 1;
+
+        return -1;
+    });
+
+    return (
+        <div className="espresso-item-display-block">
+            <Typography variant="caption" style={{ opacity: 0.5 }}>
+                {title}
+            </Typography>
+            <div className="espresso-item-display-list">
+                {sorted.map((item) => {
+                    let link: string;
+
+                    switch (item.type) {
+                        case 'action-set':
+                            link = `/action-set/${item.id}`;
+                            break;
+
+                        case 'folder':
+                            link = `/${item.id}`;
+                            break;
+                    }
+
+                    return (
+                        <Button key={item.id} variant="outlined" className={`espresso-item-button ${type}`} component={Link} to={link}>
+                            {item.name}
+                        </Button>
+                    );
+                })}
+            </div>
+        </div>
     );
 };
 
