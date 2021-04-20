@@ -162,7 +162,10 @@ espresso.server.register({
         const items = espresso.store.get('items') as Item[];
         const filtered = items.filter((i) => i.parent === id);
 
+        const folder = items.find((i) => i.id === id && i.type === 'folder') as Folder | undefined;
+
         const payload: GetFolderPayload = {
+            folder: folder || { name: 'Home', color: '', parent: null, id: '', type: 'folder' },
             items: filtered,
             crumbs: getItemCrumbs(id),
         };

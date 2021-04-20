@@ -12,6 +12,7 @@ import { ActionSchemaContextWrapper } from './contexts/action-schemas';
 // Routes
 import FolderRoute from '@routes/folder';
 import ActionSetRoute from '@routes/action-set';
+import FolderSettingsRoute from '@routes/folder-settings';
 
 // Styles
 import './main.scss';
@@ -44,6 +45,10 @@ ReactDOM.render(
 
                             <Route path="/:id" exact>
                                 <FolderRoute />
+                            </Route>
+
+                            <Route path="/:id/settings" exact>
+                                <FolderSettingsRoute />
                             </Route>
 
                             <Route path="/action-set/:id">

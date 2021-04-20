@@ -82,6 +82,8 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
         });
     };
 
+    state.crumbs[state.crumbs.length - 1].text = state.set.name;
+
     return (
         <>
             <EspressoAppBar crumbs={[...state.crumbs, { text: 'Settings', link: `/action-set/${id}/settings` }]} />

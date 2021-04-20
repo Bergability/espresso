@@ -39,14 +39,17 @@ const ItemDisplay: React.FC<Props> = ({ item }) => {
     const classes = styles();
     const [mousePosition, updateMousePosition] = useState<MousePosition>({ x: null, y: null });
     let link: string;
+    let settingsLink: string;
 
     switch (item.type) {
         case 'action-set':
             link = `/action-set/${item.id}`;
+            settingsLink = `/action-set/${item.id}/settings`;
             break;
 
         case 'folder':
             link = `/${item.id}`;
+            settingsLink = `/${item.id}/settings`;
             break;
     }
 
@@ -69,7 +72,7 @@ const ItemDisplay: React.FC<Props> = ({ item }) => {
                 anchorPosition={mousePosition.y !== null && mousePosition.x !== null ? { top: mousePosition.y, left: mousePosition.x } : undefined}
             >
                 {/* TODO Make this work for folders when you add folders dumb dumb */}
-                <MenuItem className={classes.menuItem} component={Link} to={`/action-set/${item.id}/settings`}>
+                <MenuItem className={classes.menuItem} component={Link} to={settingsLink}>
                     <Typography>Settings</Typography>
                     <ListItemSecondaryAction className={classes.menuIcon}>
                         <Icon>settings</Icon>
