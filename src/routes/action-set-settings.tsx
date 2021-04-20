@@ -21,35 +21,19 @@ interface Props {
 }
 
 const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
-    const [set, updateSet] = useState<ActionSet | null>(null);
-    const [triggers, updateTriggers] = useState<TriggerSchema[]>([]);
+    const [state, updateState] = useState<GetPutActionSetPayload | null>(null);
 
     useEffect(() => {
-        api.fetch<TriggerSchema[]>('/triggers', 'get')
-            .then((json) => {
-                if (json === null) return;
-                updateTriggers(json);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-
         api.fetch<GetPutActionSetPayload>(`/action-set/${id}`, 'get')
             .then((res) => {
-                updateSet(res.set);
+                updateState(res);
             })
             .catch((e) => {
                 console.log();
             });
     }, []);
 
-    if (set === null) return <EspressoAppBar crumbs={[]} />;
-
-    const crumbs: Crumb[] = [
-        { text: 'Home', link: `/` },
-        { text: set.name, link: `/action-set/${id}` },
-        { text: 'Settings', link: `/action-set/${id}/settings` },
-    ];
+    if (state === null) return <EspressoAppBar crumbs={[]} />;
 
     const inputs: Input<ActionSet>[] = [
         {
@@ -83,9 +67,12 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
     ];
 
     const onChange = (key: keyof ActionSet, value: any) => {
-        updateSet({
-            ...set,
-            [key]: value,
+        updateState({
+            ...state,
+            set: {
+                ...state.set,
+                [key]: value,
+            },
         });
     };
 
@@ -97,10 +84,10 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
 
     return (
         <>
-            <EspressoAppBar crumbs={crumbs} loading={set === null} />
+            <EspressoAppBar crumbs={[...state.crumbs, { text: 'Settings', link: `/action-set/${id}/settings` }]} />
             <div className="route-wrapper">
                 <Paper className="padded">
-                    <EspressoForm<ActionSet> inputs={inputs} data={set} onChange={onChange} onSave={onSave} variant="outlined" />
+                    <EspressoForm<ActionSet> inputs={inputs} data={state.set} onChange={onChange} onSave={onSave} variant="outlined" />
                 </Paper>
             </div>
         </>

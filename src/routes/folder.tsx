@@ -34,15 +34,8 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     const id = props.match.params.id;
 
     useEffect(() => {
-        console.log(id);
-
-        // TODO add parent searching
         api.fetch<GetFolderPayload>(`/folder/${id || 'home'}`, 'get')
             .then((res) => {
-                console.log(`/folder/${id || 'home'}`);
-
-                console.log(res);
-
                 updateState({
                     open: false,
                     ...res,

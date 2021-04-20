@@ -35,6 +35,7 @@ export interface GetPutActionSetPayload {
 export interface GetActionSetTriggerPayload {
     settings: ActionSetSetting | null;
     trigger: TriggerSchema;
+    crumbs: Crumb[];
     _status: number;
 }
 

@@ -20,33 +20,32 @@ interface Props {
 }
 
 const ActionSetTriggersRoute: React.FC<Props> = ({ id }) => {
-    const [set, updateSet] = useState<ActionSet | null>(null);
+    const [state, updateState] = useState<GetPutActionSetPayload | null>(null);
 
     useEffect(() => {
         api.fetch<GetPutActionSetPayload>(`/action-set/${id}`, 'get')
             .then((res) => {
-                updateSet(res.set);
+                updateState(res);
             })
             .catch((e) => {
                 console.log(e);
             });
     }, []);
 
-    if (set === null) return <EspressoAppBar crumbs={[]} />;
+    if (state === null) return <EspressoAppBar crumbs={[]} />;
 
     const crumbs: Crumb[] = [
-        { text: 'Home', link: `/` },
-        { text: set.name, link: `/action-set/${id}` },
+        ...state.crumbs,
         { text: 'Settings', link: `/action-set/${id}/settings` },
         { text: 'Triggers', link: `/action-set/${id}/settings/triggers` },
     ];
 
     return (
         <>
-            <EspressoAppBar crumbs={crumbs} loading={set === null} />
+            <EspressoAppBar crumbs={crumbs} loading={state === null} />
 
             <div className="route-wrapper">
-                {set.triggers.map((trigger) => (
+                {state.set.triggers.map((trigger) => (
                     <TriggerForm key={trigger} slug={trigger} id={id} />
                 ))}
             </div>
@@ -68,21 +67,13 @@ interface TriggerFormProps {
 //     variant?: 'filled' | 'outlined' | 'standard';
 // }
 
-interface State {
-    settings: ActionSetSetting | null;
-    trigger: TriggerSchema;
-}
-
 const TriggerForm: React.FC<TriggerFormProps> = ({ id, slug }) => {
-    const [state, updateState] = useState<State>();
+    const [state, updateState] = useState<GetActionSetTriggerPayload | null>(null);
 
     useEffect(() => {
         api.fetch<GetActionSetTriggerPayload>(`/action-set/${id}/trigger/${slug}`, 'get')
             .then((res) => {
-                updateState({
-                    settings: res.settings,
-                    trigger: res.trigger,
-                });
+                updateState(res);
             })
             .catch((e) => {
                 console.log(e);

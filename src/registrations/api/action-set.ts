@@ -205,13 +205,14 @@ espresso.server.register({
             if (set) {
                 if (set.type === 'action-set') {
                     const settings = set.settings.find((t) => t.for === slug);
+                    const crumbs = getItemCrumbs(set.id);
 
                     if (settings) {
                         _status = 200;
-                        payload = { settings, trigger, _status };
+                        payload = { settings, trigger, crumbs, _status };
                     } else if (!trigger.settings) {
                         _status = 200;
-                        payload = { settings: null, trigger, _status };
+                        payload = { settings: null, trigger, crumbs, _status };
                     } else {
                         payload = {
                             _status,
