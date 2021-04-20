@@ -10,6 +10,7 @@ function createWindow() {
         height: 600,
         width: 800,
         backgroundColor: '#303030',
+        title: 'Espresso',
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,

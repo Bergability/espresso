@@ -20,7 +20,7 @@ const generateDefaults = <Data>(inputs: Input<Data>[], data: Object = {}) => {
     return data;
 };
 
-const getCrumbs = (setId: string, actionId: string | undefined, crumbs: Crumb[] = []): Crumb[] => {
+export const getCrumbs = (setId: string, actionId: string | undefined, crumbs: Crumb[] = []): Crumb[] => {
     const items = espresso.store.get('items') as Item[];
     const actions = espresso.store.get('actions') as Action[];
     const actionSchemas = espresso.actions.getAll();

@@ -126,7 +126,7 @@ const twitchSendMessageSettings: Input<TwitchSendChatSettings>[] = [
 ];
 
 espresso.actions.register({
-    slug: 'twitch-send=chat=message',
+    slug: 'twitch-send-chat-message',
     name: 'Send chat message',
     catigory: 'Chat',
     provider: 'Twitch',

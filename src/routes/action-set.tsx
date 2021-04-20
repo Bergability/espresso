@@ -9,6 +9,7 @@ import { Switch, Route } from 'react-router-dom';
 import ActionSetEditorRoute from '@routes/action-set-editor';
 import ActionSetSettingsRoute from '@routes/action-set-settings';
 import ActionSetTriggersRoute from '@routes/action-set-triggers';
+import ActionSettingsRoute from '@routes/action-settings';
 
 // Types
 import { RouteComponentProps } from 'react-router-dom';
@@ -46,8 +47,7 @@ const ActionSetRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
 
             {/* Action settings editor */}
             <Route path={`${match.path}/action/:actionId`} exact>
-                <p>Action settings</p>
-                <ActionSetEditorRoute />
+                <ActionSettingsRoute />
             </Route>
         </Switch>
     );

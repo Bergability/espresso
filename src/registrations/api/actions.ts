@@ -1,8 +1,10 @@
 import { v4 as uuid } from 'uuid';
-import { NewActionRequestPayload, PostActionPayload } from '@typings/api';
+import { NewActionRequestPayload, PostActionPayload, APIError, GetActionPayload } from '@typings/api';
 import { ActionSet, Item } from '@typings/items';
 import { Action } from '@typings/espresso';
 import espresso from '../../core/espresso';
+
+import { getCrumbs } from './action-set';
 
 espresso.server.register({
     path: '/api/actions',
@@ -12,6 +14,45 @@ espresso.server.register({
         const actions: Action[] = espresso.store.get('actions');
         const payload = actions.filter((a) => a.set === set);
 
+        res.contentType('application/json');
+        res.send(JSON.stringify(payload, null, 4));
+    },
+});
+
+espresso.server.register({
+    path: '/api/actions/:id',
+    method: 'get',
+    response: (req, res) => {
+        const { id } = req.params;
+        const actions = espresso.store.get('actions') as Action[];
+        const action = actions.find((a) => a.id === id);
+        let payload: GetActionPayload | APIError;
+        let _status: number = 404;
+
+        if (action) {
+            const schema = espresso.actions.find((s) => s.slug === action.slug);
+
+            if (schema) {
+                _status = 200;
+                payload = {
+                    action,
+                    schema,
+                    crumbs: getCrumbs(action.set, id),
+                };
+            } else {
+                payload = {
+                    _status,
+                    error: `Action schema with the slug of "${action.slug}" not found.`,
+                };
+            }
+        } else {
+            payload = {
+                _status,
+                error: `Action with the ID of "${id}" not found.`,
+            };
+        }
+
+        res.status(_status);
         res.contentType('application/json');
         res.send(JSON.stringify(payload, null, 4));
     },

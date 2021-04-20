@@ -17,7 +17,6 @@ import api from '@utilities/api';
 import './action-set-editor.scss';
 
 // Types
-import { Crumb } from '@components/app-bar';
 import { GetPutActionSetPayload, NewActionRequestPayload, PostActionPayload } from '@typings/api';
 import { RouteComponentProps } from 'react-router-dom';
 
