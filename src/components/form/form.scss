@@ -26,3 +26,88 @@
         }
     }
 }
+
+.espresso-repeater-input,
+.espresso-repeater-form-wrapper {
+    position: relative;
+    padding: 14px;
+    padding-bottom: 9px;
+    border: solid 1px rgba(255, 255, 255, 0.23);
+    border-radius: 4px;
+}
+
+.espresso-repeater-input-label {
+    position: absolute;
+    top: -24px;
+    left: -5px;
+    padding: 0 5px;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: #424242;
+}
+
+.espresso-repeater-form-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:hover,
+    &:focus-within {
+        border-color: #2196f3;
+
+        .espresso-repeater-form-index {
+            border-color: #2196f3;
+            color: #2196f3;
+        }
+
+        .espresso-repeater-actions {
+            opacity: 1;
+        }
+    }
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
+}
+
+.espresso-repeater-form-index {
+    position: absolute;
+    left: -19px;
+    color: rgba(255, 255, 255, 0.23);
+    background-color: #424242;
+    padding: 5px 0;
+}
+
+.espresso-repeater-form {
+    width: 100%;
+    flex: 1 1 100%;
+    padding-bottom: 5px;
+}
+
+.espresso-repeater-actions {
+    position: absolute;
+    right: -13px;
+
+    display: flex;
+    flex-direction: column;
+
+    opacity: 0;
+    padding: 5px 0;
+    background-color: #424242;
+
+    .material-icons {
+        color: rgba(255, 255, 255, 0.23);
+    }
+
+    .MuiButtonBase-root:hover {
+        .material-icons {
+            color: white;
+        }
+    }
+
+    .espresso-repeater-move-up {
+        margin-bottom: 5px;
+    }
+
+    .espresso-repeater-move-down {
+        margin-top: 5px;
+    }
+}

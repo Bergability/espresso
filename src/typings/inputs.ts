@@ -44,11 +44,21 @@ export interface SelectInput<Data extends Object> extends InputBase<Data> {
 
 export interface ChipsInput<Data extends Object> extends InputBase<Data> {
     type: 'chips';
-    label: string;
     default: string[];
     emptyText: string;
     duplicates?: boolean;
     textTransform?: 'uppercase' | 'lowercase';
+}
+
+export interface RepeaterInput<Data extends Object, RepeatData extends Object = {}> extends InputBase<Data> {
+    type: 'repeater';
+    default: [];
+    inputs: Input<RepeatData>[];
+    addLabel: string;
+    emptyLabel: string;
+    removeLabel: string;
+    min?: number;
+    max?: number;
 }
 
 export interface ButtonInput {
@@ -59,5 +69,12 @@ export interface ButtonInput {
     color?: 'default' | 'inherit' | 'primary' | 'secondary';
 }
 
-export type Input<Data extends Object> = TextInput<Data> | NumberInput<Data> | ToggleInput<Data> | SelectInput<Data> | ChipsInput<Data> | ButtonInput;
+export type Input<Data extends Object = {}, RepeatData extends Object = {}> =
+    | TextInput<Data>
+    | NumberInput<Data>
+    | ToggleInput<Data>
+    | SelectInput<Data>
+    | ChipsInput<Data>
+    | RepeaterInput<Data, RepeatData>
+    | ButtonInput;
 export type InputType = Input<{}>['type'];

@@ -7,6 +7,7 @@ import { Button, TextField } from '@material-ui/core';
 import EspressoToggleInput from '@components/form/toggle';
 import EspressoSelectInput from '@components/form/select';
 import EspressoChipsInput from '@components/form/chips';
+import RepeaterInput from '@components/form/repeater';
 
 // Styles
 import './form.scss';
@@ -18,17 +19,17 @@ interface Props<Data extends Object> {
     inputs: Input<Data>[];
     data: Data;
     onChange: (key: keyof Data, value: any) => void;
-    onSave: (data: Data) => void;
+    onSave?: (data: Data) => void;
     saveDelay?: number;
     variant?: 'filled' | 'outlined' | 'standard';
 }
 
-class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
+class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>> {
     private timeout: number | null = null;
 
     componentWillUnmount() {
         if (this.timeout !== null) clearTimeout(this.timeout);
-        this.props.onSave(this.props.data);
+        if (this.props.onSave) this.props.onSave(this.props.data);
     }
 
     render() {
@@ -39,7 +40,7 @@ class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
             if (this.timeout !== null) clearTimeout(this.timeout);
 
             this.timeout = window.setTimeout(() => {
-                onSave({ ...data, [key]: value });
+                if (onSave) onSave({ ...data, [key]: value });
             }, (saveDelay !== undefined ? saveDelay : 3) * 1000);
         };
 
@@ -124,6 +125,24 @@ class EspressoForm<Data extends Object> extends React.Component<Props<Data>> {
                                     duplicates={input.duplicates}
                                     textTransform={input.textTransform}
                                     emptyText={input.emptyText}
+                                    onChange={onInputChange}
+                                />
+                            );
+
+                        case 'repeater':
+                            return (
+                                <RepeaterInput
+                                    key={input.key as string}
+                                    inputKey={input.key as string}
+                                    value={data[input.key]}
+                                    label={input.label}
+                                    helperText={input.helper}
+                                    inputs={input.inputs}
+                                    addLabel={input.addLabel}
+                                    emptyLabel={input.emptyLabel}
+                                    removeLabel={input.removeLabel}
+                                    min={input.min}
+                                    max={input.max}
                                     onChange={onInputChange}
                                 />
                             );
