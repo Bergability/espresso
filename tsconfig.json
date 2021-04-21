@@ -15,6 +15,8 @@
         "isolatedModules": true,
         "jsx": "react",
         "outDir": "dist",
+        "declaration": true,
+        "declarationDir": "declarations",
         "baseUrl": ".",
         "paths": {
             "@espresso": ["src/core/espresso"],

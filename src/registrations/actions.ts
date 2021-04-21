@@ -1,5 +1,6 @@
 import espresso from '../core/espresso';
 import { Input } from '@typings/inputs';
+import { resolve } from 'path';
 
 interface EspressoToggleSetSettings {
     set: string;
@@ -27,7 +28,7 @@ espresso.actions.register({
     provider: 'Espresso',
     description: 'Toggle a selected action set on or off.',
     settings: getSettings('The action set to toggle.'),
-    run: () => {},
+    run: async (triggerSettings, ActionSettings) => {},
 });
 
 espresso.actions.register({
@@ -37,7 +38,7 @@ espresso.actions.register({
     provider: 'Espresso',
     description: 'Disable a selected action set.',
     settings: getSettings('The action set to disable.'),
-    run: () => {},
+    run: async (triggerSettings, ActionSettings) => {},
 });
 
 espresso.actions.register({
@@ -47,7 +48,7 @@ espresso.actions.register({
     provider: 'Espresso',
     description: 'Enable a selected action set.',
     settings: getSettings('The action set to enable.'),
-    run: () => {},
+    run: async (triggerSettings, ActionSettings) => {},
 });
 
 interface EspressoRepeatSettings {
@@ -72,12 +73,24 @@ espresso.actions.register({
     children: true,
     description: 'Repeat a list of actions a set amount of times.',
     settings: repeatSettings,
-    run: () => {},
+    run: async (triggerSettings, actionSettings: EspressoRepeatSettings, triggerData, children) => {
+        // If no children are passed in exit
+        if (!children) return;
+
+        try {
+            for (let counter = 0; counter < actionSettings.iterations; counter++) {
+                await espresso.triggers.runActions(children, triggerSettings, triggerData);
+            }
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+    },
 });
 
-interface EspressoWaitSettings {
+interface EspressoWaitSettings extends Object {
     duration: number;
-    unit: string;
+    unit: 'seconds' | 'minutes' | 'hours';
 }
 
 const waitSettings: Input<EspressoWaitSettings>[] = [
@@ -108,31 +121,28 @@ espresso.actions.register({
     provider: 'Espresso',
     description: 'Wait for a set amount of time.',
     settings: waitSettings,
-    run: () => {},
-});
+    run: (triggerSettings: Object, actionSettings: EspressoWaitSettings) => {
+        let unit: number;
 
-interface TwitchSendChatSettings {
-    message: string;
-}
+        switch (actionSettings.unit) {
+            case 'seconds':
+                unit = 1000;
+                break;
 
-const twitchSendMessageSettings: Input<TwitchSendChatSettings>[] = [
-    {
-        type: 'text',
-        label: 'Message',
-        key: 'message',
-        helper: 'The message to send in Twitch chat.',
-        default: 'Hello world!',
+            case 'minutes':
+                unit = 60000;
+                break;
+
+            case 'hours':
+                unit = 3600000;
+                break;
+        }
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, actionSettings.duration * unit);
+        });
     },
-];
-
-espresso.actions.register({
-    slug: 'twitch-send-chat-message',
-    name: 'Send chat message',
-    catigory: 'Chat',
-    provider: 'Twitch',
-    description: 'Send a message in Twitch chat.',
-    settings: twitchSendMessageSettings,
-    run: () => {},
 });
 
 espresso.actions.register({
@@ -142,7 +152,7 @@ espresso.actions.register({
     catigory: 'Hue',
     description: 'Turn on a selected Philips Hue light.',
     settings: [],
-    run: () => {},
+    run: async (triggerSettings, ActionSettings) => {},
 });
 
 espresso.actions.register({
@@ -152,5 +162,5 @@ espresso.actions.register({
     catigory: 'Hue',
     description: 'Change the color of a selected Philips Hue light.',
     settings: [],
-    run: () => {},
+    run: async (triggerSettings, ActionSettings) => {},
 });

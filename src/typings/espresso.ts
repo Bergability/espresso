@@ -6,6 +6,7 @@ export interface TriggerSchema {
     provider: string;
     catigory: string;
     settings?: Input<Object>[];
+    predicate?: (triggerData: any, triggerSettings: any) => boolean;
 }
 
 export interface EspressoOptions {
@@ -21,8 +22,8 @@ export interface ActionSchema {
     description: string;
     children?: boolean;
     settings?: Input<Object>[];
-    // TODO figure out what this should be
-    run: () => void;
+    // TODO figure out why types are not working
+    run: (triggerSettings: Object, actionSettings: any, variables: Object, children?: string[]) => Promise<void>;
 }
 
 export interface Action<Settings extends Object = {}> {
