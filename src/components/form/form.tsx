@@ -14,6 +14,7 @@ import './form.scss';
 
 // Types
 import { Object, Input } from '@typings/inputs';
+import { evaluateConditions, generateDefaults } from '@utilities';
 
 interface Props<Data extends Object> {
     inputs: Input<Data>[];
@@ -47,6 +48,12 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
         return (
             <div className="espresso-form">
                 {inputs.map((input, index) => {
+                    if (input.type !== 'button' && input.conditions) {
+                        // @ts-ignore
+                        const shouldRender = evaluateConditions(input.conditions, data);
+                        if (!shouldRender) return null;
+                    }
+
                     switch (input.type) {
                         case 'button':
                             return (
@@ -61,7 +68,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                 <TextField
                                     key={input.key as string}
                                     label={input.label}
-                                    value={data[input.key] === undefined ? '' : data[input.key]}
+                                    value={data[input.key] || input.default}
                                     variant={variant}
                                     helperText={input.helper}
                                     fullWidth
@@ -77,7 +84,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                     key={input.key as string}
                                     type="number"
                                     label={input.label}
-                                    value={data[input.key] === undefined ? '' : data[input.key]}
+                                    value={data[input.key] || input.default}
                                     variant={variant}
                                     helperText={input.helper}
                                     fullWidth
@@ -94,7 +101,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                     inputKey={input.key as string}
                                     label={input.label}
                                     helperText={input.helper}
-                                    value={data[input.key]}
+                                    value={data[input.key] === undefined ? input.default : data[input.key]}
                                     onChange={onInputChange}
                                 />
                             );
@@ -106,7 +113,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                     inputKey={input.key as string}
                                     label={input.label}
                                     helperText={input.helper}
-                                    value={data[input.key]}
+                                    value={data[input.key] || input.default}
                                     variant={variant}
                                     options={input.options}
                                     multiple={input.multiple}
@@ -121,7 +128,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                     inputKey={input.key as string}
                                     label={input.label}
                                     helperText={input.helper}
-                                    value={data[input.key]}
+                                    value={data[input.key] || input.default}
                                     duplicates={input.duplicates}
                                     textTransform={input.textTransform}
                                     emptyText={input.emptyText}
@@ -134,7 +141,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                 <RepeaterInput
                                     key={input.key as string}
                                     inputKey={input.key as string}
-                                    value={data[input.key]}
+                                    value={data[input.key] || input.default}
                                     label={input.label}
                                     helperText={input.helper}
                                     inputs={input.inputs}

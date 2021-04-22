@@ -27,6 +27,7 @@ espresso.actions.register({
     catigory: 'Utilities',
     provider: 'Espresso',
     description: 'Toggle a selected action set on or off.',
+    // @ts-ignore
     settings: getSettings('The action set to toggle.'),
     run: async (triggerSettings, ActionSettings) => {},
 });
@@ -37,6 +38,7 @@ espresso.actions.register({
     catigory: 'Utilities',
     provider: 'Espresso',
     description: 'Disable a selected action set.',
+    // @ts-ignore
     settings: getSettings('The action set to disable.'),
     run: async (triggerSettings, ActionSettings) => {},
 });
@@ -47,6 +49,7 @@ espresso.actions.register({
     catigory: 'Utilities',
     provider: 'Espresso',
     description: 'Enable a selected action set.',
+    // @ts-ignore
     settings: getSettings('The action set to enable.'),
     run: async (triggerSettings, ActionSettings) => {},
 });
@@ -72,6 +75,7 @@ espresso.actions.register({
     provider: 'Espresso',
     children: true,
     description: 'Repeat a list of actions a set amount of times.',
+    // @ts-ignore
     settings: repeatSettings,
     run: async (triggerSettings, actionSettings: EspressoRepeatSettings, triggerData, children) => {
         // If no children are passed in exit
@@ -120,6 +124,7 @@ espresso.actions.register({
     catigory: 'Utilities',
     provider: 'Espresso',
     description: 'Wait for a set amount of time.',
+    // @ts-ignore
     settings: waitSettings,
     run: (triggerSettings: Object, actionSettings: EspressoWaitSettings) => {
         let unit: number;

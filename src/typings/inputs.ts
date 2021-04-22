@@ -2,6 +2,21 @@ export interface Object {
     [key: string]: any;
 }
 
+type ComparisonOperators = 'equal' | 'not-equal' | 'greater-than' | 'greater-than-or-equal' | 'less-than' | 'less-than-or-equal';
+type ArrayLengthComparisonOperators =
+    | 'array-length-equal'
+    | 'array-length-not-equal'
+    | 'array-length-greater-than'
+    | 'array-length-greater-than-or-equal'
+    | 'array-length-less-than'
+    | 'array-length-less-than-or-equal';
+
+export interface Condition<Data extends Object = {}> {
+    value: keyof Data;
+    operator: ComparisonOperators | ArrayLengthComparisonOperators;
+    comparison: any;
+}
+
 export interface Option {
     value: string;
     text: string;
@@ -16,6 +31,7 @@ interface InputBase<Data extends Object> {
     default: any;
     key: keyof Data;
     helper?: string;
+    conditions?: Condition<Data>[];
 }
 
 export interface TextInput<Data extends Object> extends InputBase<Data> {
