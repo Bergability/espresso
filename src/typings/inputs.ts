@@ -81,6 +81,7 @@ export interface ButtonInput {
     type: 'button';
     label: string;
     link: string;
+    external?: boolean;
     variant?: 'text' | 'outlined' | 'contained';
     color?: 'default' | 'inherit' | 'primary' | 'secondary';
 }

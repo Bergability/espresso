@@ -18,7 +18,7 @@ export interface TriggerSchema {
 
 export interface EspressoOptions {
     slug: string;
-    get: () => Option[];
+    get: () => Promise<Option[]>;
 }
 
 export interface ActionSchema {

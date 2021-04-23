@@ -4,7 +4,7 @@ import { Item, ActionSet } from '@typings/items';
 
 espresso.options.register({
     slug: 'espresso:triggers',
-    get: () => {
+    get: async () => {
         return espresso.triggers.getAll().reduce<Option[]>((acc, trigger) => {
             return [
                 ...acc,
@@ -20,7 +20,7 @@ espresso.options.register({
 
 espresso.options.register({
     slug: 'espresso:action-sets',
-    get: () => {
+    get: async () => {
         const items = espresso.store.get('items') as Item[];
         return items.reduce<Option[]>((acc, item) => {
             if (item.type !== 'action-set') return acc;

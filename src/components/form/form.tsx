@@ -56,6 +56,13 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
 
                     switch (input.type) {
                         case 'button':
+                            if (input.external === true) {
+                                return (
+                                    <Button key={index} href={input.link} variant={input.variant} color={input.color} target="_blank">
+                                        {input.label}
+                                    </Button>
+                                );
+                            }
                             return (
                                 <Button key={index} to={input.link} component={Link} variant={input.variant} color={input.color}>
                                     {input.label}
@@ -68,7 +75,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                 <TextField
                                     key={input.key as string}
                                     label={input.label}
-                                    value={data[input.key] || input.default}
+                                    value={data[input.key] == undefined ? input.default : data[input.key]}
                                     variant={variant}
                                     helperText={input.helper}
                                     fullWidth
@@ -84,7 +91,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                     key={input.key as string}
                                     type="number"
                                     label={input.label}
-                                    value={data[input.key] || input.default}
+                                    value={data[input.key] == undefined ? input.default : data[input.key]}
                                     variant={variant}
                                     helperText={input.helper}
                                     fullWidth
@@ -113,7 +120,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                     inputKey={input.key as string}
                                     label={input.label}
                                     helperText={input.helper}
-                                    value={data[input.key] || input.default}
+                                    value={data[input.key] == undefined ? input.default : data[input.key]}
                                     variant={variant}
                                     options={input.options}
                                     multiple={input.multiple}
@@ -128,7 +135,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                     inputKey={input.key as string}
                                     label={input.label}
                                     helperText={input.helper}
-                                    value={data[input.key] || input.default}
+                                    value={data[input.key] == undefined ? input.default : data[input.key]}
                                     duplicates={input.duplicates}
                                     textTransform={input.textTransform}
                                     emptyText={input.emptyText}
@@ -141,7 +148,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                 <RepeaterInput
                                     key={input.key as string}
                                     inputKey={input.key as string}
-                                    value={data[input.key] || input.default}
+                                    value={data[input.key] == undefined ? input.default : data[input.key]}
                                     label={input.label}
                                     helperText={input.helper}
                                     inputs={input.inputs}

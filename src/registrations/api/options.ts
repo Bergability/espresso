@@ -37,6 +37,8 @@ espresso.server.register({
             return;
         }
 
-        res.send(JSON.stringify(options.get(), null, 4));
+        options.get().then((options) => {
+            res.send(JSON.stringify(options, null, 4));
+        });
     },
 });
