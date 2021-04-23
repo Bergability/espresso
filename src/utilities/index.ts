@@ -27,6 +27,15 @@ export const generateDefaults = <Data>(inputs: Input<Data>[], data: Object = {})
     return data;
 };
 
+export const copyToClipboard = (text: string) => {
+    // @ts-ignore
+    navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
+        if (result.state == 'granted' || result.state == 'prompt') {
+            navigator.clipboard.writeText(text);
+        }
+    });
+};
+
 const evaluateCondition = (condition: Condition, data: Object): boolean => {
     let met: boolean = false;
     const { value, operator, comparison } = condition;

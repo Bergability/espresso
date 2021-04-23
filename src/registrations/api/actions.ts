@@ -1,10 +1,32 @@
 import { v4 as uuid } from 'uuid';
 import { NewActionRequestPayload, PostActionPayload, APIError, GetActionPayload } from '@typings/api';
 import { ActionSet, Item } from '@typings/items';
-import { Action } from '@typings/espresso';
+import { Action, Variable } from '@typings/espresso';
 import espresso from '../../core/espresso';
 
 import { getActionCrumbs } from './action-set';
+
+const getVariables = (setId: string): Variable[] => {
+    const triggers = espresso.triggers.getAll();
+    const items = espresso.store.get('items') as Item[];
+    const set = items.find((i) => i.id === setId) as ActionSet;
+
+    if (!set) return [];
+
+    return set.triggers.reduce<Variable[]>((acc, triggerSlug) => {
+        const trigger = triggers.find((t) => t.slug === triggerSlug);
+        if (!trigger) return acc;
+        if (!trigger.variables) return acc;
+
+        if (typeof trigger.variables === 'function') {
+            const settings = set.settings.find((s) => s.for === triggerSlug);
+            if (!settings) return acc;
+            return [...acc, ...trigger.variables(settings)];
+        }
+
+        return [...acc, ...trigger.variables];
+    }, []);
+};
 
 espresso.server.register({
     path: '/api/actions',
@@ -38,6 +60,7 @@ espresso.server.register({
                     action,
                     schema,
                     crumbs: getActionCrumbs(action.set, id),
+                    variables: getVariables(action.set),
                 };
             } else {
                 payload = {

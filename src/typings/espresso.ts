@@ -1,11 +1,18 @@
 import { Option, Input, Object } from '@typings/inputs';
 
+export interface Variable {
+    name: string;
+    description?: string;
+}
+
 export interface TriggerSchema {
     slug: string;
     name: string;
     provider: string;
     catigory: string;
     settings?: Input<Object>[];
+    variables?: Variable[] | ((triggerSettings: any) => Variable[]);
+    getVariables?: (triggerData: any, triggerSettings: any) => Object;
     predicate?: (triggerData: any, triggerSettings: any) => boolean;
 }
 

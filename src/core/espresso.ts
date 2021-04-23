@@ -14,9 +14,6 @@ class EspressoClass {
     public plugins = new Plugins();
     public parseVariables(string: string, variables: { [key: string]: string }) {
         Object.keys(variables).forEach((variable) => {
-            console.log(variable);
-            console.log(variables[variable]);
-
             const regex = new RegExp(`\\[${variable}\\]`, 'g');
             string = string.replaceAll(regex, variables[variable].trim());
         });

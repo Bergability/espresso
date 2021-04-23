@@ -1,5 +1,5 @@
 import { Crumb } from '@components/app-bar';
-import { Action, ActionSchema, TriggerSchema } from './espresso';
+import { Action, ActionSchema, TriggerSchema, Variable } from './espresso';
 import { ActionSet, Item, ActionSetSetting, Folder } from './items';
 
 type ServerMethod = 'get' | 'post' | 'put' | 'delete';
@@ -59,6 +59,7 @@ export interface GetActionPayload {
     action: Action;
     crumbs: Crumb[];
     schema: ActionSchema;
+    variables: Variable[];
 }
 
 export interface GetFolderPayload {

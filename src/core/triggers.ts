@@ -43,6 +43,13 @@ export default class EspressoTriggers extends EspressoRegistrar<TriggerSchema> {
                 if (shouldRun === false) return;
             }
 
+            if (trigger.getVariables) {
+                triggerData = trigger.getVariables(
+                    triggerData,
+                    actionSet.settings.find((s) => s.for === slug)
+                );
+            }
+
             // TODO should we be passing in trigger data?
             this.runActions(actionSet.actions, trigger.settings, triggerData);
             ranSets.push(actionSet.id);
