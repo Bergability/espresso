@@ -25,6 +25,15 @@
             margin-bottom: 5px;
         }
     }
+
+    &-label {
+        position: absolute;
+        top: -7px;
+        left: 14px;
+        padding: 0 5px;
+        color: rgba(255, 255, 255, 0.7);
+        background-color: #424242;
+    }
 }
 
 .espresso-repeater-input,

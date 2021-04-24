@@ -17,7 +17,7 @@ import './folder.scss';
 // Types
 import { Item } from '@typings/items';
 import { RouteComponentProps } from 'react-router-dom';
-import { GetFolderPayload, GetItemPayload } from '@typings/api';
+import { GetFolderPayload, GetItemsPayload } from '@typings/api';
 
 interface RouteParams {
     id?: string;
@@ -87,6 +87,7 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
             <div className="route-wrapper">
                 <ItemDisplayBlock type="folder" items={state.items} />
                 <ItemDisplayBlock type="action-set" items={state.items} />
+                <ItemDisplayBlock type="list" items={state.items} />
             </div>
 
             <NewItemDialog open={state.open} onClose={onClose} onNewItem={onNewItem} />

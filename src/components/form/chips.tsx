@@ -114,6 +114,9 @@ const EspressoChipsInput: React.FC<Props> = ({ inputKey, label, value, emptyText
 
     return (
         <FormControl fullWidth>
+            <Typography variant="caption" className="espresso-chips-input-label">
+                {label}
+            </Typography>
             <form
                 className={`espresso-chips-input ${classes.wrapper}`}
                 onSubmit={(e) => {

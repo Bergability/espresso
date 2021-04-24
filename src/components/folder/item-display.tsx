@@ -51,6 +51,11 @@ const ItemDisplay: React.FC<Props> = ({ item }) => {
             link = `/${item.id}`;
             settingsLink = `/${item.id}/settings`;
             break;
+
+        case 'list':
+            link = `/list/${item.id}`;
+            settingsLink = `/list/${item.id}`;
+            break;
     }
 
     const onContextMenu = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

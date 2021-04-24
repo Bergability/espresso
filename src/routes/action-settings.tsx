@@ -93,6 +93,7 @@ const ActionSettingsRoute: React.FC<RouteComponentProps<Params>> = (props) => {
                         data={state.action.settings}
                         onChange={onChange}
                         onSave={onSave}
+                        variant="outlined"
                     />
                 </Paper>
             </div>

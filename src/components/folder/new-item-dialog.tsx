@@ -74,7 +74,7 @@ const NewItemDialog: React.FC<Props> = ({ open, onClose, onNewItem }) => {
                         >
                             <MenuItem value="action-set">Action Set</MenuItem>
                             <MenuItem value="folder">Folder</MenuItem>
-                            {/* <MenuItem value="list">List</MenuItem> */}
+                            <MenuItem value="list">List</MenuItem>
                         </Select>
                     </FormControl>
                 </DialogContent>

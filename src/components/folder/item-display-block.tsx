@@ -23,6 +23,10 @@ const ItemDisplayBlock: React.FC<Props> = ({ type, items }) => {
         case 'folder':
             title = 'Folders';
             break;
+
+        case 'list':
+            title = 'Lists';
+            break;
     }
 
     const filtered = items.filter((i) => i.type === type);

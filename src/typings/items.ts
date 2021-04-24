@@ -24,5 +24,12 @@ export interface ActionSetSetting {
     [key: string]: any;
 }
 
-export type Item = Folder | ActionSet;
+export interface List extends ItemBase {
+    type: 'list';
+    items: string[];
+    message?: string;
+    managed?: boolean;
+}
+
+export type Item = Folder | ActionSet | List;
 export type ItemType = Item['type'];

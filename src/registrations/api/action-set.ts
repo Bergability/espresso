@@ -37,6 +37,10 @@ export const getItemCrumbs = (id: string | null, crumbs: Crumb[] = []): Crumb[] 
             case 'folder':
                 link = `/${item.id}`;
                 break;
+
+            case 'list':
+                link = `/list/${item.id}`;
+                break;
         }
 
         crumbs = [{ text: item.name, link }, ...crumbs];

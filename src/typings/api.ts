@@ -14,9 +14,14 @@ export interface APIError {
     error: string;
 }
 
-export interface GetItemPayload {
+export interface GetItemsPayload {
     items: Item[];
     _status: number;
+}
+
+export interface GetItemPayload {
+    item: Item;
+    crumbs: Crumb[];
 }
 
 export interface PostPutItemPayload {
