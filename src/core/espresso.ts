@@ -3,7 +3,7 @@ import Server from './server';
 import Store from './store';
 import Triggers from './triggers';
 import Options from './options';
-import Plugins from './plugins';
+import Plugins, { Plugin } from './plugins';
 
 class EspressoClass {
     public actions = new Actions();
@@ -32,7 +32,7 @@ const port = espresso.store.get<number>('port');
 espresso.server.start(port);
 
 // Load plugins
-espresso.plugins.load(espresso.store.get('plugins') as string[]);
+espresso.plugins.load(espresso.store.get('plugins') as Plugin[]);
 
 export type Espresso = EspressoClass;
 export default espresso;

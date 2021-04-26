@@ -1,3 +1,4 @@
+import espresso from './espresso';
 import fs from 'fs';
 import path from 'path';
 
@@ -7,14 +8,27 @@ interface Manifest {
     load: string[];
 }
 
+export interface Plugin {
+    slug: string;
+    path: string;
+}
+
 export default class EspressoPlugins {
-    public load(manifests: string[]) {
-        manifests.forEach((mainifestPath) => {
-            const manifest = JSON.parse(fs.readFileSync(path.join(mainifestPath, 'manifest.json'), 'utf-8')) as Manifest;
+    public load(manifests: Plugin[]) {
+        manifests.forEach((m) => {
+            const manifest = JSON.parse(fs.readFileSync(path.join(m.path, 'manifest.json'), 'utf-8')) as Manifest;
 
             manifest.load.forEach((filePath) => {
-                require(path.join(mainifestPath, filePath));
+                require(path.join(m.path, filePath));
             });
         });
+    }
+
+    public getPath(slug: string) {
+        const plugins = espresso.store.get('plugins') as Plugin[];
+        const plugin = plugins.find((p) => p.slug === slug);
+
+        if (plugin) return plugin.path;
+        return false;
     }
 }
