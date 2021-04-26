@@ -3,6 +3,7 @@ import { ActionSet, Folder, Item, List, ItemType } from '@typings/items';
 import { v4 as uuid } from 'uuid';
 import { APIError, GetFolderPayload, GetItemPayload, GetItemsPayload, PostPutItemPayload } from '@typings/api';
 import { getItemCrumbs } from './action-set';
+import { Action } from '@typings/espresso';
 
 /**
  *
@@ -63,7 +64,7 @@ espresso.server.register({
                     name,
                     parent: parent || null,
                     type,
-                    color: '#ff00ff',
+                    color: '#ffffff',
                 };
                 break;
 
@@ -163,11 +164,42 @@ espresso.server.register({
     method: 'delete',
     response: (req, res) => {
         const { id } = req.params;
-        const payload = {
-            id,
-            message: 'TODO make this work',
+        const items = espresso.store.get('items') as Item[];
+        const actions = espresso.store.get('actions') as Action[];
+
+        const getChildren = (parentId: string): string[] => {
+            const item = items.find((i) => i.id === parentId);
+
+            if (!item) return [];
+
+            const children = items.reduce<string[]>((acc, i) => {
+                if (i.parent === parentId) {
+                    if (i.type === 'folder') {
+                        return [...acc, i.id, ...getChildren(i.id)];
+                    }
+                    return [...acc, i.id];
+                }
+                return acc;
+            }, []);
+            return children;
         };
-        res.send(JSON.stringify(payload, null, 4));
+
+        let toDelete = [id];
+
+        const item = items.find((i) => i.id === id);
+
+        if (item) {
+            if (item.type === 'folder') {
+                toDelete = [...toDelete, ...getChildren(id)];
+            }
+        }
+
+        const newItems = items.filter((i) => !toDelete.includes(i.id));
+        const newActions = actions.filter((a) => !toDelete.includes(a.set));
+
+        espresso.store.set('items', newItems);
+        espresso.store.set('actions', newActions);
+        res.send(JSON.stringify({}, null, 4));
     },
 });
 

@@ -1,25 +1,39 @@
 import espresso from '../core/espresso';
-import { Input } from '@typings/inputs';
+import { Condition, Input } from '@typings/inputs';
 import { resolve } from 'path';
 
+/**
+ *
+ * Toggle action set action
+ *
+ */
 interface EspressoToggleSetSettings {
     set: string;
+    state: 'toggle' | 'enabled' | 'disabled';
 }
 
-const getSettings = (helper: string) => {
-    const settings: Input<EspressoToggleSetSettings>[] = [
-        {
-            type: 'select',
-            label: 'Action set',
-            key: 'set',
-            helper,
-            options: 'espresso:action-sets',
-            default: '',
-        },
-    ];
-
-    return settings;
-};
+const toggleSettings: Input<EspressoToggleSetSettings>[] = [
+    {
+        type: 'select',
+        label: 'Action set',
+        key: 'set',
+        helper: 'The action set to change the state of.',
+        options: 'espresso:action-sets',
+        default: '',
+    },
+    {
+        type: 'select',
+        label: 'State',
+        key: 'state',
+        helper: 'The state to set the action set to.',
+        default: 'toggle',
+        options: [
+            { text: 'Enable', value: 'enable' },
+            { text: 'Disable', value: 'disable' },
+            { text: 'Toggle', value: 'toggle' },
+        ],
+    },
+];
 
 espresso.actions.register({
     slug: 'espresso-toggle-action-set',
@@ -28,32 +42,15 @@ espresso.actions.register({
     provider: 'Espresso',
     description: 'Toggle a selected action set on or off.',
     // @ts-ignore
-    settings: getSettings('The action set to toggle.'),
+    settings: toggleSettings,
     run: async (triggerSettings, ActionSettings) => {},
 });
 
-espresso.actions.register({
-    slug: 'espresso-disable-action-set',
-    name: 'Disable action set',
-    catigory: 'Utilities',
-    provider: 'Espresso',
-    description: 'Disable a selected action set.',
-    // @ts-ignore
-    settings: getSettings('The action set to disable.'),
-    run: async (triggerSettings, ActionSettings) => {},
-});
-
-espresso.actions.register({
-    slug: 'espresso-enable-action-set',
-    name: 'Enable action set',
-    catigory: 'Utilities',
-    provider: 'Espresso',
-    description: 'Enable a selected action set.',
-    // @ts-ignore
-    settings: getSettings('The action set to enable.'),
-    run: async (triggerSettings, ActionSettings) => {},
-});
-
+/**
+ *
+ * Repeat action
+ *
+ */
 interface EspressoRepeatSettings {
     iterations: number;
 }
@@ -92,6 +89,11 @@ espresso.actions.register({
     },
 });
 
+/**
+ *
+ * Wait action
+ *
+ */
 interface EspressoWaitSettings extends Object {
     duration: number;
     unit: 'seconds' | 'minutes' | 'hours';
@@ -150,22 +152,83 @@ espresso.actions.register({
     },
 });
 
-espresso.actions.register({
-    slug: 'hue-turn-on-light',
-    name: 'Turn on light',
-    provider: 'Philips',
-    catigory: 'Hue',
-    description: 'Turn on a selected Philips Hue light.',
-    settings: [],
-    run: async (triggerSettings, ActionSettings) => {},
-});
+/**
+ *
+ * Conditional action
+ *
+ */
+interface CondtionalActionSettings {
+    conditions: Condition[];
+    type: 'or' | 'and';
+}
+
+const condtionalActionSettings: Input<CondtionalActionSettings, Condition>[] = [
+    {
+        type: 'select',
+        label: 'Evaluation type',
+        key: 'type',
+        default: 'and',
+        options: [
+            { text: 'If all conditions are met', value: 'and' },
+            { text: 'If one or more conditions are met', value: 'or' },
+        ],
+    },
+    {
+        type: 'repeater',
+        label: 'Conditions',
+        key: 'conditions',
+        default: [],
+        emptyLabel: 'No conditions',
+        addLabel: 'Add condition',
+        removeLabel: 'Remove condition',
+        inputs: [
+            {
+                type: 'text',
+                key: 'value',
+                label: 'Value',
+                default: '',
+            },
+            {
+                type: 'select',
+                label: 'Operator',
+                key: 'operator',
+                default: 'equal',
+                options: [
+                    { text: 'Equals', value: 'equal' },
+                    { text: 'Does not equal', value: 'not-equal' },
+                    { text: 'Greater than', value: 'greater-than' },
+                    { text: 'Greater than or equal', value: 'greater-than-or-equal' },
+                    { text: 'Less than', value: 'less-than' },
+                    { text: 'Less than or equal', value: 'less-than-or-equal' },
+                    { text: 'Array length equals', value: 'array-length-equal' },
+                    { text: 'Array length not equal', value: 'array-length-not-equal' },
+                    { text: 'Array length greater than', value: 'array-length-greater-than' },
+                    { text: 'Array length greater than or equal', value: 'array-length-greater-than-or-equal' },
+                    { text: 'Array length less than', value: 'array-length-less-than' },
+                    { text: 'Array length less than or equal', value: 'array-length-less-than-or-equal' },
+                    { text: 'Array contains', value: 'array-contains' },
+                ],
+            },
+            {
+                type: 'text',
+                key: 'comparison',
+                label: 'Value',
+                default: '',
+            },
+        ],
+    },
+];
 
 espresso.actions.register({
-    slug: 'hue-change-light-color',
-    name: 'Change light color',
-    provider: 'Philips',
-    catigory: 'Hue',
-    description: 'Change the color of a selected Philips Hue light.',
-    settings: [],
-    run: async (triggerSettings, ActionSettings) => {},
+    slug: 'conditional-actions',
+    name: 'Conditional Actions',
+    children: true,
+    provider: 'Espresso',
+    catigory: 'Utility',
+    description: 'Run actions if set condtions are met.',
+    // @ts-ignore
+    settings: condtionalActionSettings,
+    run: async (triggerSettings, actionSettings, triggerData) => {
+        console.log('here');
+    },
 });

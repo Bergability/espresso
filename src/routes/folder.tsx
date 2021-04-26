@@ -33,7 +33,7 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     const [state, updateState] = useState<State | null>(null);
     const id = props.match.params.id;
 
-    useEffect(() => {
+    const refresh = () => {
         api.fetch<GetFolderPayload>(`/folder/${id || 'home'}`, 'get')
             .then((res) => {
                 updateState({
@@ -44,6 +44,10 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
             .catch((e) => {
                 console.log(e);
             });
+    };
+
+    useEffect(() => {
+        refresh();
     }, [id]);
 
     if (state === null) return <EspressoAppBar crumbs={[]} />;
@@ -85,9 +89,9 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
             </EspressoAppBar>
 
             <div className="route-wrapper">
-                <ItemDisplayBlock type="folder" items={state.items} />
-                <ItemDisplayBlock type="action-set" items={state.items} />
-                <ItemDisplayBlock type="list" items={state.items} />
+                <ItemDisplayBlock type="folder" items={state.items} refresh={refresh} />
+                <ItemDisplayBlock type="action-set" items={state.items} refresh={refresh} />
+                <ItemDisplayBlock type="list" items={state.items} refresh={refresh} />
             </div>
 
             <NewItemDialog open={state.open} onClose={onClose} onNewItem={onNewItem} />

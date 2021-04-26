@@ -37,74 +37,80 @@ export const copyToClipboard = (text: string) => {
 };
 
 const evaluateCondition = (condition: Condition, data: Object): boolean => {
-    let met: boolean = false;
     const { value, operator, comparison } = condition;
     switch (operator) {
         // Compairson Ops
         case 'equal':
-            if (data[value] === comparison) met = true;
+            if (data[value] === comparison) return true;
             break;
 
         case 'not-equal':
-            if (data[value] !== comparison) met = true;
+            if (data[value] !== comparison) return true;
             break;
 
         case 'greater-than':
-            if (data[value] > comparison) met = true;
+            if (data[value] > comparison) return true;
             break;
 
         case 'greater-than-or-equal':
-            if (data[value] >= comparison) met = true;
+            if (data[value] >= comparison) return true;
             break;
 
         case 'less-than':
-            if (data[value] < comparison) met = true;
+            if (data[value] < comparison) return true;
             break;
 
         case 'less-than-or-equal':
-            if (data[value] <= comparison) met = true;
+            if (data[value] <= comparison) return true;
             break;
 
         // Array compairison ops
         case 'array-length-equal':
-            if (data[value].length === comparison) met = true;
+            if (data[value].length === comparison) return true;
             break;
 
         case 'array-length-not-equal':
-            if (data[value].length !== comparison) met = true;
+            if (data[value].length !== comparison) return true;
             break;
 
         case 'array-length-greater-than':
-            if (data[value].length > comparison) met = true;
+            if (data[value].length > comparison) return true;
             break;
 
         case 'array-length-greater-than-or-equal':
-            if (data[value].length >= comparison) met = true;
+            if (data[value].length >= comparison) return true;
             break;
 
         case 'array-length-less-than':
-            if (data[value].length < comparison) met = true;
+            if (data[value].length < comparison) return true;
             break;
 
         case 'array-length-less-than-or-equal':
-            if (data[value].length <= comparison) met = true;
+            if (data[value].length <= comparison) return true;
+            break;
+
+        case 'array-contains':
+            if ((data[value] as string[]).includes(comparison as string) <= comparison) return true;
             break;
     }
 
-    return met;
+    return false;
 };
 
-export const evaluateConditions = (conditions: Condition[], data: Object): boolean => {
-    let met: boolean = true;
-    conditions.forEach((condition) => {
-        // console.log(value);
-        // console.log(data);
+export const evaluateConditions = (conditions: (Condition | Condition[])[], data: Object): boolean => {
+    // The base array of condtions is treated as || conditions
+    return conditions.reduce<boolean>((acc, condition) => {
+        // If an array of conditions is passed treat them as && condtions
+        if (Array.isArray(condition)) {
+            const and = condition.reduce<boolean>((a, c) => {
+                if (evaluateCondition(c, data) === false) return false;
+                return a;
+            }, true);
 
-        // console.log(operator);
-        // console.log(comparison);
-        // console.log(data[value]);
-        if (evaluateCondition(condition, data) === false) met = false;
-    });
-
-    return met;
+            if (and === true) return true;
+        } else {
+            if (evaluateCondition(condition, data) === true) return true;
+        }
+        return acc;
+    }, false);
 };

@@ -25,6 +25,7 @@ const styles = makeStyles((theme) =>
 
 // Types
 import { Item } from '@typings/items';
+import api from '@utilities/api';
 
 interface MousePosition {
     x: null | number;
@@ -33,9 +34,10 @@ interface MousePosition {
 
 interface Props {
     item: Item;
+    refresh: () => void;
 }
 
-const ItemDisplay: React.FC<Props> = ({ item }) => {
+const ItemDisplay: React.FC<Props> = ({ item, refresh }) => {
     const classes = styles();
     const [mousePosition, updateMousePosition] = useState<MousePosition>({ x: null, y: null });
     let link: string;
@@ -66,6 +68,16 @@ const ItemDisplay: React.FC<Props> = ({ item }) => {
         });
     };
 
+    const onDelete = () => {
+        api.fetch(`/items/${item.id}`, 'delete')
+            .then(() => {
+                refresh();
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
+
     const ContextMenu: React.FC = () => {
         return (
             <Menu
@@ -76,7 +88,6 @@ const ItemDisplay: React.FC<Props> = ({ item }) => {
                 anchorReference="anchorPosition"
                 anchorPosition={mousePosition.y !== null && mousePosition.x !== null ? { top: mousePosition.y, left: mousePosition.x } : undefined}
             >
-                {/* TODO Make this work for folders when you add folders dumb dumb */}
                 <MenuItem className={classes.menuItem} component={Link} to={settingsLink}>
                     <Typography>Settings</Typography>
                     <ListItemSecondaryAction className={classes.menuIcon}>
@@ -84,12 +95,7 @@ const ItemDisplay: React.FC<Props> = ({ item }) => {
                     </ListItemSecondaryAction>
                 </MenuItem>
 
-                <MenuItem
-                    className={classes.menuItem}
-                    onClick={() => {
-                        // onDelete(action.id);
-                    }}
-                >
+                <MenuItem className={classes.menuItem} onClick={onDelete}>
                     <Typography color="error">Delete</Typography>
                     <ListItemSecondaryAction className={classes.menuIcon}>
                         <Icon color="error">delete</Icon>

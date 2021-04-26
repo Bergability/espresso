@@ -9,7 +9,8 @@ type ArrayLengthComparisonOperators =
     | 'array-length-greater-than'
     | 'array-length-greater-than-or-equal'
     | 'array-length-less-than'
-    | 'array-length-less-than-or-equal';
+    | 'array-length-less-than-or-equal'
+    | 'array-contains';
 
 export interface Condition<Data extends Object = {}> {
     value: keyof Data;
@@ -31,7 +32,7 @@ interface InputBase<Data extends Object> {
     default: any;
     key: keyof Data;
     helper?: string;
-    conditions?: Condition<Data>[];
+    conditions?: (Condition<Data> | Condition<Data>[])[];
 }
 
 export interface TextInput<Data extends Object> extends InputBase<Data> {

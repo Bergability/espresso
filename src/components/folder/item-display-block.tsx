@@ -11,9 +11,10 @@ import { Item } from '@typings/items';
 interface Props {
     type: Item['type'];
     items: Item[];
+    refresh: () => void;
 }
 
-const ItemDisplayBlock: React.FC<Props> = ({ type, items }) => {
+const ItemDisplayBlock: React.FC<Props> = ({ type, items, refresh }) => {
     let title: string;
 
     switch (type) {
@@ -47,7 +48,7 @@ const ItemDisplayBlock: React.FC<Props> = ({ type, items }) => {
             </Typography>
             <div className="espresso-item-display-list">
                 {sorted.map((item) => (
-                    <ItemDisplay key={item.id} item={item} />
+                    <ItemDisplay key={item.id} item={item} refresh={refresh} />
                 ))}
             </div>
         </div>
