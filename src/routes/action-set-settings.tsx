@@ -86,7 +86,7 @@ const ActionSetSettingsRoute: React.FC<Props> = ({ id }) => {
 
     return (
         <>
-            <EspressoAppBar crumbs={[...state.crumbs, { text: 'Settings', link: `/action-set/${id}/settings` }]} />
+            <EspressoAppBar crumbs={[...state.crumbs, { text: 'Settings', link: `/action-set/${id}/settings`, type: 'link' }]} />
             <div className="route-wrapper">
                 <Paper className="padded">
                     <EspressoForm<ActionSet> inputs={inputs} data={state.set} onChange={onChange} onSave={onSave} variant="outlined" />

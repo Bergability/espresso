@@ -82,7 +82,7 @@ const FolderRoute: React.FC<RouteComponentProps<RouteParams>> = (props) => {
 
     return (
         <>
-            <EspressoAppBar crumbs={state.crumbs}>
+            <EspressoAppBar crumbs={state.crumbs} refresh={refresh}>
                 <IconButton onClick={onNewItemClick}>
                     <Icon>add_box</Icon>
                 </IconButton>

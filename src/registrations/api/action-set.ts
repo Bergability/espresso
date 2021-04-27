@@ -21,7 +21,7 @@ const generateDefaults = <Data>(inputs: Input<Data>[], data: Object = {}) => {
 };
 
 export const getItemCrumbs = (id: string | null, crumbs: Crumb[] = []): Crumb[] => {
-    if (id === null) crumbs = [{ text: 'Home', link: '/' }, ...crumbs];
+    if (id === null) crumbs = [{ text: 'Home', link: '/', type: 'folder', id: null }, ...crumbs];
 
     const items = espresso.store.get('items') as Item[];
     const item = items.find((i) => i.id === id);
@@ -43,9 +43,9 @@ export const getItemCrumbs = (id: string | null, crumbs: Crumb[] = []): Crumb[] 
                 break;
         }
 
-        crumbs = [{ text: item.name, link }, ...crumbs];
+        crumbs = [{ text: item.name, link, type: item.type, id: item.id }, ...crumbs];
         if (item.parent === null) {
-            crumbs = [{ text: 'Home', link: '/' }, ...crumbs];
+            crumbs = [{ text: 'Home', link: '/', type: 'folder', id: null }, ...crumbs];
         } else {
             crumbs = getItemCrumbs(item.parent, crumbs);
         }
@@ -70,7 +70,7 @@ export const getActionCrumbs = (setId: string, actionId: string | undefined, cru
             const schema = actionSchemas.find((s) => s.slug === action.slug);
 
             if (schema) {
-                crumbs = [{ text: schema.name, link: `/action-set/${setId}/${actionId}` }, ...crumbs];
+                crumbs = [{ text: schema.name, link: `/action-set/${setId}/${actionId}`, type: 'action', id: action.id }, ...crumbs];
             }
         }
 

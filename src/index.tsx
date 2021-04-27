@@ -1,6 +1,8 @@
 // Libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 // Components
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
@@ -36,33 +38,35 @@ ReactDOM.render(
     <>
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <ActionSchemaContextWrapper>
-                <div className="app">
-                    <Router>
-                        <Switch>
-                            <Route path="/" exact>
-                                <FolderRoute />
-                            </Route>
+            <DndProvider backend={HTML5Backend}>
+                <ActionSchemaContextWrapper>
+                    <div className="app">
+                        <Router>
+                            <Switch>
+                                <Route path="/" exact>
+                                    <FolderRoute />
+                                </Route>
 
-                            <Route path="/:id" exact>
-                                <FolderRoute />
-                            </Route>
+                                <Route path="/:id" exact>
+                                    <FolderRoute />
+                                </Route>
 
-                            <Route path="/:id/settings" exact>
-                                <FolderSettingsRoute />
-                            </Route>
+                                <Route path="/:id/settings" exact>
+                                    <FolderSettingsRoute />
+                                </Route>
 
-                            <Route path="/list/:id" exact>
-                                <ListRoute />
-                            </Route>
+                                <Route path="/list/:id" exact>
+                                    <ListRoute />
+                                </Route>
 
-                            <Route path="/action-set/:id">
-                                <ActionSetRoute />
-                            </Route>
-                        </Switch>
-                    </Router>
-                </div>
-            </ActionSchemaContextWrapper>
+                                <Route path="/action-set/:id">
+                                    <ActionSetRoute />
+                                </Route>
+                            </Switch>
+                        </Router>
+                    </div>
+                </ActionSchemaContextWrapper>
+            </DndProvider>
         </ThemeProvider>
     </>,
     document.getElementById('mount')

@@ -204,6 +204,33 @@ espresso.server.register({
 });
 
 espresso.server.register({
+    path: '/api/items/:id/move',
+    method: 'put',
+    response: (req, res) => {
+        const { id } = req.params;
+        const { to } = req.body;
+        const items = espresso.store.get('items') as Item[];
+        const index = items.findIndex((i) => i.id === id);
+        let _status: number = 200;
+        let payload: {} | APIError;
+
+        if (index > -1) {
+            espresso.store.set(`items.${index}.parent`, to);
+            payload = {};
+        } else {
+            payload = {
+                _status,
+                error: `No item with ID "${id}" found.`,
+            };
+        }
+
+        res.contentType('application/json');
+        res.status(_status);
+        res.send(JSON.stringify(payload, null, 4));
+    },
+});
+
+espresso.server.register({
     path: '/api/folder/:id',
     method: 'get',
     response: (req, res) => {

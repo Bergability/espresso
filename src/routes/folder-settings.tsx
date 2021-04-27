@@ -76,7 +76,7 @@ const FolderSettingsRoute: React.FC<RouteComponentProps<RouteParams>> = (props) 
 
     return (
         <>
-            <EspressoAppBar crumbs={[...state.crumbs, { text: 'Settings', link: '' }]} />
+            <EspressoAppBar crumbs={[...state.crumbs, { text: 'Settings', link: '', type: 'link' }]} />
 
             <div className="route-wrapper">
                 <Paper className="padded">

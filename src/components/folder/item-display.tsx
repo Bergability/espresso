@@ -1,5 +1,6 @@
 // Libraries
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
 
 // Components
 import { Button, Icon, Typography, MenuItem, Menu, ListItemSecondaryAction, makeStyles, createStyles } from '@material-ui/core';
@@ -20,6 +21,19 @@ const styles = makeStyles((theme) =>
         childButton: {
             color: theme.palette.text.primary,
         },
+        dragging: {
+            backgroundColor: theme.palette.background.default,
+            // borderColor: theme.palette.background.default,
+            color: 'transparent',
+            transition: 'none',
+            // opacity: '.5',
+        },
+        draggingIcon: {
+            display: 'none',
+        },
+        dragOver: {
+            borderColor: theme.palette.primary.main,
+        },
     })
 );
 
@@ -38,8 +52,38 @@ interface Props {
 }
 
 const ItemDisplay: React.FC<Props> = ({ item, refresh }) => {
+    const ref = useRef(null);
     const classes = styles();
     const [mousePosition, updateMousePosition] = useState<MousePosition>({ x: null, y: null });
+    const [disableRipple, updateRipple] = useState(false);
+    const [{ isDragging }, drag] = useDrag(() => ({
+        type: 'item',
+        item: { id: item.id },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    }));
+
+    const [{ isOver }, drop] = useDrop(() => ({
+        accept: item.type === 'folder' ? 'item' : [],
+        collect: (monitor) => ({
+            isOver: monitor.isOver() && monitor.canDrop(),
+        }),
+        drop: (e: { id: string }) => {
+            const itemId = e.id as string;
+
+            api.fetch(`/items/${itemId}/move`, 'put', JSON.stringify({ to: item.id }))
+                .then(() => {
+                    refresh();
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        },
+    }));
+
+    drop(drag(ref));
+
     let link: string;
     let settingsLink: string;
 
@@ -108,14 +152,26 @@ const ItemDisplay: React.FC<Props> = ({ item, refresh }) => {
     return (
         <React.Fragment key={item.id}>
             <Button
+                ref={ref}
+                onDragStart={() => {
+                    updateRipple(true);
+                }}
+                onDragEnd={() => {
+                    updateRipple(false);
+                }}
+                disableRipple={disableRipple}
                 key={item.id}
                 variant="outlined"
-                className={`espresso-item-button ${item.type}`}
+                className={`${item.type} ${isDragging ? classes.dragging : ''} ${isOver ? classes.dragOver : ''}`}
                 component={Link}
                 to={link}
                 onContextMenu={onContextMenu}
             >
-                {item.type === 'folder' ? <Icon style={{ marginRight: '10px', color: item.color }}>folder</Icon> : null}
+                {item.type === 'folder' ? (
+                    <Icon style={{ marginRight: '10px', color: item.color }} className={isDragging ? classes.draggingIcon : ''}>
+                        folder
+                    </Icon>
+                ) : null}
                 <span>{item.name}</span>
             </Button>
             <ContextMenu />

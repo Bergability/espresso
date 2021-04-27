@@ -36,8 +36,8 @@ const ActionSetTriggersRoute: React.FC<Props> = ({ id }) => {
 
     const crumbs: Crumb[] = [
         ...state.crumbs,
-        { text: 'Settings', link: `/action-set/${id}/settings` },
-        { text: 'Triggers', link: `/action-set/${id}/settings/triggers` },
+        { text: 'Settings', link: `/action-set/${id}/settings`, type: 'link' },
+        { text: 'Triggers', link: `/action-set/${id}/settings/triggers`, type: 'link' },
     ];
 
     return (
