@@ -58,7 +58,18 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                         case 'button':
                             if (input.external === true) {
                                 return (
-                                    <Button key={index} href={input.link} variant={input.variant} color={input.color} target="_blank">
+                                    <Button
+                                        key={index}
+                                        href={input.link}
+                                        variant={input.variant}
+                                        color={input.color}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            console.log('hereeeee');
+
+                                            window.open(input.link, '_blank');
+                                        }}
+                                    >
                                         {input.label}
                                     </Button>
                                 );

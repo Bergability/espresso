@@ -7,6 +7,7 @@ interface State {
     actions: Action[];
     plugins: string[];
     port: number;
+    [key: string]: any;
 }
 
 /**
@@ -23,9 +24,9 @@ export default class EspressoStore {
         },
     });
 
-    private validate: () => Promise<void> = async () => {
-        // TODO validate
-    };
+    public onChange(key: string, callback: () => void) {
+        this.config.onDidChange(key, callback);
+    }
 
     public set(path: string, value: any) {
         this.config.set(path, value);

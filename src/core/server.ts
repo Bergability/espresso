@@ -22,6 +22,7 @@ export default class EspressoServer extends EspressoRegistrar<EspressoServerRout
     private app = express();
     private server = http.createServer(this.app);
     private socket = new ws.Server({ server: this.server });
+    public port = 23167;
 
     constructor() {
         super({
@@ -38,6 +39,7 @@ export default class EspressoServer extends EspressoRegistrar<EspressoServerRout
     // Start the server if it is not already running
     public start(port: number = 23167) {
         if (this.server.listening) return;
+        this.port = port;
         this.server.listen(port);
     }
 

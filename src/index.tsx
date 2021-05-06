@@ -16,6 +16,7 @@ import FolderRoute from '@routes/folder';
 import ActionSetRoute from '@routes/action-set';
 import FolderSettingsRoute from '@routes/folder-settings';
 import ListRoute from '@routes/list';
+import PluginsRoute from '@routes/plugins';
 
 // Styles
 import './main.scss';
@@ -45,6 +46,10 @@ ReactDOM.render(
                             <Switch>
                                 <Route path="/" exact>
                                     <FolderRoute />
+                                </Route>
+
+                                <Route path="/plugins" exact>
+                                    <PluginsRoute />
                                 </Route>
 
                                 <Route path="/:id" exact>

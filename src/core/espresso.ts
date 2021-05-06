@@ -1,3 +1,4 @@
+import { shell } from 'electron';
 import Actions from './actions';
 import Server from './server';
 import Store from './store';
@@ -12,14 +13,20 @@ class EspressoClass {
     public triggers = new Triggers();
     public options = new Options();
     public plugins = new Plugins();
+
     public parseVariables(string: string, variables: { [key: string]: string }) {
         Object.keys(variables).forEach((variable) => {
             const regex = new RegExp(`\\[${variable}\\]`, 'g');
             string = string.replaceAll(regex, variables[variable].trim());
         });
-
         return string;
     }
+
+    public utilities = {
+        openInBrowser: (url: string) => {
+            shell.openExternal(url);
+        },
+    };
 }
 
 const espresso = new EspressoClass();

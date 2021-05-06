@@ -21,7 +21,7 @@ const generateDefaults = <Data>(inputs: Input<Data>[], data: Object = {}) => {
 };
 
 export const getItemCrumbs = (id: string | null, crumbs: Crumb[] = []): Crumb[] => {
-    if (id === null) crumbs = [{ text: 'Home', link: '/', type: 'folder', id: null }, ...crumbs];
+    if (id === null) crumbs = [{ text: 'My Items', link: '/', type: 'folder', id: null }, ...crumbs];
 
     const items = espresso.store.get('items') as Item[];
     const item = items.find((i) => i.id === id);
@@ -45,7 +45,7 @@ export const getItemCrumbs = (id: string | null, crumbs: Crumb[] = []): Crumb[] 
 
         crumbs = [{ text: item.name, link, type: item.type, id: item.id }, ...crumbs];
         if (item.parent === null) {
-            crumbs = [{ text: 'Home', link: '/', type: 'folder', id: null }, ...crumbs];
+            crumbs = [{ text: 'My Items', link: '/', type: 'folder', id: null }, ...crumbs];
         } else {
             crumbs = getItemCrumbs(item.parent, crumbs);
         }

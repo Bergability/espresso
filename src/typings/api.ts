@@ -72,3 +72,12 @@ export interface GetFolderPayload {
     items: Item[];
     crumbs: Crumb[];
 }
+
+export interface Plugin {
+    slug: string;
+    version: string;
+    name: string;
+    path: string;
+}
+
+export type GetPluginsPayload = Plugin[];

@@ -20,13 +20,10 @@ function createWindow() {
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-    mainWindow.webContents.on('new-window', function (e, url) {
-        e.preventDefault();
-        shell.openExternal(url);
+    mainWindow.webContents.setWindowOpenHandler((e) => {
+        shell.openExternal(e.url);
+        return { action: 'deny' };
     });
-
-    // Open the DevTools.
-    //   mainWindow.webContents.openDevTools();
 }
 
 app.on('ready', () => {

@@ -1,0 +1,34 @@
+.espresso-plugin-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.espresso-plugin-list {
+    margin-top: 20px;
+}
+
+.espresso-plugin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    padding: 20px 0;
+
+    &:not(:last-child) {
+        border-bottom: solid 1px #212121;
+    }
+
+    &:last-child {
+        padding-bottom: 0;
+    }
+
+    &-version {
+        opacity: 0.5;
+        font-size: 0.8rem;
+    }
+
+    &-path {
+        opacity: 0.5;
+    }
+}

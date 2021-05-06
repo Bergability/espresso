@@ -88,6 +88,7 @@ const NewItemDialog: React.FC<Props> = ({ open, onClose, onNewItem }) => {
                         color="primary"
                         onClick={() => {
                             onNewItem(state.name, state.type);
+                            updateState({ name: '', type: 'action-set' });
                         }}
                     >
                         Add item

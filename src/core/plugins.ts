@@ -2,9 +2,10 @@ import espresso from './espresso';
 import fs from 'fs';
 import path from 'path';
 
-interface Manifest {
+export interface Manifest {
     name: string;
     slug: string;
+    version: string;
     load: string[];
 }
 
