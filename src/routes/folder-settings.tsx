@@ -1,16 +1,9 @@
 // Libraries
 import React, { useState, useEffect } from 'react';
-import { withRouter, useRouteMatch } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 // Components
-import { Switch, Route } from 'react-router-dom';
 import { Paper } from '@material-ui/core';
-
-// Routes
-import ActionSetEditorRoute from '@routes/action-set-editor';
-import ActionSetSettingsRoute from '@routes/action-set-settings';
-import ActionSetTriggersRoute from '@routes/action-set-triggers';
-import ActionSettingsRoute from '@routes/action-settings';
 
 // Types
 import { RouteComponentProps } from 'react-router-dom';
@@ -65,7 +58,7 @@ const FolderSettingsRoute: React.FC<RouteComponentProps<RouteParams>> = (props) 
             default: '',
         },
         {
-            type: 'text',
+            type: 'color',
             key: 'color',
             label: 'Color',
             default: '#ff00ff',

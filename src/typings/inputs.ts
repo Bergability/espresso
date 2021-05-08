@@ -40,6 +40,11 @@ export interface TextInput<Data extends Object> extends InputBase<Data> {
     default: string;
 }
 
+export interface ColorInput<Data extends Object> extends InputBase<Data> {
+    type: 'color';
+    default: string;
+}
+
 export interface NumberInput<Data extends Object> extends InputBase<Data> {
     type: 'number';
     default: number;
@@ -89,6 +94,7 @@ export interface ButtonInput {
 
 export type Input<Data extends Object = {}, RepeatData extends Object = {}> =
     | TextInput<Data>
+    | ColorInput<Data>
     | NumberInput<Data>
     | ToggleInput<Data>
     | SelectInput<Data>

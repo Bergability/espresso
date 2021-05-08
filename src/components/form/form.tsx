@@ -3,6 +3,7 @@ import React from 'react';
 
 // Components
 import { Link } from 'react-router-dom';
+import { ColorPicker } from 'material-ui-color';
 import { Button, TextField } from '@material-ui/core';
 import EspressoToggleInput from '@components/form/toggle';
 import EspressoSelectInput from '@components/form/select';
@@ -79,7 +80,6 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                             );
 
                         case 'text':
-                            // TODO make a better number input
                             return (
                                 <TextField
                                     key={input.key as string}
@@ -90,6 +90,23 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                     fullWidth
                                     onChange={(e) => {
                                         onInputChange(input.key, e.target.value);
+                                    }}
+                                />
+                            );
+
+                        case 'color':
+                            // TODO make better :^)
+                            return (
+                                <ColorPicker
+                                    key={input.key as string}
+                                    // label={input.label}
+                                    value={data[input.key] == undefined ? input.default : data[input.key]}
+                                    // variant={variant}
+                                    // helperText={input.helper}
+                                    // fullWidth
+                                    disableAlpha
+                                    onChange={(e) => {
+                                        onInputChange(input.key, `#${e.hex}`);
                                     }}
                                 />
                             );
