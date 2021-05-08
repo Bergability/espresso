@@ -100,6 +100,18 @@ const PluginRoute: React.FC = () => {
                                     </div>
 
                                     <div>
+                                        {plugin.settings ? (
+                                            <Button
+                                                variant="outlined"
+                                                style={{ marginRight: 15 }}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    window.open(plugin.settings, '_blank');
+                                                }}
+                                            >
+                                                Settings
+                                            </Button>
+                                        ) : null}
                                         <Button
                                             variant="outlined"
                                             onClick={() => {

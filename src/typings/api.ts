@@ -78,6 +78,7 @@ export interface Plugin {
     version: string;
     name: string;
     path: string;
+    settings?: string;
 }
 
 export type GetPluginsPayload = Plugin[];

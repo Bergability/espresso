@@ -7,6 +7,7 @@ export interface Manifest {
     slug: string;
     version: string;
     load: string[];
+    settings?: string;
 }
 
 export interface Plugin {
@@ -15,7 +16,7 @@ export interface Plugin {
 }
 
 export default class EspressoPlugins {
-    public load(manifests: Plugin[]) {
+    public load(manifests: Plugin[], callback?: () => void) {
         manifests.forEach((m) => {
             const manifest = JSON.parse(fs.readFileSync(path.join(m.path, 'manifest.json'), 'utf-8')) as Manifest;
 
@@ -23,6 +24,8 @@ export default class EspressoPlugins {
                 require(path.join(m.path, filePath));
             });
         });
+
+        if (callback) callback();
     }
 
     public getPath(slug: string) {

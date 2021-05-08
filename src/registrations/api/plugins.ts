@@ -1,5 +1,6 @@
-import { Manifest } from '@core/plugins';
 import fs from 'fs';
+import path from 'path';
+import { Manifest } from '@core/plugins';
 import espresso from '../../core/espresso';
 import { Plugin } from '../../typings/api';
 
@@ -7,8 +8,18 @@ espresso.server.register({
     path: '/api/plugins',
     method: 'get',
     response: (req, res) => {
+        const plugins = espresso.store.get('plugins') as Plugin[];
+        const port = espresso.store.get('port');
+
+        plugins.forEach((plugin, index) => {
+            const manifest = JSON.parse(fs.readFileSync(path.join(plugin.path, 'manifest.json'), 'utf8')) as Manifest;
+            if (manifest.settings) {
+                plugins[index].settings = `http://localhost:${port}${manifest.settings}`;
+            }
+        });
+
         res.contentType('application/json');
-        res.send(JSON.stringify(espresso.store.get('plugins'), null, 4));
+        res.send(JSON.stringify(plugins, null, 4));
     },
 });
 

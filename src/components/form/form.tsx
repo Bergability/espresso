@@ -65,8 +65,6 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                         color={input.color}
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            console.log('hereeeee');
-
                                             window.open(input.link, '_blank');
                                         }}
                                     >
