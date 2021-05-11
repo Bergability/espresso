@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 
 import './core/espresso';
@@ -19,11 +19,6 @@ function createWindow() {
 
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
-
-    mainWindow.webContents.setWindowOpenHandler((e) => {
-        shell.openExternal(e.url);
-        return { action: 'deny' };
-    });
 }
 
 app.on('ready', () => {

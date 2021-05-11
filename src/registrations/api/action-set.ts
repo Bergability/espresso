@@ -162,6 +162,7 @@ espresso.server.register({
                     if (!setting && trigger && trigger.settings) {
                         set.settings.push({
                             for: slug,
+                            version: trigger.version,
                             ...generateDefaults(trigger.settings),
                         });
                     }

@@ -86,11 +86,20 @@ espresso.server.register({
     method: 'post',
     response: (req, res) => {
         const body = req.body as NewActionRequestPayload;
+
+        const schema = espresso.actions.find((s) => s.slug === body.slug);
+
+        if (!schema) {
+            res.status(500).send({});
+            return;
+        }
+
         const settings = espresso.actions.generateDefaults(body.slug);
         const id = uuid();
         const action: Action = {
             id,
             settings,
+            version: schema.version,
             set: body.set,
             slug: body.slug,
             actions: [],

@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 import { shell, powerMonitor } from 'electron';
 
 import Actions from './actions';
@@ -30,6 +31,9 @@ class EspressoClass {
     public utilities = {
         openInBrowser: (url: string) => {
             shell.openExternal(url);
+        },
+        uuid: () => {
+            return uuid();
         },
     };
 }

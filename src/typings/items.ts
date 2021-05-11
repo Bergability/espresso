@@ -21,6 +21,7 @@ export interface ActionSet extends ItemBase {
 
 export interface ActionSetSetting {
     for: string;
+    version: string;
     [key: string]: any;
 }
 

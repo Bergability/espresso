@@ -31,4 +31,12 @@ export default class EspressoEvents {
             l.callback(data);
         });
     }
+
+    public dispatchTrigger<T = any>(slug: string, data?: T) {
+        const listeners = this.listeners.filter((l) => l.slug === slug && l.triggers === true);
+
+        listeners.forEach((l) => {
+            l.callback(data);
+        });
+    }
 }

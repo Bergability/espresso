@@ -1,6 +1,5 @@
 import espresso from '../core/espresso';
 import { Condition, Input } from '@typings/inputs';
-import { resolve } from 'path';
 
 /**
  *
@@ -40,6 +39,7 @@ espresso.actions.register({
     name: 'Toggle action set',
     catigory: 'Utilities',
     provider: 'Espresso',
+    version: '1.0.0',
     description: 'Toggle a selected action set on or off.',
     // @ts-ignore
     settings: toggleSettings,
@@ -70,6 +70,7 @@ espresso.actions.register({
     name: 'Repeat actions',
     catigory: 'Utilities',
     provider: 'Espresso',
+    version: '1.0.0',
     children: true,
     description: 'Repeat a list of actions a set amount of times.',
     // @ts-ignore
@@ -125,6 +126,7 @@ espresso.actions.register({
     name: 'Wait...',
     catigory: 'Utilities',
     provider: 'Espresso',
+    version: '1.0.0',
     description: 'Wait for a set amount of time.',
     // @ts-ignore
     settings: waitSettings,
@@ -157,78 +159,78 @@ espresso.actions.register({
  * Conditional action
  *
  */
-interface CondtionalActionSettings {
-    conditions: Condition[];
-    type: 'or' | 'and';
-}
+// interface CondtionalActionSettings {
+//     conditions: Condition[];
+//     type: 'or' | 'and';
+// }
 
-const condtionalActionSettings: Input<CondtionalActionSettings, Condition>[] = [
-    {
-        type: 'select',
-        label: 'Evaluation type',
-        key: 'type',
-        default: 'and',
-        options: [
-            { text: 'If all conditions are met', value: 'and' },
-            { text: 'If one or more conditions are met', value: 'or' },
-        ],
-    },
-    {
-        type: 'repeater',
-        label: 'Conditions',
-        key: 'conditions',
-        default: [],
-        emptyLabel: 'No conditions',
-        addLabel: 'Add condition',
-        removeLabel: 'Remove condition',
-        inputs: [
-            {
-                type: 'text',
-                key: 'value',
-                label: 'Value',
-                default: '',
-            },
-            {
-                type: 'select',
-                label: 'Operator',
-                key: 'operator',
-                default: 'equal',
-                options: [
-                    { text: 'Equals', value: 'equal' },
-                    { text: 'Does not equal', value: 'not-equal' },
-                    { text: 'Greater than', value: 'greater-than' },
-                    { text: 'Greater than or equal', value: 'greater-than-or-equal' },
-                    { text: 'Less than', value: 'less-than' },
-                    { text: 'Less than or equal', value: 'less-than-or-equal' },
-                    { text: 'Array length equals', value: 'array-length-equal' },
-                    { text: 'Array length not equal', value: 'array-length-not-equal' },
-                    { text: 'Array length greater than', value: 'array-length-greater-than' },
-                    { text: 'Array length greater than or equal', value: 'array-length-greater-than-or-equal' },
-                    { text: 'Array length less than', value: 'array-length-less-than' },
-                    { text: 'Array length less than or equal', value: 'array-length-less-than-or-equal' },
-                    { text: 'Array contains', value: 'array-contains' },
-                ],
-            },
-            {
-                type: 'text',
-                key: 'comparison',
-                label: 'Value',
-                default: '',
-            },
-        ],
-    },
-];
+// const condtionalActionSettings: Input<CondtionalActionSettings, Condition>[] = [
+//     {
+//         type: 'select',
+//         label: 'Evaluation type',
+//         key: 'type',
+//         default: 'and',
+//         options: [
+//             { text: 'If all conditions are met', value: 'and' },
+//             { text: 'If one or more conditions are met', value: 'or' },
+//         ],
+//     },
+//     {
+//         type: 'repeater',
+//         label: 'Conditions',
+//         key: 'conditions',
+//         default: [],
+//         emptyLabel: 'No conditions',
+//         addLabel: 'Add condition',
+//         removeLabel: 'Remove condition',
+//         inputs: [
+//             {
+//                 type: 'text',
+//                 key: 'value',
+//                 label: 'Value',
+//                 default: '',
+//             },
+//             {
+//                 type: 'select',
+//                 label: 'Operator',
+//                 key: 'operator',
+//                 default: 'equal',
+//                 options: [
+//                     { text: 'Equals', value: 'equal' },
+//                     { text: 'Does not equal', value: 'not-equal' },
+//                     { text: 'Greater than', value: 'greater-than' },
+//                     { text: 'Greater than or equal', value: 'greater-than-or-equal' },
+//                     { text: 'Less than', value: 'less-than' },
+//                     { text: 'Less than or equal', value: 'less-than-or-equal' },
+//                     { text: 'Array length equals', value: 'array-length-equal' },
+//                     { text: 'Array length not equal', value: 'array-length-not-equal' },
+//                     { text: 'Array length greater than', value: 'array-length-greater-than' },
+//                     { text: 'Array length greater than or equal', value: 'array-length-greater-than-or-equal' },
+//                     { text: 'Array length less than', value: 'array-length-less-than' },
+//                     { text: 'Array length less than or equal', value: 'array-length-less-than-or-equal' },
+//                     { text: 'Array contains', value: 'array-contains' },
+//                 ],
+//             },
+//             {
+//                 type: 'text',
+//                 key: 'comparison',
+//                 label: 'Value',
+//                 default: '',
+//             },
+//         ],
+//     },
+// ];
 
-espresso.actions.register({
-    slug: 'conditional-actions',
-    name: 'Conditional Actions',
-    children: true,
-    provider: 'Espresso',
-    catigory: 'Utility',
-    description: 'Run actions if set condtions are met.',
-    // @ts-ignore
-    settings: condtionalActionSettings,
-    run: async (triggerSettings, actionSettings, triggerData) => {
-        console.log('here');
-    },
-});
+// espresso.actions.register({
+//     slug: 'conditional-actions',
+//     name: 'Conditional Actions',
+//     children: true,
+//     provider: 'Espresso',
+//     catigory: 'Utility',
+//     description: 'Run actions if set condtions are met.',
+//     // @ts-ignore
+//     settings: condtionalActionSettings,
+//     run: async (triggerSettings, actionSettings, triggerData) => {
+//         console.log('here');
+//     },
+// });

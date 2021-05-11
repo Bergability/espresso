@@ -15,7 +15,7 @@ import './form.scss';
 
 // Types
 import { Object, Input } from '@typings/inputs';
-import { evaluateConditions, generateDefaults } from '@utilities';
+import { evaluateConditions, generateDefaults, openInBrowser } from '@utilities';
 
 interface Props<Data extends Object> {
     inputs: Input<Data>[];
@@ -57,24 +57,20 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
 
                     switch (input.type) {
                         case 'button':
-                            if (input.external === true) {
-                                return (
-                                    <Button
-                                        key={index}
-                                        href={input.link}
-                                        variant={input.variant}
-                                        color={input.color}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            window.open(input.link, '_blank');
-                                        }}
-                                    >
-                                        {input.label}
-                                    </Button>
-                                );
-                            }
                             return (
-                                <Button key={index} to={input.link} component={Link} variant={input.variant} color={input.color}>
+                                <Button
+                                    key={index}
+                                    to={input.link}
+                                    component={Link}
+                                    variant={input.variant}
+                                    color={input.color}
+                                    onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+                                        if (input.external === true) {
+                                            e.preventDefault();
+                                            openInBrowser(input.link);
+                                        }
+                                    }}
+                                >
                                     {input.label}
                                 </Button>
                             );

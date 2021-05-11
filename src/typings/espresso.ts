@@ -10,6 +10,7 @@ export interface TriggerSchema {
     name: string;
     provider: string;
     catigory: string;
+    version: string;
     settings?: Input<Object>[];
     variables?: Variable[] | ((triggerSettings: any) => Variable[]);
     getVariables?: (triggerData: any, triggerSettings: any) => Object;
@@ -27,6 +28,7 @@ export interface ActionSchema {
     provider: string;
     catigory: string;
     description: string;
+    version: string;
     children?: boolean;
     settings?: Input<Object>[];
     // TODO figure out why types are not working
@@ -37,6 +39,7 @@ export interface Action<Settings extends Object = {}> {
     id: string;
     slug: string;
     set: string;
+    version: string;
     actions: string[];
     settings: Settings;
 }

@@ -5,6 +5,7 @@ import { GetPluginsPayload } from '@typings/api';
 import api from '@utilities/api';
 
 import './plugins.scss';
+import { openInBrowser } from '@utilities';
 
 const PluginRoute: React.FC = () => {
     const [state, updateState] = useState<GetPluginsPayload | null>(null);
@@ -106,7 +107,7 @@ const PluginRoute: React.FC = () => {
                                                 style={{ marginRight: 15 }}
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    window.open(plugin.settings, '_blank');
+                                                    openInBrowser(plugin.settings as string);
                                                 }}
                                             >
                                                 Settings

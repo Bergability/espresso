@@ -1,8 +1,14 @@
+import { shell } from 'electron';
+
 // Utilities
 import api from './api';
 
 // Types
 import { Option, Input, Object, Condition } from '@typings/inputs';
+
+export const openInBrowser = (url: string) => {
+    shell.openExternal(url);
+};
 
 export const getOptions = async (slug: string): Promise<Option[]> => {
     try {

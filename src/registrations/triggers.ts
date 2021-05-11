@@ -5,4 +5,5 @@ espresso.triggers.register({
     name: 'Generic trigger',
     provider: 'Espresso',
     catigory: 'Utility',
+    version: '1.0.0',
 });
