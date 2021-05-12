@@ -19,12 +19,16 @@ import {
     ListItem,
     ListItemText,
     ListItemIcon,
+    Badge,
+    Divider,
+    Tooltip,
 } from '@material-ui/core';
 
 // Styles
 import './app-bar.scss';
 import { Item } from '@typings/items';
 import api from '@utilities/api';
+import Logo from './logo';
 
 const useStyles = makeStyles((theme) => ({
     current: {
@@ -78,7 +82,9 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs, loading, children, refresh })
                         }}
                         style={{ marginRight: 20 }}
                     >
-                        <Icon>menu</Icon>
+                        <Badge variant="dot" color="error" overlap="circle">
+                            <Icon>menu</Icon>
+                        </Badge>
                     </IconButton>
                     <CrumbDisplay />
                     {children}
@@ -91,12 +97,37 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs, loading, children, refresh })
                     updateDrawerState(false);
                 }}
             >
-                <List style={{ width: 250 }}>
+                <div className="drawer-header">
+                    <Logo />
+
+                    <Tooltip title="Close navigation" placement="right">
+                        <IconButton
+                            onClick={() => {
+                                updateDrawerState(false);
+                            }}
+                        >
+                            <Icon>chevron_left</Icon>
+                        </IconButton>
+                    </Tooltip>
+                </div>
+
+                <Divider />
+
+                <List style={{ width: 250, paddingTop: 0 }}>
                     <ListItem button component={Link} to="/">
                         <ListItemIcon>
                             <Icon>folder</Icon>
                         </ListItemIcon>
                         <ListItemText primary="My Items" />
+                    </ListItem>
+
+                    <ListItem button component={Link} to="/">
+                        <ListItemIcon>
+                            <Badge badgeContent={4} color="error" overlap="circle">
+                                <Icon>notifications</Icon>
+                            </Badge>
+                        </ListItemIcon>
+                        <ListItemText primary="Notifications" />
                     </ListItem>
 
                     <ListItem button component={Link} to="/plugins">
@@ -106,12 +137,12 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs, loading, children, refresh })
                         <ListItemText primary="Plugins" />
                     </ListItem>
 
-                    {/* <ListItem button component={Link} to="/">
+                    <ListItem button component={Link} to="/">
                         <ListItemIcon>
                             <Icon>settings</Icon>
                         </ListItemIcon>
                         <ListItemText primary="Settings" />
-                    </ListItem> */}
+                    </ListItem>
                 </List>
             </Drawer>
             {loading ? <LinearProgress /> : null}

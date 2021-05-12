@@ -11,3 +11,19 @@
         flex: 1 1 100%;
     }
 }
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+    padding: 20px;
+    // border-bottom: solid 1px #595959;
+
+    img {
+        width: 125px;
+        margin-top: 5px;
+        user-select: none;
+        pointer-events: none;
+    }
+}

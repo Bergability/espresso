@@ -31,7 +31,7 @@ export default class EspressoServer extends EspressoRegistrar<EspressoServerRout
 
         setInterval(() => {
             this.emitToSocket('ping');
-        }, 30000);
+        }, 120 * 1000);
 
         this.app.use(bodyParser.json());
     }

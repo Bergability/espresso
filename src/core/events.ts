@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import espresso from './espresso';
 
 interface Listener<T = any> {
     id: string;
@@ -27,6 +28,8 @@ export default class EspressoEvents {
     public dispatch<T = any>(slug: string, data?: T) {
         const listeners = this.listeners.filter((l) => l.slug === slug);
 
+        if (espresso) espresso.server.emitToSocket(slug, data);
+
         listeners.forEach((l) => {
             l.callback(data);
         });
@@ -34,6 +37,8 @@ export default class EspressoEvents {
 
     public dispatchTrigger<T = any>(slug: string, data?: T) {
         const listeners = this.listeners.filter((l) => l.slug === slug && l.triggers === true);
+
+        if (espresso) espresso.server.emitToSocket(slug, data);
 
         listeners.forEach((l) => {
             l.callback(data);

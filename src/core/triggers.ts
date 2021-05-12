@@ -24,6 +24,8 @@ export default class EspressoTriggers extends EspressoRegistrar<TriggerSchema> {
 
         if (!trigger) return [];
 
+        espresso.events.dispatchTrigger(slug, triggerData);
+
         const ranSets: string[] = [];
 
         const actionSets: ActionSet[] = (espresso.store.get('items') as Item[]).filter((item) => {
@@ -34,7 +36,6 @@ export default class EspressoTriggers extends EspressoRegistrar<TriggerSchema> {
         }) as ActionSet[];
 
         actionSets.forEach((actionSet) => {
-            console.log(`Running action set ${actionSet.id}`);
             if (trigger.predicate) {
                 const shouldRun = trigger.predicate(
                     triggerData,
