@@ -23,6 +23,7 @@ espresso.server.register({
 import './action-set';
 import './actions';
 import './items';
+import './notifications';
 import './options';
 import './plugins';
 import './schemas';

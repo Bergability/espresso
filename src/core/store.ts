@@ -20,6 +20,7 @@ export default class EspressoStore {
             items: [],
             actions: [],
             plugins: [],
+            notifications: [],
             port: 23167,
         },
     });

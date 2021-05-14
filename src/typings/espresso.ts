@@ -43,3 +43,22 @@ export interface Action<Settings extends Object = {}> {
     actions: string[];
     settings: Settings;
 }
+
+export interface EspressoEvent<T = any> {
+    event: string;
+    data: T;
+}
+
+interface NotificationAction {
+    text: string;
+    link: string;
+}
+
+export interface EspressoNotification {
+    id: string;
+    title: string;
+    message: string;
+    actions?: NotificationAction[];
+    dismissible?: boolean;
+    slug?: string;
+}

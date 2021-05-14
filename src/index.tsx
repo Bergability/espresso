@@ -10,6 +10,7 @@ import { CssBaseline, ThemeProvider, createMuiTheme, Theme } from '@material-ui/
 
 // Contexts
 import { ActionSchemaContextWrapper } from './contexts/action-schemas';
+import { NotificationContextWrapper } from './contexts/notifications';
 
 // Routes
 import FolderRoute from '@routes/folder';
@@ -17,6 +18,7 @@ import ActionSetRoute from '@routes/action-set';
 import FolderSettingsRoute from '@routes/folder-settings';
 import ListRoute from '@routes/list';
 import PluginsRoute from '@routes/plugins';
+import NotificationsRoute from '@routes/notifications';
 
 // Styles
 import './main.scss';
@@ -40,37 +42,43 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <DndProvider backend={HTML5Backend}>
-                <ActionSchemaContextWrapper>
-                    <div className="app">
-                        <Router>
-                            <Switch>
-                                <Route path="/" exact>
-                                    <FolderRoute />
-                                </Route>
+                <NotificationContextWrapper>
+                    <ActionSchemaContextWrapper>
+                        <div className="app">
+                            <Router>
+                                <Switch>
+                                    <Route path="/" exact>
+                                        <FolderRoute />
+                                    </Route>
 
-                                <Route path="/plugins" exact>
-                                    <PluginsRoute />
-                                </Route>
+                                    <Route path="/plugins" exact>
+                                        <PluginsRoute />
+                                    </Route>
 
-                                <Route path="/:id" exact>
-                                    <FolderRoute />
-                                </Route>
+                                    <Route path="/notifications" exact>
+                                        <NotificationsRoute />
+                                    </Route>
 
-                                <Route path="/:id/settings" exact>
-                                    <FolderSettingsRoute />
-                                </Route>
+                                    <Route path="/:id" exact>
+                                        <FolderRoute />
+                                    </Route>
 
-                                <Route path="/list/:id" exact>
-                                    <ListRoute />
-                                </Route>
+                                    <Route path="/:id/settings" exact>
+                                        <FolderSettingsRoute />
+                                    </Route>
 
-                                <Route path="/action-set/:id">
-                                    <ActionSetRoute />
-                                </Route>
-                            </Switch>
-                        </Router>
-                    </div>
-                </ActionSchemaContextWrapper>
+                                    <Route path="/list/:id" exact>
+                                        <ListRoute />
+                                    </Route>
+
+                                    <Route path="/action-set/:id">
+                                        <ActionSetRoute />
+                                    </Route>
+                                </Switch>
+                            </Router>
+                        </div>
+                    </ActionSchemaContextWrapper>
+                </NotificationContextWrapper>
             </DndProvider>
         </ThemeProvider>
     </>,

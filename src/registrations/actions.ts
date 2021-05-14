@@ -156,6 +156,48 @@ espresso.actions.register({
 
 /**
  *
+ * Send notification
+ *
+ */
+interface EspressoNotificationSettings extends Object {
+    title: string;
+    message: string;
+}
+
+const notificationSettings: Input<EspressoNotificationSettings>[] = [
+    {
+        type: 'text',
+        label: 'Notification Title',
+        key: 'title',
+        default: '',
+    },
+    {
+        type: 'text',
+        label: 'Notification message',
+        key: 'message',
+        default: '',
+    },
+];
+
+espresso.actions.register({
+    slug: 'espresso-notification',
+    name: 'Send notification',
+    catigory: 'Utilities',
+    provider: 'Espresso',
+    version: '1.0.0',
+    description: 'Send a notification to the notification list.',
+    // @ts-ignore
+    settings: notificationSettings,
+    run: async (triggerSettings: Object, actionSettings: EspressoNotificationSettings, triggerData) => {
+        espresso.notifications.add({
+            title: espresso.parseVariables(actionSettings.title, triggerData),
+            message: espresso.parseVariables(actionSettings.message, triggerData),
+        });
+    },
+});
+
+/**
+ *
  * Conditional action
  *
  */

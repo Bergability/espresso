@@ -1,5 +1,5 @@
 import { Crumb } from '@components/app-bar';
-import { Action, ActionSchema, TriggerSchema, Variable } from './espresso';
+import { Action, ActionSchema, TriggerSchema, Variable, EspressoNotification } from './espresso';
 import { ActionSet, Item, ActionSetSetting, Folder } from './items';
 
 type ServerMethod = 'get' | 'post' | 'put' | 'delete';
@@ -82,3 +82,7 @@ export interface Plugin {
 }
 
 export type GetPluginsPayload = Plugin[];
+
+export interface NotificationPayload {
+    notifications: EspressoNotification[];
+}

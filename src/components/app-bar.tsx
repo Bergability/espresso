@@ -1,5 +1,5 @@
 // Libraries
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import { useDrop } from 'react-dnd';
 
 // Components
@@ -23,6 +23,9 @@ import {
     Divider,
     Tooltip,
 } from '@material-ui/core';
+
+// Context
+import NotificationContext from '../contexts/notifications';
 
 // Styles
 import './app-bar.scss';
@@ -52,12 +55,13 @@ export interface Crumb {
 }
 
 interface Props {
-    crumbs: Crumb[];
+    crumbs?: Crumb[];
     loading?: boolean;
     refresh?: () => void;
 }
 
-const EspressoAppBar: React.FC<Props> = ({ crumbs, loading, children, refresh }) => {
+const EspressoAppBar: React.FC<Props> = ({ crumbs = [], loading, children, refresh }) => {
+    const { notifications } = useContext(NotificationContext);
     const [drawerState, updateDrawerState] = useState(false);
 
     const CrumbDisplay: React.FC = () => {
@@ -82,7 +86,7 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs, loading, children, refresh })
                         }}
                         style={{ marginRight: 20 }}
                     >
-                        <Badge variant="dot" color="error" overlap="circle">
+                        <Badge variant="dot" color="error" overlap="circle" invisible={notifications.length <= 0}>
                             <Icon>menu</Icon>
                         </Badge>
                     </IconButton>
@@ -121,9 +125,9 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs, loading, children, refresh })
                         <ListItemText primary="My Items" />
                     </ListItem>
 
-                    <ListItem button component={Link} to="/">
+                    <ListItem button component={Link} to="/notifications">
                         <ListItemIcon>
-                            <Badge badgeContent={4} color="error" overlap="circle">
+                            <Badge badgeContent={notifications.length} color="error" overlap="circle" invisible={notifications.length <= 0}>
                                 <Icon>notifications</Icon>
                             </Badge>
                         </ListItemIcon>

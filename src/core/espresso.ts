@@ -3,6 +3,7 @@ import { shell, powerMonitor } from 'electron';
 
 import Actions from './actions';
 import Events from './events';
+import Notifications from './notifications';
 import Server from './server';
 import Store from './store';
 import Tokens from './tokens';
@@ -13,6 +14,7 @@ import Plugins, { Plugin } from './plugins';
 class EspressoClass {
     public actions = new Actions();
     public events = new Events();
+    public notifications = new Notifications();
     public server = new Server();
     public store = new Store();
     public tokens = new Tokens();
