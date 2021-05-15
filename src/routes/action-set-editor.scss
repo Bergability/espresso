@@ -16,10 +16,31 @@
         padding: 20px;
         overflow-y: auto;
 
+        &-button {
+            display: block;
+        }
+
         &-button:not(:last-child) {
             margin-bottom: 10px;
         }
     }
+}
+
+.espresso-actions-editor-new-section {
+    &:not(:last-child) {
+        margin-bottom: 20px;
+    }
+
+    &-name.MuiTypography-root {
+        opacity: 0.75;
+        font-size: 0.8em;
+        margin-bottom: 5px;
+    }
+}
+
+.espresso-actions-editor-new-list {
+    display: flex;
+    flex-direction: column;
 }
 
 .espresso-action-list-button-group {

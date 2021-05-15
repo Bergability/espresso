@@ -2,17 +2,53 @@ import React, { createContext, useEffect, useState } from 'react';
 import { ActionSchema } from '@typings/espresso';
 import api from '@utilities/api';
 
-type State = ActionSchema[];
+interface SortedObject {
+    [key: string]: ActionSchema[];
+}
 
-const ActionSchemaContext = createContext<State>([]);
+interface SortedList {
+    name: string;
+    schemas: ActionSchema[];
+}
+
+interface State {
+    schemas: ActionSchema[];
+    sorted: SortedList[];
+}
+
+const ActionSchemaContext = createContext<State>({ schemas: [], sorted: [] });
 
 export const ActionSchemaContextWrapper: React.FC = ({ children }) => {
-    const [state, updateState] = useState<State>([]);
+    const [state, updateState] = useState<State>({ schemas: [], sorted: [] });
 
     useEffect(() => {
-        api.fetch<State>('/schemas/actions', 'get')
+        api.fetch<ActionSchema[]>('/schemas/actions', 'get')
             .then((res) => {
-                updateState(res);
+                const sortedObject: SortedObject = res.reduce<SortedObject>((acc, schema) => {
+                    const key = `${schema.provider} ${schema.catigory}`;
+
+                    if (acc[key] === undefined) acc[key] = [];
+
+                    acc[key] = [...acc[key], schema].sort((a, b) => {
+                        if (a.name > b.name) return 1;
+                        if (a.name < b.name) return -1;
+                        return 0;
+                    });
+
+                    return acc;
+                }, {});
+
+                const sortedList: SortedList[] = Object.entries(sortedObject).reduce<SortedList[]>((acc, [name, schemas]) => {
+                    acc = [...acc, { name, schemas }].sort((a, b) => {
+                        if (a.name > b.name) return 1;
+                        if (a.name < b.name) return -1;
+                        return 0;
+                    });
+
+                    return acc;
+                }, []);
+
+                updateState({ schemas: res, sorted: sortedList });
             })
             .catch((e) => {
                 console.log(e);

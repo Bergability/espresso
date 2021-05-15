@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 // Components
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Icon, IconButton, Paper } from '@material-ui/core';
+import { Button, Icon, IconButton, Paper, Typography } from '@material-ui/core';
 import EspressoAppBar from '@components/app-bar';
 import ActionComponent from '@components/actions/action';
 
@@ -26,7 +26,7 @@ interface Params {
 }
 
 const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
-    const actionSchemas = useContext(ActionSchemaContext);
+    const { schemas, sorted } = useContext(ActionSchemaContext);
     const [state, updateState] = useState<GetPutActionSetPayload | null>(null);
     const { id, actionId } = props.match.params;
 
@@ -98,7 +98,7 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
                         const action = state.actions.find((a) => a.id === aId);
                         if (!action) return <p key={aId}>Womp, action not found</p>;
 
-                        const schema = actionSchemas.find((a) => a.slug === action.slug);
+                        const schema = schemas.find((a) => a.slug === action.slug);
                         if (!schema) return <p key={aId}>Booo, schema not found</p>;
 
                         return (
@@ -118,20 +118,27 @@ const ActionSetEditorRoute: React.FC<RouteComponentProps<Params>> = (props) => {
                 </div>
 
                 <Paper className="espresso-actions-editor-new" square>
-                    {actionSchemas.map((schema) => (
-                        <Button
-                            key={schema.slug}
-                            variant="outlined"
-                            className="espresso-actions-editor-new-button"
-                            style={{ textTransform: 'none' }}
-                            fullWidth
-                            onClick={(e) => {
-                                e.preventDefault();
-                                onNewActionClick(schema.slug);
-                            }}
-                        >
-                            {schema.name}
-                        </Button>
+                    {sorted.map(({ schemas, name }) => (
+                        <div key={name} className="espresso-actions-editor-new-section">
+                            <Typography className="espresso-actions-editor-new-section-name">{name}</Typography>
+                            <div className="espresso-actions-editor-new-list">
+                                {schemas.map((schema) => (
+                                    <Button
+                                        key={schema.slug}
+                                        variant="outlined"
+                                        className="espresso-actions-editor-new-button"
+                                        style={{ textTransform: 'none' }}
+                                        fullWidth
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            onNewActionClick(schema.slug);
+                                        }}
+                                    >
+                                        {schema.name}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
                     ))}
                 </Paper>
             </div>
