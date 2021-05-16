@@ -11,7 +11,7 @@ espresso.options.register({
                 {
                     text: trigger.name,
                     value: trigger.slug,
-                    catigory: trigger.catigory,
+                    catigory: `${trigger.provider} ${trigger.catigory}`,
                 },
             ];
         }, []);

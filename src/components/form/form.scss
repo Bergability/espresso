@@ -1,3 +1,18 @@
+// .espresso-select-input {
+
+// }
+
+.cat-list-subheader.MuiListSubheader-root {
+    position: relative;
+    font-size: 0.8em;
+    opacity: 0.75;
+    line-height: 1.5em;
+
+    &:not(:first-child) {
+        margin-top: 20px;
+    }
+}
+
 .espresso-toggle-input {
     display: flex;
     justify-content: space-between;
