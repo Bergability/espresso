@@ -35,7 +35,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
     }
 
     render() {
-        const { inputs, data, onChange, onSave, saveDelay, variant } = this.props;
+        const { inputs, data, onChange, onSave, saveDelay, variant = 'outlined' } = this.props;
 
         const onInputChange = (key: keyof Data, value: any) => {
             onChange(key, value);

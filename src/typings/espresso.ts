@@ -12,8 +12,11 @@ export interface TriggerSchema {
     catigory: string;
     version: string;
     settings?: Input<Object>[];
+    // Used to list out the variables that the user will see
     variables?: Variable[] | ((triggerSettings: any) => Variable[]);
+    // Used to get the variable values at trigger run time
     getVariables?: (triggerData: any, triggerSettings: any) => Object;
+    // Used at trigger run time to determine if the trigger should run or not
     predicate?: (triggerData: any, triggerSettings: any) => boolean;
 }
 
