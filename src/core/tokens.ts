@@ -31,8 +31,6 @@ export default class EspressoStore {
     }
 
     public delete(id: string) {
-        const store = this.config.store;
-        delete store[id];
-        this.config.set('', store);
+        this.config.delete(id);
     }
 }

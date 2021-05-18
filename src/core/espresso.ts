@@ -87,23 +87,3 @@ powerMonitor.addListener('resume', () => {
 
 export type Espresso = EspressoClass;
 export default espresso;
-
-const foo = {
-    benefit_end_month: 0,
-    user_name: 'bergability',
-    display_name: 'Bergability',
-    channel_name: 'bergability',
-    user_id: '113128856',
-    channel_id: '113128856',
-    recipient_id: '86338165',
-    recipient_user_name: 'bethsdelfino',
-    recipient_display_name: 'bethsdelfino',
-    time: '2021-05-16T22:37:09.683207287Z',
-    sub_message: { message: '', emotes: null },
-    sub_plan: '1000',
-    sub_plan_name: 'Channel Subscription to Bergability',
-    months: 45,
-    context: 'subgift',
-    is_gift: true,
-    multi_month_duration: 1,
-};
