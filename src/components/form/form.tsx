@@ -9,6 +9,7 @@ import EspressoToggleInput from '@components/form/toggle';
 import EspressoSelectInput from '@components/form/select';
 import EspressoChipsInput from '@components/form/chips';
 import RepeaterInput from '@components/form/repeater';
+import FormSection from '@components/form/form-section';
 
 // Styles
 import './form.scss';
@@ -49,13 +50,27 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
         return (
             <div className="espresso-form">
                 {inputs.map((input, index) => {
-                    if (input.type !== 'button' && input.conditions) {
+                    if (input.type !== 'button' && input.type !== 'section' && input.conditions) {
                         // @ts-ignore
                         const shouldRender = evaluateConditions(input.conditions, data);
                         if (!shouldRender) return null;
                     }
 
                     switch (input.type) {
+                        case 'section':
+                            return (
+                                <FormSection
+                                    key={index}
+                                    data={data}
+                                    // @ts-ignore
+                                    inputs={input.inputs}
+                                    title={input.title}
+                                    description={input.description}
+                                    onChange={onInputChange}
+                                />
+                            );
+                            break;
+
                         case 'button':
                             return (
                                 <Button

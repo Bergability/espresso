@@ -35,6 +35,13 @@ interface InputBase<Data extends Object> {
     conditions?: (Condition<Data> | Condition<Data>[])[];
 }
 
+export interface InputSection<Data extends Object = {}, RepeatData extends Object = {}> {
+    type: 'section';
+    title: string;
+    description?: string;
+    inputs: Input<Data, RepeatData>[];
+}
+
 export interface TextInput<Data extends Object> extends InputBase<Data> {
     type: 'text';
     default: string;
@@ -93,6 +100,7 @@ export interface ButtonInput {
 }
 
 export type Input<Data extends Object = {}, RepeatData extends Object = {}> =
+    | InputSection<Data, RepeatData>
     | TextInput<Data>
     | ColorInput<Data>
     | NumberInput<Data>
