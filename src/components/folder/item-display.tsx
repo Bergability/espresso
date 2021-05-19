@@ -139,6 +139,15 @@ const ItemDisplay: React.FC<Props> = ({ item, refresh }) => {
                     </ListItemSecondaryAction>
                 </MenuItem>
 
+                {item.type === 'action-set' ? (
+                    <MenuItem className={classes.menuItem} component={Link} to={`${settingsLink}/triggers`}>
+                        <Typography>Trigger Settings</Typography>
+                        <ListItemSecondaryAction className={classes.menuIcon}>
+                            <Icon>tune</Icon>
+                        </ListItemSecondaryAction>
+                    </MenuItem>
+                ) : null}
+
                 <MenuItem className={classes.menuItem} onClick={onDelete}>
                     <Typography color="error">Delete</Typography>
                     <ListItemSecondaryAction className={classes.menuIcon}>
