@@ -34,3 +34,20 @@ espresso.options.register({
         }, []);
     },
 });
+
+espresso.options.register({
+    slug: 'espresso:lists',
+    get: async () => {
+        const items = espresso.store.get('items') as Item[];
+        return items.reduce<Option[]>((acc, item) => {
+            if (item.type !== 'list') return acc;
+            return [
+                ...acc,
+                {
+                    text: item.name,
+                    value: item.id,
+                },
+            ];
+        }, []);
+    },
+});
