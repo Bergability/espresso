@@ -1,4 +1,5 @@
 import { Option, Input, Object } from '@typings/inputs';
+import { Updater } from './updater';
 
 export interface Variable {
     name: string;
@@ -18,6 +19,7 @@ export interface TriggerSchema {
     getVariables?: (triggerData: any, triggerSettings: any) => Object;
     // Used at trigger run time to determine if the trigger should run or not
     predicate?: (triggerData: any, triggerSettings: any) => boolean;
+    updater?: Updater[];
 }
 
 export interface EspressoOptions {
@@ -34,6 +36,7 @@ export interface ActionSchema {
     version: string;
     children?: boolean;
     settings?: Input<Object>[];
+    updater?: Updater[];
     // TODO figure out why types are not working
     run: (triggerSettings: Object, actionSettings: any, variables: Object, children?: string[]) => Promise<void>;
 }
@@ -64,4 +67,5 @@ export interface EspressoNotification {
     actions?: NotificationAction[];
     dismissible?: boolean;
     slug?: string;
+    version: string;
 }

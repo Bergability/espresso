@@ -5,6 +5,10 @@ import { APIError, GetFolderPayload, GetItemPayload, GetItemsPayload, PostPutIte
 import { getItemCrumbs } from './action-set';
 import { Action } from '@typings/espresso';
 
+const actionSetVersion = '1.0.0';
+const folderVersion = '1.0.0';
+const listVersion = '1.0.0';
+
 /**
  *
  * Items
@@ -49,11 +53,14 @@ espresso.server.register({
                     type,
                     name,
                     parent: parent || null,
-                    cooldown: -1,
+                    useCooldown: false,
+                    cooldown: 1,
+                    cooldownUnit: 'seconds',
                     active: false,
                     settings: [],
                     actions: [],
                     triggers: [],
+                    version: actionSetVersion,
                 };
 
                 break;
@@ -65,6 +72,7 @@ espresso.server.register({
                     parent: parent || null,
                     type,
                     color: '#ffffff',
+                    version: folderVersion,
                 };
                 break;
 
@@ -75,6 +83,7 @@ espresso.server.register({
                     parent: parent || null,
                     type,
                     items: [],
+                    version: listVersion,
                 };
 
                 if (managed) item.managed === managed;
@@ -241,7 +250,7 @@ espresso.server.register({
         const folder = items.find((i) => i.id === id && i.type === 'folder') as Folder | undefined;
 
         const payload: GetFolderPayload = {
-            folder: folder || { name: 'Home', color: '', parent: null, id: '', type: 'folder' },
+            folder: folder || { name: 'Home', color: '', parent: null, id: '', type: 'folder', version: folderVersion },
             items: filtered,
             crumbs: getItemCrumbs(id),
         };

@@ -60,10 +60,16 @@ class EspressoClass {
 }
 
 const espresso = new EspressoClass();
-espresso.events.dispatch('espresso:init');
+
+export type Espresso = EspressoClass;
+export default espresso;
 
 // @ts-ignore
 global.espresso = espresso;
+
+// Run any store updates
+espresso.store.init();
+espresso.events.dispatch('espresso:init');
 
 // Start the server
 const port = espresso.store.get<number>('port');
@@ -84,6 +90,3 @@ powerMonitor.addListener('suspend', () => {
 powerMonitor.addListener('resume', () => {
     espresso.events.dispatch('espresso:power-resume');
 });
-
-export type Espresso = EspressoClass;
-export default espresso;

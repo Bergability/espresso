@@ -1,12 +1,16 @@
 import Store from 'electron-store';
-import { Item } from '@typings/items';
+import { Item, ActionSet, ActionSetV1 } from '@typings/items';
 import { Action } from '@typings/espresso';
+import { SchemaUpdater, Updater } from '@typings/updater';
+import { Object } from '@typings/inputs';
+import espresso from './espresso';
 
 interface State {
     items: Item[];
     actions: Action[];
     plugins: string[];
     port: number;
+    version: string;
     [key: string]: any;
 }
 
@@ -22,8 +26,80 @@ export default class EspressoStore {
             plugins: [],
             notifications: [],
             port: 23167,
+            version: '1.0.0',
         },
     });
+
+    private configUpdater: Updater[] = [];
+    private actionUpdater: Updater[] = [];
+    private notificationUpdater: Updater[] = [];
+    private itemUpdater: SchemaUpdater[] = [
+        {
+            slug: 'action-set',
+            updates: [
+                {
+                    from: '1.0.0',
+                    version: '1.1.0',
+                    updater: (set: ActionSetV1): ActionSet => {
+                        return {
+                            ...set,
+                            cooldown: 1,
+                            cooldownUnit: 'seconds',
+                            useCooldown: false,
+                        };
+                    },
+                },
+            ],
+        },
+    ];
+
+    constructor() {
+        this.config.set(this.runUpdates(this.configUpdater, this.config.store));
+    }
+
+    public init() {
+        /**
+         * Update all items
+         */
+        const updateItem = (item: Item) => {
+            const updater = this.itemUpdater.find((u) => u.slug === item.type);
+            if (!updater) return item;
+
+            return this.runUpdates(updater.updates, item) as Item;
+        };
+
+        const items = this.config.get('items');
+        this.config.set(
+            'items',
+            items.reduce<Item[]>((acc, item) => {
+                return [...acc, updateItem(item)];
+            }, [])
+        );
+
+        // const actions = this.config.get('actions');
+
+        // this.config.set(
+        //     'actions',
+        //     actions.reduce<Action[]>((acc, action) => {
+        //         return [...acc, this.runUpdates(this.actionUpdater, action) as Action];
+        //     }, [])
+        // );
+    }
+
+    public runUpdates<Prev extends Object = {}, Next extends Object = {}>(updaters: Updater[], object: Prev): Next {
+        if (!object.version) return (object as unknown) as Next;
+
+        const getVersion = () => {
+            return object.version;
+        };
+
+        while (updaters.find((u) => u.from === getVersion())) {
+            const updater = updaters.find((u) => u.from === getVersion());
+            if (updater) object = updater.updater({ ...object, version: updater.version });
+        }
+
+        return (object as unknown) as Next;
+    }
 
     public onChange(key: string, callback: () => void) {
         this.config.onDidChange(key, callback);
@@ -47,38 +123,10 @@ export default class EspressoStore {
     /**
      * Delete a value from the store object based on a dot notated path.
      *
-     * @param path Dot notated path to the value to be retrieved.
+     * @param path Dot notated path to the value to delete.
      */
     public delete(path: string) {
         // @ts-ignore
         this.config.delete(path);
     }
-
-    /**
-     * Save this.store to a file on the users machine and overwirte this.activeStore with it's value.
-     *
-     * @returns Always returns true.
-     */
-    save: () => boolean = () => {
-        //   const config = {};
-        //   Object.entries(espresso).forEach(([key, entry]) => {
-        //     if (entry.toJSON) {
-        //       const json = entry.toJSON();
-
-        //       if (json) {
-        //         const { slug, value } = entry.toJSON();
-        //         config[slug] = value;
-        //       }
-        //     }
-        //   });
-
-        //   this.config.set(config);
-
-        //   espresso.toasts.add({
-        //     text: "Changes have been saved",
-        //     color: "success"
-        //   });
-        // return true;
-        return false;
-    };
 }

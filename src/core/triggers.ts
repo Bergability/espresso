@@ -7,7 +7,15 @@ import { Action, TriggerSchema } from '@typings/espresso';
 import espresso from './espresso';
 import { ActionSet, Item } from '@typings/items';
 
+interface Cooldown {
+    id: string;
+    start: number;
+    timeout: NodeJS.Timeout;
+}
+
 export default class EspressoTriggers extends EspressoRegistrar<TriggerSchema> {
+    public cooldowns: Cooldown[] = [];
+
     constructor() {
         super({
             registeredEvent: 'trigger-registered',
@@ -36,6 +44,9 @@ export default class EspressoTriggers extends EspressoRegistrar<TriggerSchema> {
         }) as ActionSet[];
 
         actionSets.forEach((actionSet) => {
+            // If a cooldown is currently active do not run the set
+            if (actionSet.useCooldown && this.cooldowns.find((c) => c.id === actionSet.id)) return;
+
             if (trigger.predicate) {
                 const shouldRun = trigger.predicate(
                     triggerData,
@@ -54,6 +65,27 @@ export default class EspressoTriggers extends EspressoRegistrar<TriggerSchema> {
             // TODO should we be passing in trigger data?
             this.runActions(actionSet.actions, trigger.settings, triggerData);
             ranSets.push(actionSet.id);
+
+            // Set the cooldown if needed
+            if (actionSet.useCooldown) {
+                let unit: number;
+
+                switch (actionSet.cooldownUnit) {
+                    case 'seconds':
+                        unit = 1000;
+                        break;
+
+                    case 'minutes':
+                        unit = 60000;
+                        break;
+
+                    case 'hours':
+                        unit = 3600000;
+                        break;
+                }
+
+                this.setCooldown(actionSet.id, unit * actionSet.cooldown);
+            }
         });
 
         return ranSets;
@@ -91,5 +123,22 @@ export default class EspressoTriggers extends EspressoRegistrar<TriggerSchema> {
                 }
             }
         }
+    }
+
+    public setCooldown(id: string, duration: number) {
+        this.cooldowns = [
+            ...this.cooldowns,
+            {
+                id,
+                start: Date.now(),
+                timeout: setTimeout(() => {
+                    this.removeCooldown(id);
+                }, duration),
+            },
+        ];
+    }
+
+    public removeCooldown(id: string) {
+        this.cooldowns = this.cooldowns.filter((c) => c.id !== id);
     }
 }

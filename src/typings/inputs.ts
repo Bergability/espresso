@@ -38,7 +38,7 @@ interface InputBase<Data extends Object> {
 export interface InputSection<Data extends Object = {}, RepeatData extends Object = {}> {
     type: 'section';
     title: string;
-    description?: string;
+    description?: string[];
     inputs: Input<Data, RepeatData>[];
 }
 

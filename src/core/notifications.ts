@@ -3,11 +3,11 @@ import espresso from './espresso';
 import { EspressoNotification } from '../typings/espresso';
 
 export default class EspressoNotifications {
-    public add(notification: Omit<EspressoNotification, 'id'>): string {
+    public add(notification: Omit<EspressoNotification, 'id' | 'version'>): string {
         const id = uuid();
         const notifications = espresso.store.get('notifications') as EspressoNotification[];
 
-        espresso.store.set('notifications', [{ id, ...notification }, ...notifications]);
+        espresso.store.set('notifications', [{ id, version: '1.0.0', ...notification }, ...notifications]);
         espresso.events.dispatch('espresso:notification-added', { id, ...notification });
 
         return id;

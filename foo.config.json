@@ -1,0 +1,172 @@
+{
+    "items": [
+        {
+            "id": "6836524c-d0e3-4ba7-ab21-2d5e14d807da",
+            "type": "action-set",
+            "name": "Subscriptions",
+            "parent": "fa20f601-58e0-475c-bddb-0a275a87836c",
+            "cooldown": -1,
+            "active": true,
+            "version": "1.0.0",
+            "settings": [
+                {
+                    "for": "twitch:all-subscription",
+                    "version": "1.0.0",
+                    "gifts": true,
+                    "useMin": false,
+                    "min": 1,
+                    "useMax": false,
+                    "max": 15
+                }
+            ],
+            "actions": ["6c7fc24f-6bf8-4aad-9236-ddc1e6735a3d", "f5756737-4c65-4793-8115-a2f8f0938e79"],
+            "triggers": [null, "twitch:all-subscription"]
+        },
+        {
+            "id": "e7b2ec5f-49ac-42c1-a469-20f390113161",
+            "name": "Twitch",
+            "parent": null,
+            "type": "folder",
+            "color": "#9146FF",
+            "version": "1.0.0"
+        },
+        {
+            "id": "f028597f-623f-480a-89f9-e0d0f2d3e11a",
+            "name": "Roles",
+            "parent": "e7b2ec5f-49ac-42c1-a469-20f390113161",
+            "type": "folder",
+            "color": "#ffffff",
+            "version": "1.0.0"
+        },
+        {
+            "id": "3a065e2c-9039-4f45-a2eb-fb8e1c5176a8",
+            "name": "Moderators",
+            "parent": "f028597f-623f-480a-89f9-e0d0f2d3e11a",
+            "type": "list",
+            "version": "1.0.0",
+            "items": ["Kotomeri", "ToastPlaysThis", "apDrop", "pretty_polyglot", "fr7nkie"]
+        },
+        {
+            "id": "11bcaa15-a33d-43f0-85f8-2cf8d8b63799",
+            "type": "action-set",
+            "name": "Test Chat Command",
+            "parent": null,
+            "cooldown": -1,
+            "active": true,
+            "version": "1.0.0",
+            "settings": [
+                {
+                    "for": "twitch:chat-command",
+                    "version": "1.0.0",
+                    "aliases": ["test"],
+                    "limit": false,
+                    "roles": [],
+                    "useList": true,
+                    "lists": ["e81a80cc-452a-4afd-823f-ef78f89b3cc0"],
+                    "useVariables": false,
+                    "variables": [],
+                    "requireLast": true,
+                    "concatLast": false,
+                    "useLists": false
+                }
+            ],
+            "actions": ["4e90886f-d219-4fee-93b2-509b6a10dd10"],
+            "triggers": ["twitch:chat-command"]
+        },
+        {
+            "id": "fa20f601-58e0-475c-bddb-0a275a87836c",
+            "name": "Events",
+            "parent": "e7b2ec5f-49ac-42c1-a469-20f390113161",
+            "type": "folder",
+            "color": "#ffffff",
+            "version": "1.0.0"
+        },
+        {
+            "id": "bd56a4d4-3764-48d3-be0c-4f6d2fe58f99",
+            "type": "action-set",
+            "name": "Bits",
+            "parent": "fa20f601-58e0-475c-bddb-0a275a87836c",
+            "cooldown": -1,
+            "active": true,
+            "version": "1.0.0",
+            "settings": [
+                {
+                    "for": "twitch:bits-cheered",
+                    "version": "1.0.0",
+                    "min": false,
+                    "amount": 100
+                }
+            ],
+            "actions": ["237b18d3-70d4-48ac-8e29-170551f55077"],
+            "triggers": ["twitch:bits-cheered"]
+        }
+    ],
+    "actions": [
+        {
+            "id": "6c7fc24f-6bf8-4aad-9236-ddc1e6735a3d",
+            "settings": {
+                "message": "Enjoy the sub, [username]! bergaLove"
+            },
+            "version": "1.0.0",
+            "set": "6836524c-d0e3-4ba7-ab21-2d5e14d807da",
+            "slug": "twitch:send-chat-message",
+            "actions": []
+        },
+        {
+            "id": "4e90886f-d219-4fee-93b2-509b6a10dd10",
+            "settings": {
+                "message": "You used the test command! bergaDer"
+            },
+            "version": "1.0.0",
+            "set": "11bcaa15-a33d-43f0-85f8-2cf8d8b63799",
+            "slug": "twitch:send-chat-message",
+            "actions": []
+        },
+        {
+            "id": "f5756737-4c65-4793-8115-a2f8f0938e79",
+            "settings": {
+                "title": "[username] subscribed!",
+                "message": "Sub info: [gifter] [username] [months] [tier] [gift]"
+            },
+            "version": "1.0.0",
+            "set": "6836524c-d0e3-4ba7-ab21-2d5e14d807da",
+            "slug": "espresso-notification",
+            "actions": []
+        },
+        {
+            "id": "237b18d3-70d4-48ac-8e29-170551f55077",
+            "settings": {
+                "title": "[username] cheered!",
+                "message": "[username] sent [amount] bits, for a total of [total] bits. Anon: [anonymous]"
+            },
+            "version": "1.0.0",
+            "set": "bd56a4d4-3764-48d3-be0c-4f6d2fe58f99",
+            "slug": "espresso-notification",
+            "actions": []
+        }
+    ],
+    "plugins": [
+        {
+            "path": "/Users/berg/Documents/Projects/espresso-plugins/twitch",
+            "version": "1.0.0",
+            "name": "Twitch",
+            "slug": "twitch"
+        }
+    ],
+    "notifications": [],
+    "port": 23167,
+    "twitch": {
+        "main": {
+            "id": "113128856",
+            "username": "Bergability",
+            "token": "170c3073-f496-4b57-af3a-a346ff911300"
+        },
+        "bot": {
+            "id": "118635864",
+            "username": "Botability",
+            "token": "d162e9ee-8ac5-4af5-bf65-62c273d79c24"
+        },
+        "version": "1.0.0"
+    },
+    "version": "1.0.0"
+}

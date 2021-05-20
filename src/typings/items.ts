@@ -3,6 +3,7 @@ interface ItemBase {
     type: string;
     name: string;
     parent: null | string;
+    version: string;
 }
 
 export interface Folder extends ItemBase {
@@ -10,10 +11,21 @@ export interface Folder extends ItemBase {
     color: string;
 }
 
-export interface ActionSet extends ItemBase {
+export interface ActionSetV1 extends ItemBase {
     type: 'action-set';
     active: boolean;
     cooldown: number;
+    triggers: string[];
+    actions: string[];
+    settings: ActionSetSetting[];
+}
+
+export interface ActionSet extends ItemBase {
+    type: 'action-set';
+    active: boolean;
+    useCooldown: boolean;
+    cooldown: number;
+    cooldownUnit: 'seconds' | 'minutes' | 'hours';
     triggers: string[];
     actions: string[];
     settings: ActionSetSetting[];
