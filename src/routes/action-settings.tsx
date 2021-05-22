@@ -30,8 +30,6 @@ const ActionSettingsRoute: React.FC<RouteComponentProps<Params>> = (props) => {
     useEffect(() => {
         api.fetch<GetActionPayload>(`/actions/${actionId}`, 'get')
             .then((res) => {
-                console.log(res);
-
                 updateState(res);
             })
             .catch((e) => {

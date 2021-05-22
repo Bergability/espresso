@@ -85,4 +85,6 @@ export type GetPluginsPayload = Plugin[];
 
 export interface NotificationPayload {
     notifications: EspressoNotification[];
+    pinned: EspressoNotification[];
+    count: number;
 }

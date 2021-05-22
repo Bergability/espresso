@@ -50,7 +50,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
         return (
             <div className="espresso-form">
                 {inputs.map((input, index) => {
-                    if (input.type !== 'button' && input.type !== 'section' && input.conditions) {
+                    if (input.type !== 'button' && input.type !== 'section' && input.conditions && input.conditions.length > 0) {
                         // @ts-ignore
                         const shouldRender = evaluateConditions(input.conditions, data);
                         if (!shouldRender) return null;

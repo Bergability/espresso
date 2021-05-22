@@ -60,12 +60,16 @@ interface NotificationAction {
     link: string;
 }
 
+// TODO add pinning
 export interface EspressoNotification {
     id: string;
+    slug?: string;
     title: string;
     message: string;
+    color: string;
     actions?: NotificationAction[];
     dismissible?: boolean;
-    slug?: string;
+    pinned?: boolean;
     version: string;
+    timestamp: number;
 }

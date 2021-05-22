@@ -162,6 +162,7 @@ espresso.actions.register({
 interface EspressoNotificationSettings extends Object {
     title: string;
     message: string;
+    color: string;
 }
 
 const notificationSettings: Input<EspressoNotificationSettings>[] = [
@@ -176,6 +177,12 @@ const notificationSettings: Input<EspressoNotificationSettings>[] = [
         label: 'Notification message',
         key: 'message',
         default: '',
+    },
+    {
+        type: 'color',
+        label: 'Notification color',
+        key: 'color',
+        default: '#ffffff',
     },
 ];
 
@@ -192,6 +199,7 @@ espresso.actions.register({
         espresso.notifications.add({
             title: espresso.parseVariables(actionSettings.title, triggerData),
             message: espresso.parseVariables(actionSettings.message, triggerData),
+            color: espresso.parseVariables(actionSettings.color, triggerData),
         });
     },
 });

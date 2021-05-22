@@ -3,7 +3,7 @@ import { EspressoNotification } from '@typings/espresso';
 import api from '@utilities/api';
 import { NotificationPayload } from '@typings/api';
 
-const NotificationContext = createContext<NotificationPayload>({ notifications: [] });
+const NotificationContext = createContext<NotificationPayload>({ notifications: [], pinned: [], count: 0 });
 
 export class NotificationContextWrapper extends React.Component<{}, NotificationPayload> {
     private socket = new WebSocket('ws://localhost:23167');
@@ -12,8 +12,14 @@ export class NotificationContextWrapper extends React.Component<{}, Notification
     constructor(prop: any) {
         super(prop);
 
-        this.state = { notifications: [] };
+        this.state = { notifications: [], pinned: [], count: 0 };
 
+        this.update();
+
+        this.init();
+    }
+
+    private update() {
         api.fetch<NotificationPayload>('/notifications', 'get')
             .then((res) => {
                 this.setState(() => {
@@ -23,8 +29,6 @@ export class NotificationContextWrapper extends React.Component<{}, Notification
             .catch((e) => {
                 console.log(e);
             });
-
-        this.init();
     }
 
     private init() {
@@ -52,25 +56,11 @@ export class NotificationContextWrapper extends React.Component<{}, Notification
 
         switch (event) {
             case 'espresso:notification-added':
-                this.addNotification(data as EspressoNotification);
-                break;
-
             case 'espresso:notification-dismissed':
-                this.removeNotification(data as string);
-                break;
+            case 'espresso:notification-pinned':
+            case 'espresso:notification-unpinned':
+                this.update();
         }
-    }
-
-    private addNotification(notification: EspressoNotification) {
-        this.setState((state) => ({
-            notifications: [notification, ...state.notifications],
-        }));
-    }
-
-    private removeNotification(id: string) {
-        this.setState((state) => {
-            return { notifications: state.notifications.filter((n) => n.id !== id) };
-        });
     }
 
     public render() {

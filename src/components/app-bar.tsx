@@ -61,7 +61,7 @@ interface Props {
 }
 
 const EspressoAppBar: React.FC<Props> = ({ crumbs = [], loading, children, refresh }) => {
-    const { notifications } = useContext(NotificationContext);
+    const { count } = useContext(NotificationContext);
     const [drawerState, updateDrawerState] = useState(false);
 
     const CrumbDisplay: React.FC = () => {
@@ -86,7 +86,7 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs = [], loading, children, refre
                         }}
                         style={{ marginRight: 20 }}
                     >
-                        <Badge variant="dot" color="error" overlap="circle" invisible={notifications.length <= 0}>
+                        <Badge variant="dot" color="error" overlap="circle" invisible={count <= 0}>
                             <Icon>menu</Icon>
                         </Badge>
                     </IconButton>
@@ -127,7 +127,7 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs = [], loading, children, refre
 
                     <ListItem button component={Link} to="/notifications">
                         <ListItemIcon>
-                            <Badge badgeContent={notifications.length} color="error" overlap="circle" invisible={notifications.length <= 0}>
+                            <Badge badgeContent={count} color="error" overlap="circle" invisible={count <= 0}>
                                 <Icon>notifications</Icon>
                             </Badge>
                         </ListItemIcon>

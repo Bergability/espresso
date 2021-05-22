@@ -1,15 +1,29 @@
 .notification {
     position: relative;
-    overflow: hidden;
+    border-left: solid 5px transparent;
 
     &:not(:last-child) {
         margin-bottom: 10px;
     }
 
-    &-title.MuiTypography-root {
+    &-section-header.MuiTypography-root,
+    &-title.MuiTypography-root,
+    &-time.MuiTypography-root {
+        display: inline-block;
         opacity: 0.5;
         font-size: 0.9em;
         margin-bottom: 5px;
+    }
+
+    &:hover {
+        .notification-base-actions {
+            opacity: 1;
+        }
+    }
+
+    &-section-divider {
+        opacity: 0.5;
+        margin: 30px auto;
     }
 }
 
@@ -17,4 +31,18 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 10px;
+}
+
+.notification-base-actions {
+    opacity: 0;
+    position: absolute;
+    top: -17px;
+    right: -10px;
+    background-color: #424242;
+    border-radius: 4px;
+    transition: opacity ease-in-out 0.15s;
+
+    .MuiButton-root {
+        padding: 5px 20px !important;
+    }
 }
