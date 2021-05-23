@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import EspressoAppBar, { Crumb } from '@components/app-bar';
 import api from '@utilities/api';
 import { EspressoNotification } from '@typings/espresso';
-import { Button, IconButton, Icon, Paper, Typography, ButtonGroup, Tooltip } from '@material-ui/core';
+import { Button, Icon, Paper, Typography, ButtonGroup, Tooltip } from '@material-ui/core';
 import { openInBrowser } from '@utilities';
 
 import './notifications.scss';
@@ -74,14 +74,16 @@ const NotificationDisplay: React.FC<{ notification: EspressoNotification }> = ({
                             updateHover(false);
                         }}
                     >
-                        <Tooltip title="Pin notification">
+                        <Tooltip title={notification.pinned ? 'Unpin notification' : 'Pin notification'}>
                             <Button
                                 onClick={() => {
                                     if (notification.pinned) unpinNotification(notification.id);
                                     else pinNotification(notification.id);
                                 }}
                             >
-                                <Icon fontSize="small">push_pin</Icon>
+                                <Icon fontSize="small" style={{ transform: notification.pinned ? 'rotate(0deg)' : 'rotate(45deg)' }}>
+                                    push_pin
+                                </Icon>
                             </Button>
                         </Tooltip>
                         <Tooltip title="Dismiss notification">
