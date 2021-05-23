@@ -41,9 +41,26 @@ const NewItemDialog: React.FC<Props> = ({ open, onClose, onNewItem }) => {
         updateState({ ...state, type });
     };
 
+    const onSubmit = () => {
+        if (state.name.trim() === '') return;
+        console.log('hereeeeeeeee');
+
+        onNewItem(state.name, state.type);
+        updateState({ name: '', type: 'action-set' });
+    };
+
     return (
         <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
-            <form>
+            <form
+                action="/"
+                method="POST"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    console.log('hereee?');
+
+                    onSubmit();
+                }}
+            >
                 <DialogTitle>
                     <Typography>New item</Typography>
                 </DialogTitle>
@@ -83,14 +100,7 @@ const NewItemDialog: React.FC<Props> = ({ open, onClose, onNewItem }) => {
                     <Button variant="outlined" onClick={onClose}>
                         Cancel
                     </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                            onNewItem(state.name, state.type);
-                            updateState({ name: '', type: 'action-set' });
-                        }}
-                    >
+                    <Button variant="contained" color="primary" onClick={onSubmit} type="submit">
                         Add item
                     </Button>
                 </DialogActions>
