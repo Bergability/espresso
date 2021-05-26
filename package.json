@@ -1,13 +1,14 @@
 {
     "name": "espresso",
-    "version": "1.0.0",
+    "version": "0.0.2",
     "description": "",
-    "main": "index.js",
+    "main": "dist/main.js",
     "scripts": {
         "build": "tsc --p tsconfig.electron.json",
         "start": "electron --inspect=5858 ./dist/main.js",
         "dev:react": "webpack --config ./webpack.config.js",
-        "dev:electron": "concurrently \"tsc --p tsconfig.electron.json -w\" \"electronmon ./dist/main.js\""
+        "dev:electron": "concurrently \"tsc --p tsconfig.electron.json -w\" \"electronmon ./dist/main.js\"",
+        "package": "electron-packager . Espresso --ignore=typings --out=packaged --overwrite --platform=darwin,win32"
     },
     "author": "",
     "license": "ISC",
@@ -40,6 +41,7 @@
         "@types/ws": "^7.4.1",
         "concurrently": "^6.0.2",
         "css-loader": "^5.2.1",
+        "electron-packager": "^15.2.0",
         "electronmon": "^2.0.1",
         "html-webpack-plugin": "^5.3.1",
         "sass": "^1.32.8",
