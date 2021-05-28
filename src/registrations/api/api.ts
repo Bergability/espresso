@@ -20,6 +20,16 @@ espresso.server.register({
     },
 });
 
+espresso.server.register({
+    path: '/api/app/settings',
+    method: 'get',
+    response: (req, res) => {
+        res.send({
+            config: espresso.store.path,
+        });
+    },
+});
+
 import './action-set';
 import './actions';
 import './items';

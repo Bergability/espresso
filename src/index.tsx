@@ -6,7 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 // Components
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import { CssBaseline, ThemeProvider, createMuiTheme, Theme } from '@material-ui/core';
+import { CssBaseline, ThemeProvider, createMuiTheme, Theme, Button } from '@material-ui/core';
 
 // Contexts
 import { ActionSchemaContextWrapper } from './contexts/action-schemas';
@@ -19,6 +19,8 @@ import FolderSettingsRoute from '@routes/folder-settings';
 import ListRoute from '@routes/list';
 import PluginsRoute from '@routes/plugins';
 import NotificationsRoute from '@routes/notifications';
+import SettingsRoute from '@routes/settings';
+import NotFoundRoute from '@routes/404';
 
 // Styles
 import './main.scss';
@@ -59,6 +61,10 @@ ReactDOM.render(
                                         <NotificationsRoute />
                                     </Route>
 
+                                    <Route path="/settings" exact>
+                                        <SettingsRoute />
+                                    </Route>
+
                                     <Route path="/:id" exact>
                                         <FolderRoute />
                                     </Route>
@@ -73,6 +79,10 @@ ReactDOM.render(
 
                                     <Route path="/action-set/:id">
                                         <ActionSetRoute />
+                                    </Route>
+
+                                    <Route>
+                                        <NotFoundRoute />
                                     </Route>
                                 </Switch>
                             </Router>

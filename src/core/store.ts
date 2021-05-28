@@ -30,6 +30,8 @@ export default class EspressoStore {
         },
     });
 
+    public path = this.config.path;
+
     private configUpdater: Updater[] = [];
     private actionUpdater: Updater[] = [];
     private notificationUpdater: Updater[] = [];

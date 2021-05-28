@@ -9,7 +9,8 @@
         "start": "electron --inspect=5858 ./dist/main.js",
         "dev:react": "webpack --config ./webpack.config.js",
         "dev:electron": "concurrently \"tsc --p tsconfig.electron.json -w\" \"electronmon ./dist/main.js\"",
-        "package": "electron-packager . Espresso --ignore=typings --out=packaged --overwrite --platform=darwin,win32 --asar"
+        "package": "electron-packager . Espresso --ignore=typings --out=packaged --overwrite --platform=darwin,win32 --app-bundle-id=\"gg.espresso\"",
+        "sign": "electron-osx-sign \"packaged/Espresso-darwin-x64/Espresso.app\""
     },
     "author": "",
     "license": "ISC",

@@ -141,7 +141,7 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs = [], loading, children, refre
                         <ListItemText primary="Plugins" />
                     </ListItem>
 
-                    <ListItem button component={Link} to="/">
+                    <ListItem button component={Link} to="/settings">
                         <ListItemIcon>
                             <Icon>settings</Icon>
                         </ListItemIcon>
