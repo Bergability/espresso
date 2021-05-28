@@ -23,6 +23,10 @@ export const generateDefaults = <Data>(inputs: Input<Data>[], data: Object = {})
     inputs.forEach((input) => {
         if (input.type === 'button') return;
 
+        if (input.type === 'section') {
+            data = { ...data, ...generateDefaults(input.inputs) };
+        }
+
         // @ts-ignore
         if (data[input.key] === undefined) {
             // @ts-ignore

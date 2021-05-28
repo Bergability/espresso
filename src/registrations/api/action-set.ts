@@ -1,24 +1,9 @@
 import espresso from '../../core/espresso';
-import { Input } from '@typings/inputs';
 import { ActionSet, ActionSetSetting, Item } from '@typings/items';
 import { Action } from '@typings/espresso';
 import { APIError, GetPutActionSetPayload, GetActionSetTriggerPayload, PutActionSetTriggerPayload } from '@typings/api';
 import { Crumb } from '@components/app-bar';
-// import { v4 as uuid } from 'uuid';
-
-const generateDefaults = <Data>(inputs: Input<Data>[], data: Object = {}) => {
-    inputs.forEach((input) => {
-        if (input.type === 'button') return;
-
-        // @ts-ignore
-        if (data[input.key] === undefined) {
-            // @ts-ignore
-            data[input.key] = input.default;
-        }
-    });
-
-    return data;
-};
+import { generateDefaults } from '../../utilities';
 
 export const getItemCrumbs = (id: string | null, crumbs: Crumb[] = []): Crumb[] => {
     if (id === null) crumbs = [{ text: 'My Items', link: '/', type: 'folder', id: null }, ...crumbs];

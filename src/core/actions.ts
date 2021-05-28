@@ -4,20 +4,7 @@ import EspressoRegistrar from './registrar';
 // Types
 import { ActionSchema } from '@typings/espresso';
 import { Object, Input } from '@typings/inputs';
-
-const generateDefaults = <Data>(inputs: Input<Data>[], data: Object = {}) => {
-    inputs.forEach((input) => {
-        if (input.type === 'button') return;
-
-        // @ts-ignore
-        if (data[input.key] === undefined) {
-            // @ts-ignore
-            data[input.key] = input.default;
-        }
-    });
-
-    return data;
-};
+import { generateDefaults } from '../utilities';
 
 export default class EspressoActions extends EspressoRegistrar<ActionSchema> {
     constructor() {

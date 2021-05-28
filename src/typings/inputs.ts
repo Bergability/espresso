@@ -81,7 +81,7 @@ export interface ChipsInput<Data extends Object> extends InputBase<Data> {
 
 export interface RepeaterInput<Data extends Object, RepeatData extends Object = {}> extends InputBase<Data> {
     type: 'repeater';
-    default: [];
+    default: RepeatData[];
     inputs: Input<RepeatData>[];
     addLabel: string;
     emptyLabel: string;
