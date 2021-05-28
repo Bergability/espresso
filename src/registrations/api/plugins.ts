@@ -30,7 +30,7 @@ espresso.server.register({
         const path = req.body.path as string;
         const plugins = espresso.store.get('plugins') as Plugin[];
 
-        if (!path || !path.endsWith('/manifest.json')) {
+        if (!path || !path.endsWith('manifest.json')) {
             res.status(400);
             res.send();
             return;
