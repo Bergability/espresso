@@ -2,6 +2,19 @@ export interface Object {
     [key: string]: any;
 }
 
+export interface Color {
+    alpha: number;
+    css: { backgroundColor: string };
+    format?: string;
+    hex: string;
+    hsl: [number, number, number];
+    hsv: [number, number, number];
+    name?: string;
+    raw: [number, number, number];
+    rgb: [number, number, number];
+    value?: number;
+}
+
 type ComparisonOperators = 'equal' | 'not-equal' | 'greater-than' | 'greater-than-or-equal' | 'less-than' | 'less-than-or-equal';
 type ArrayLengthComparisonOperators =
     | 'array-length-equal'

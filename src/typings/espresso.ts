@@ -1,4 +1,4 @@
-import { Option, Input, Object } from '@typings/inputs';
+import { Option, Input, Object, Color } from '@typings/inputs';
 import { Updater } from './updater';
 
 export interface Variable {
@@ -66,7 +66,7 @@ export interface EspressoNotification {
     slug?: string;
     title: string;
     message: string;
-    color: string;
+    color: string | Color;
     actions?: NotificationAction[];
     dismissible?: boolean;
     pinned?: boolean;

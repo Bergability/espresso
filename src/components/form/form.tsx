@@ -117,7 +117,7 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                     // fullWidth
                                     disableAlpha
                                     onChange={(e) => {
-                                        onInputChange(input.key, `#${e.hex}`);
+                                        onInputChange(input.key, e);
                                     }}
                                 />
                             );

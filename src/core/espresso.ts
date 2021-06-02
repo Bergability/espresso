@@ -1,5 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { shell, powerMonitor } from 'electron';
+import { getColorValue } from '../utilities';
 
 import Actions from './actions';
 import Events from './events';
@@ -56,6 +57,7 @@ class EspressoClass {
         uuid: () => {
             return uuid();
         },
+        getColorValue,
     };
 }
 

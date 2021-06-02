@@ -126,11 +126,16 @@ export default class EspressoTriggers extends EspressoRegistrar<TriggerSchema> {
     }
 
     public setCooldown(id: string, duration: number) {
+        // @ts-ignore
         this.cooldowns = [
+            // @ts-ignore
             ...this.cooldowns,
             {
+                // @ts-ignore
                 id,
+                // @ts-ignore
                 start: Date.now(),
+                // @ts-ignore
                 timeout: setTimeout(() => {
                     this.removeCooldown(id);
                 }, duration),

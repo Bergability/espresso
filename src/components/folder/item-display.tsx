@@ -1,6 +1,7 @@
 // Libraries
 import React, { useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import { getColorValue } from '../../utilities';
 
 // Components
 import { Button, Icon, Typography, MenuItem, Menu, ListItemSecondaryAction, makeStyles, createStyles } from '@material-ui/core';
@@ -177,7 +178,7 @@ const ItemDisplay: React.FC<Props> = ({ item, refresh }) => {
                 onContextMenu={onContextMenu}
             >
                 {item.type === 'folder' ? (
-                    <Icon style={{ marginRight: '10px', color: item.color }} className={isDragging ? classes.draggingIcon : ''}>
+                    <Icon style={{ marginRight: '10px', color: getColorValue(item.color).hex }} className={isDragging ? classes.draggingIcon : ''}>
                         folder
                     </Icon>
                 ) : null}

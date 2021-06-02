@@ -79,6 +79,9 @@ const EspressoAppBar: React.FC<Props> = ({ crumbs = [], loading, children, refre
     return (
         <>
             <AppBar position="sticky" color="default">
+                {/* <div id="app-control-bar">
+                    <Logo />
+                </div> */}
                 <Toolbar className="espresso-app-bar">
                     <IconButton
                         onClick={() => {

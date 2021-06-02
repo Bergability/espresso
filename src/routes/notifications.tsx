@@ -3,7 +3,7 @@ import EspressoAppBar, { Crumb } from '@components/app-bar';
 import api from '@utilities/api';
 import { EspressoNotification } from '@typings/espresso';
 import { Button, Icon, Paper, Typography, ButtonGroup, Tooltip } from '@material-ui/core';
-import { openInBrowser } from '@utilities';
+import { openInBrowser, getColorValue } from '@utilities';
 
 import './notifications.scss';
 import NotificationContext from 'src/contexts/notifications';
@@ -61,7 +61,7 @@ const NotificationDisplay: React.FC<{ notification: EspressoNotification }> = ({
     };
 
     return (
-        <Paper key={notification.id} className="notification" style={{ borderLeftColor: notification.color }}>
+        <Paper key={notification.id} className="notification" style={{ borderLeftColor: getColorValue(notification.color).hex }}>
             {notification.dismissible === false ? null : (
                 <div className="notification-base-actions">
                     <ButtonGroup

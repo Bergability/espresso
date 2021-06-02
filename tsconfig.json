@@ -1,5 +1,5 @@
 {
-    "exclude": ["declarations", "dist"],
+    "exclude": ["declarations", "dist", "packaged"],
     "compilerOptions": {
         "target": "es5",
         "lib": ["dom", "dom.iterable", "esnext"],

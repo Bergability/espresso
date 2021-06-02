@@ -1,5 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const path = require('path');
+const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = [
@@ -21,6 +21,7 @@ module.exports = [
                 {
                     test: /\.ts(x?)$/,
                     include: /src/,
+                    exclude: path.join(__dirname, 'src', 'core'),
                     use: [{ loader: 'ts-loader' }],
                 },
                 {

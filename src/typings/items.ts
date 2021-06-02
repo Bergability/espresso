@@ -1,3 +1,5 @@
+import { Color } from './inputs';
+
 interface ItemBase {
     id: string;
     type: string;
@@ -8,7 +10,7 @@ interface ItemBase {
 
 export interface Folder extends ItemBase {
     type: 'folder';
-    color: string;
+    color: string | Color;
 }
 
 export interface ActionSetV1 extends ItemBase {

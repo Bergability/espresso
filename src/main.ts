@@ -41,6 +41,8 @@ function createWindow() {
         width: 800,
         backgroundColor: '#303030',
         title: 'Espresso',
+        // frame: false,
+        // titleBarStyle: 'hiddenInset',
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,

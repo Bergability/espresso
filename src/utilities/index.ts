@@ -1,10 +1,11 @@
 import { shell } from 'electron';
+import ColorUtility from 'color';
 
 // Utilities
 import api from './api';
 
 // Types
-import { Option, Input, Object, Condition } from '@typings/inputs';
+import { Option, Input, Object, Condition, Color } from '@typings/inputs';
 
 export const openInBrowser = (url: string) => {
     shell.openExternal(url);
@@ -44,6 +45,28 @@ export const copyToClipboard = (text: string) => {
             navigator.clipboard.writeText(text);
         }
     });
+};
+
+export const getColorValue = (raw: string | Color): Color => {
+    // If raw is not a string, it is already a color object
+    if (typeof raw !== 'string')
+        return {
+            ...raw,
+            hex: `#${raw.hex}`,
+        };
+
+    // TODO add CSS color values
+    const color = ColorUtility(raw, 'hex');
+
+    return {
+        alpha: color.alpha(),
+        css: { backgroundColor: color.hex() },
+        hex: color.hex(),
+        hsl: color.hsl().array() as Color['hsl'],
+        hsv: color.hsv().array() as Color['hsv'],
+        raw: color.rgb().array() as Color['raw'],
+        rgb: color.rgb().array() as Color['rgb'],
+    };
 };
 
 const evaluateCondition = (condition: Condition, data: Object): boolean => {
