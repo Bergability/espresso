@@ -4,7 +4,7 @@ import React from 'react';
 // Components
 import { Link } from 'react-router-dom';
 import { ColorPicker } from 'material-ui-color';
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField, Slider } from '@material-ui/core';
 import EspressoToggleInput from '@components/form/toggle';
 import EspressoSelectInput from '@components/form/select';
 import EspressoChipsInput from '@components/form/chips';
@@ -50,7 +50,13 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
         return (
             <div className="espresso-form">
                 {inputs.map((input, index) => {
-                    if (input.type !== 'button' && input.type !== 'section' && input.conditions && input.conditions.length > 0) {
+                    if (
+                        input.type !== 'button' &&
+                        input.type !== 'section' &&
+                        input.type !== 'title' &&
+                        input.conditions &&
+                        input.conditions.length > 0
+                    ) {
                         // @ts-ignore
                         const shouldRender = evaluateConditions(input.conditions, data);
                         if (!shouldRender) return null;
@@ -58,18 +64,18 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
 
                     switch (input.type) {
                         case 'section':
+                        case 'title':
                             return (
                                 <FormSection
                                     key={index}
                                     data={data}
                                     // @ts-ignore
-                                    inputs={input.inputs}
+                                    inputs={input.inputs ? input.inputs : []}
                                     title={input.title}
                                     description={input.description}
                                     onChange={onInputChange}
                                 />
                             );
-                            break;
 
                         case 'button':
                             return (
@@ -134,6 +140,21 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
                                     fullWidth
                                     onChange={(e) => {
                                         onInputChange(input.key, e.target.value);
+                                    }}
+                                />
+                            );
+
+                        case 'slider':
+                            return (
+                                <Slider
+                                    key={input.key as string}
+                                    value={data[input.key] == undefined ? input.default : data[input.key]}
+                                    min={input.min}
+                                    max={input.max}
+                                    step={input.step}
+                                    valueLabelDisplay="auto"
+                                    onChange={(e, value) => {
+                                        onInputChange(input.key, value);
                                     }}
                                 />
                             );

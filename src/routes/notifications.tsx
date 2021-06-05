@@ -60,8 +60,10 @@ const NotificationDisplay: React.FC<{ notification: EspressoNotification }> = ({
         return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
     };
 
+    const color = getColorValue(notification.color);
+
     return (
-        <Paper key={notification.id} className="notification" style={{ borderLeftColor: getColorValue(notification.color).hex }}>
+        <Paper key={notification.id} className="notification" style={{ borderLeftColor: color !== null ? color.hex : 'white' }}>
             {notification.dismissible === false ? null : (
                 <div className="notification-base-actions">
                     <ButtonGroup

@@ -1,5 +1,6 @@
 import { shell } from 'electron';
 import ColorUtility from 'color';
+import colors from './colors';
 
 // Utilities
 import api from './api';
@@ -47,7 +48,7 @@ export const copyToClipboard = (text: string) => {
     });
 };
 
-export const getColorValue = (raw: string | Color): Color => {
+export const getColorValue = (raw: string | Color): Color | null => {
     // If raw is not a string, it is already a color object
     if (typeof raw !== 'string')
         return {
@@ -55,8 +56,15 @@ export const getColorValue = (raw: string | Color): Color => {
             hex: `#${raw.hex}`,
         };
 
-    // TODO add CSS color values
-    const color = ColorUtility(raw, 'hex');
+    let color;
+
+    if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(raw)) {
+        color = ColorUtility(raw, 'hex');
+    } else if (colors[raw.toLowerCase().replaceAll(' ', '')]) {
+        color = ColorUtility(colors[raw.toLowerCase().replaceAll(' ', '')], 'hex');
+    } else {
+        return null;
+    }
 
     return {
         alpha: color.alpha(),

@@ -55,6 +55,12 @@ export interface InputSection<Data extends Object = {}, RepeatData extends Objec
     inputs: Input<Data, RepeatData>[];
 }
 
+export interface Title {
+    type: 'title';
+    title: string;
+    description?: string[];
+}
+
 export interface TextInput<Data extends Object> extends InputBase<Data> {
     type: 'text';
     default: string;
@@ -70,6 +76,14 @@ export interface NumberInput<Data extends Object> extends InputBase<Data> {
     default: number;
     min?: number;
     max?: number;
+}
+
+export interface SliderInput<Data extends Object> extends InputBase<Data> {
+    type: 'slider';
+    default: number;
+    min?: number;
+    max?: number;
+    step?: number;
 }
 
 export interface ToggleInput<Data extends Object> extends InputBase<Data> {
@@ -117,9 +131,11 @@ export type Input<Data extends Object = {}, RepeatData extends Object = {}> =
     | TextInput<Data>
     | ColorInput<Data>
     | NumberInput<Data>
+    | SliderInput<Data>
     | ToggleInput<Data>
     | SelectInput<Data>
     | ChipsInput<Data>
     | RepeaterInput<Data, RepeatData>
+    | Title
     | ButtonInput;
 export type InputType = Input<{}>['type'];

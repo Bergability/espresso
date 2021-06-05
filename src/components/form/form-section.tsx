@@ -13,7 +13,7 @@ interface Props {
 
 const FormSection: React.FC<Props> = ({ inputs, data, title, description, onChange }) => {
     return (
-        <div className="espresso-form-section">
+        <div className={`espresso-form-section ${inputs.length === 0 ? 'only-title' : ''}`}>
             <div className="espresso-form-section-header">
                 <Typography className="espresso-form-section-title">{title}</Typography>
                 {description
@@ -27,14 +27,16 @@ const FormSection: React.FC<Props> = ({ inputs, data, title, description, onChan
                       })
                     : null}
             </div>
-            <EspressoForm<{}>
-                data={data}
-                variant="outlined"
-                onChange={(key: string, v: any) => {
-                    onChange(key, v);
-                }}
-                inputs={inputs}
-            />
+            {inputs.length === 0 ? null : (
+                <EspressoForm<{}>
+                    data={data}
+                    variant="outlined"
+                    onChange={(key: string, v: any) => {
+                        onChange(key, v);
+                    }}
+                    inputs={inputs}
+                />
+            )}
         </div>
     );
 };

@@ -24,6 +24,8 @@ class EspressoClass {
     public plugins = new Plugins();
 
     public parseVariables(string: string, variables: { [key: string]: any }) {
+        if (typeof string !== 'string') return string;
+
         Object.keys(variables).forEach((variable) => {
             // TODO add better dev logging for when a var isn't a string
             switch (typeof variables[variable]) {
@@ -42,6 +44,12 @@ class EspressoClass {
                 case 'undefined':
                     variables[variable] = '';
                     break;
+
+                case 'string':
+                    break;
+
+                default:
+                    return;
             }
 
             const regex = new RegExp(`\\[${variable}\\]`, 'g');

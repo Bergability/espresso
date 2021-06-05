@@ -159,6 +159,13 @@ const ItemDisplay: React.FC<Props> = ({ item, refresh }) => {
         );
     };
 
+    const iconStyles: { [key: string]: string } = { marginRight: '10px' };
+
+    if (item.type === 'folder') {
+        const color = getColorValue(item.color);
+        iconStyles.color = color !== null ? color.hex : 'white';
+    }
+
     return (
         <React.Fragment key={item.id}>
             <Button
@@ -178,7 +185,7 @@ const ItemDisplay: React.FC<Props> = ({ item, refresh }) => {
                 onContextMenu={onContextMenu}
             >
                 {item.type === 'folder' ? (
-                    <Icon style={{ marginRight: '10px', color: getColorValue(item.color).hex }} className={isDragging ? classes.draggingIcon : ''}>
+                    <Icon style={iconStyles} className={isDragging ? classes.draggingIcon : ''}>
                         folder
                     </Icon>
                 ) : null}
