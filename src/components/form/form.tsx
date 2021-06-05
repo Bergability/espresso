@@ -4,12 +4,13 @@ import React from 'react';
 // Components
 import { Link } from 'react-router-dom';
 import { ColorPicker } from 'material-ui-color';
-import { Button, TextField, Slider } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import EspressoToggleInput from '@components/form/toggle';
 import EspressoSelectInput from '@components/form/select';
 import EspressoChipsInput from '@components/form/chips';
 import RepeaterInput from '@components/form/repeater';
 import FormSection from '@components/form/form-section';
+import SliderInput from '@components/form/slider';
 
 // Styles
 import './form.scss';
@@ -146,16 +147,18 @@ class EspressoForm<Data extends Object = {}> extends React.Component<Props<Data>
 
                         case 'slider':
                             return (
-                                <Slider
+                                <SliderInput
                                     key={input.key as string}
+                                    inputKey={input.key as string}
+                                    helperText={input.helper}
+                                    label={input.label}
                                     value={data[input.key] == undefined ? input.default : data[input.key]}
                                     min={input.min}
                                     max={input.max}
+                                    minLabel={input.minLabel}
+                                    maxLabel={input.maxLabel}
                                     step={input.step}
-                                    valueLabelDisplay="auto"
-                                    onChange={(e, value) => {
-                                        onInputChange(input.key, value);
-                                    }}
+                                    onChange={onInputChange}
                                 />
                             );
 

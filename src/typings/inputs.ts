@@ -81,8 +81,10 @@ export interface NumberInput<Data extends Object> extends InputBase<Data> {
 export interface SliderInput<Data extends Object> extends InputBase<Data> {
     type: 'slider';
     default: number;
-    min?: number;
-    max?: number;
+    min: number;
+    max: number;
+    minLabel?: string;
+    maxLabel?: string;
     step?: number;
 }
 
