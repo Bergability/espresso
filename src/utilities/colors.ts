@@ -169,6 +169,7 @@ const colors: { [key: string]: string } = {
     owo: '#ee82ee',
     o3o: '#ee82ee',
     accordingtoallknownlawsofaviationthereisnowayabeeshouldbeabletofly: '#ffd700',
+    banana: '#ffe135',
 };
 
 export default colors;
